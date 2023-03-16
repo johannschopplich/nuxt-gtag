@@ -1,4 +1,5 @@
 import type { Gtag } from './types'
+import { useHead } from '#imports'
 
 export default defineNuxtPlugin(() => {
   const { gtag: gtagOpts } = useRuntimeConfig().public
@@ -15,6 +16,15 @@ export default defineNuxtPlugin(() => {
 
   gtag('js', new Date())
   gtag('config', gtagOpts.id, gtagOpts.config)
+
+  useHead({
+    script: [
+      {
+        src: `https://www.googletagmanager.com/gtag/js?id=${gtagOpts.id}`,
+        async: true,
+      },
+    ],
+  })
 
   return {
     provide: {

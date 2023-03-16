@@ -44,40 +44,31 @@ Done! Google Analytics will now run in your application's client.
 
 ## Configuration
 
-All [supported module options](#module-options) can be set by either the module options key `gtag`, or the public runtime config key with the same name.
+All [supported module options](#module-options) can be configured using the `gtag` key in your Nuxt configuration:
 
 ```ts
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
-  // Configure using the module options
   gtag: {
     id: 'G-XXXXXXXXXX',
     config: {
       page_title: 'My Custom Page Title'
     }
   },
-
-  // **Or** the public runtime config instead
-  runtimeConfig: {
-    public: {
-      gtag: {
-        id: 'G-XXXXXXXXXX',
-        config: {
-          page_title: 'My Custom Page Title'
-        }
-      }
-    }
-  }
 })
 ```
+
+### Runtime Config
 
 Alternatively, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig) by matching environment variables at runtime, set your desired option in your project's `.env` file:
 
 ```bash
-# Sets the `gtag` public runtime config value for the key `id`
+# Sets the `gtag.id` module option
 NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
 ```
+
+With this setup, you can omit the `gtag` key in your Nuxt configuration if you only want to set the measurement ID.
 
 ## Module Options
 
