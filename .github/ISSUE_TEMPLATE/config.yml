@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Nuxt Gtag Documentation
+    url: https://github.com/johannschopplich/nuxt-gtag#readme
+    about: Check the documentation for usage of Nuxt Gtag
