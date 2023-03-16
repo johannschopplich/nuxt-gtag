@@ -1,7 +1,7 @@
 {
   "name": "nuxt-gtag",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "packageManager": "pnpm@7.29.1",
   "description": "Nuxt 3 module to natively integrate Google Analytics",
   "author": "Johann Schopplich <pkg@johannschopplich.com>",
