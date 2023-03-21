@@ -1,4 +1,3 @@
-import type { Gtag } from './types'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
@@ -10,8 +9,9 @@ export default defineNuxtPlugin(() => {
   // @ts-expect-error: `dataLayer` is not defined
   window.dataLayer = window.dataLayer || []
 
-  const gtag: Gtag = (...args: any[]) => {
-    (window as any).dataLayer.push(args)
+  function gtag(..._args: any[]) {
+    // eslint-disable-next-line prefer-rest-params
+    (window as any).dataLayer.push(arguments)
   }
 
   gtag('js', new Date())
