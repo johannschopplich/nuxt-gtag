@@ -17,10 +17,10 @@
 
 ```bash
 # pnpm
-pnpm add -D nuxt-gtag
+pnpm add nuxt-gtag
 
 # npm
-npm i -D nuxt-gtag
+npm i nuxt-gtag
 ```
 
 ## Basic Usage
