@@ -21,6 +21,17 @@ export interface ModuleOptions {
    * @default undefined
    */
   config?: Record<string, any>
+
+  /**
+   * Whether to load the Google Analytics 4 script asynchronously or defer its loading
+   *
+   * @remarks
+   * If set to `async`, the script will be loaded asynchronously.
+   * If set to `defer`, the script will be loaded with the `defer` attribute.
+   *
+   * @default 'defer'
+   */
+  loadingStrategy?: 'async' | 'defer'
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -35,6 +46,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     id: undefined,
     config: undefined,
+    loadingStrategy: 'defer',
   },
   setup(options, nuxt) {
     // Add module options to public runtime config

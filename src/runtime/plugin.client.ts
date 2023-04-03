@@ -17,11 +17,14 @@ export default defineNuxtPlugin(() => {
   gtag('js', new Date())
   gtag('config', gtagOpts.id, gtagOpts.config)
 
+  // Sanitize loading strategy to be either `async` or `defer`
+  const loadingStrategy = gtagOpts.loadingStrategy === 'async' ? 'async' : 'defer'
+
   useHead({
     script: [
       {
         src: `https://www.googletagmanager.com/gtag/js?id=${gtagOpts.id}`,
-        async: true,
+        [loadingStrategy]: true,
       },
     ],
   })

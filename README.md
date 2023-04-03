@@ -72,10 +72,11 @@ With this setup, you can omit the `gtag` key in your Nuxt configuration if you o
 
 ## Module Options
 
-| Option | Type | Description | Default |
+| Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `string` | The Google Analytics measurement ID. | `undefined` |
-| `config` | `Record<string, any>` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. | `{}` |
+| `id` | `string` | `undefined` | The Google Analytics measurement ID. |
+| `config` | `Record<string, any>` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 
 ## Composables
 
