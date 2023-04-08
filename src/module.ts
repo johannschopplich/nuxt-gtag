@@ -23,6 +23,16 @@ export interface ModuleOptions {
   config?: Record<string, any>
 
   /**
+   * Whether to initially consent to tracking
+   *
+   * @remarks
+   * If set to `true`, the Google Analytics 4 script will be loaded immediately
+   *
+   * @default true
+   */
+  initialConsent?: boolean
+
+  /**
    * Whether to load the Google Analytics 4 script asynchronously or defer its loading
    *
    * @remarks
@@ -46,6 +56,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     id: undefined,
     config: undefined,
+    initialConsent: true,
     loadingStrategy: 'defer',
   },
   setup(options, nuxt) {

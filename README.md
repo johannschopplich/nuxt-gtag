@@ -9,8 +9,9 @@
 ## Features
 
 - 🌻 No dependencies except Google's `gtag.js`
-- 🦾 SSR-ready
+- 🤝 Manual [consent management](#consent-management) for GDPR compliance
 - 📯 Track events manually with [composables](#composables)
+- 🦾 SSR-ready
 - 📂 [`.env` file support](#configuration)
 
 ## Setup
@@ -40,7 +41,11 @@ export default defineNuxtConfig({
 
 Done! Google Analytics will now run in your application's client.
 
-> ℹ️ Make sure the `Page changes based on browser history events` checkbox is enabled. This will allow GA4 to automatically track page views. You can find this option in the `Admin` > `Property` > `Data Streams` > `Web` > `General Settings` > `User-Defined` > `Page changes based on browser history events` section.
+> **Note**
+>
+> Ensure that the **Enhanced measurement** feature is enabled to allow GA4 to automatically track page views in your Single Page Application.
+>
+> To enable this feature, go to your Google Analytics 4 account, then navigate to "Admin" > "Data Streams" > "Web" > "Enhanced measurement settings." In this section, make sure the "Page views" toggle is enabled. Enabling the "Page views" toggle allows GA4 to track page changes based on browser history events in your Single Page Application.
 
 ## Configuration
 
@@ -55,8 +60,39 @@ export default defineNuxtConfig({
     config: {
       page_title: 'My Custom Page Title'
     }
-  },
+  }
 })
+```
+
+### Consent Management
+
+If you want to disable tracking by default, you can set the `initialConsent` option to `false`. This will prevent the `gtag.js` script from loading until the user has consented to tracking.
+
+```ts
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    id: 'G-XXXXXXXXXX',
+    initialConsent: false
+  }
+})
+```
+
+To manually manage consent, you can use the [`useGtagConsent` composable](#usegtagconsent) to set the consent state, e.g. after the user has accepted your cookie policy.
+
+```vue
+<script setup lang="ts">
+function acceptTracking() {
+  useGtagConsent(true)
+}
+</script>
+
+<template>
+  <button @click="acceptTracking">
+    Accept Tracking
+  </button>
+</template>
 ```
 
 ### Runtime Config
@@ -76,6 +112,7 @@ With this setup, you can omit the `gtag` key in your Nuxt configuration if you o
 | --- | --- | --- | --- |
 | `id` | `string` | `undefined` | The Google Analytics measurement ID. |
 | `config` | `Record<string, any>` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `initialConsent` | `boolean` | `true` | Whether to initially consent to tracking. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 
 ## Composables
@@ -124,14 +161,32 @@ gtag('event', 'screen_view', {
 })
 ```
 
-### `useTrackEvent`
+### `useGtagConsent`
+
+If you want to manually manage consent, i.e. for GDPR compliance, you can use the `useGtagConsent` composable to set the consent state. This composable accepts a boolean value that indicates whether the user has consented to tracking. If the user has consented, the `gtag.js` script will be loaded and tracking will begin.
+
+This is only necessary if you have disabled the `initialConsent` option.
+
+```ts
+useGtagConsent(true)
+```
 
 > ℹ️ Since the Gtag instance is available in the client only, executing the composable on the server will have no effect.
+
+**Type Declarations**
+
+```ts
+function useGtagConsent(hasConsent: boolean): void
+```
+
+### `useTrackEvent`
 
 Track your defined goals by passing the following parameters:
 
 - The name of the recommended or custom event
 - A collection of parameters that provide additional information about the event (optional)
+
+> ℹ️ Since the Gtag instance is available in the client only, executing the composable on the server will have no effect.
 
 **Type Declarations**
 
