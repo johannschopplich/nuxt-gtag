@@ -19,11 +19,14 @@ export function useGtagConsent(hasConsent: boolean) {
     return
   }
 
-  // Disable Google Analytics with GDPR compliance
-  // https://developers.google.com/analytics/devguides/collection/gtagjs/user-opt-out
   disableGtag(true)
 }
 
+/**
+ * Disable Google Analytics with GDPR compliance
+ *
+ * @see https://developers.google.com/analytics/devguides/collection/gtagjs/user-opt-out
+ */
 function disableGtag(value: boolean) {
   const { gtag: gtagOpts } = useRuntimeConfig().public
   ;(window as any)[`ga-disable-${gtagOpts.id}`] = value
