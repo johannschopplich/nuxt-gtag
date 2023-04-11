@@ -8,6 +8,10 @@ function logGtagFn() {
   console.log('Use the "gtag" function to send custom events', gtag)
 }
 
+function consentTracking() {
+  useGtagConsent(true)
+}
+
 function trackEvent() {
   useTrackEvent('share')
 }
@@ -35,6 +39,10 @@ function trackEvent() {
   <h3>Composables</h3>
   <button @click="logGtagFn">
     useGtag
+  </button>
+  &nbsp;
+  <button @click="consentTracking">
+    useGtagConsent
   </button>
   &nbsp;
   <button @click="trackEvent">
