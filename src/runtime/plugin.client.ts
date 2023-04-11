@@ -1,18 +1,42 @@
-import { gtag, loadGtagScript } from './utils'
 import { defineNuxtPlugin, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
-  const { gtag: gtagOpts } = useRuntimeConfig().public
+  const {
+    gtag: { id, config, initialConsent, loadingStrategy },
+  } = useRuntimeConfig().public
 
-  if (!gtagOpts.id)
+  if (!id)
     return
 
   // @ts-expect-error: `dataLayer` is not defined
   window.dataLayer = window.dataLayer || []
 
-  gtag('js', new Date())
-  gtag('config', gtagOpts.id, gtagOpts.config)
+  function gtag(..._args: any[]) {
+    // eslint-disable-next-line prefer-rest-params
+    (window as any).dataLayer.push(arguments)
+  }
 
-  if (gtagOpts.initialConsent)
-    loadGtagScript()
+  gtag('js', new Date())
+  gtag('config', id, config)
+
+  if (!initialConsent)
+    return
+
+  // Sanitize loading strategy to be either `async` or `defer`
+  const strategy = loadingStrategy === 'async' ? 'async' : 'defer'
+
+  useHead({
+    script: [
+      {
+        src: `https://www.googletagmanager.com/gtag/js?id=${id}`,
+        [strategy]: true,
+      },
+    ],
+  })
+
+  return {
+    provide: {
+      gtag,
+    },
+  }
 })

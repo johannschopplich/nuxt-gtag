@@ -1,25 +1,30 @@
-import { loadGtagScript } from '../utils'
-import { useRuntimeConfig } from '#imports'
+import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtagConsent(hasConsent: boolean) {
+  const { gtag: { id } } = useRuntimeConfig().public
+
   if (process.server || !('dataLayer' in window))
     return
 
-  // `js` and `config` are already called on plugin initialization
+  // The first two `dataLayer` items are typically the `js` and `config` commands
+  // that are called during the plugin initialization. Therefore, if the `dataLayer`
+  // has more than two items, it is considered to be initialized.
   const isInitialized = (window as any).dataLayer.length > 2
 
   if (hasConsent) {
     if (!isInitialized) {
-      loadGtagScript()
+      useHead({
+        script: [{ src: `https://www.googletagmanager.com/gtag/js?id=${id}` }],
+      })
     }
     else {
       // Re-enable Google Analytics
-      disableGtag(false)
+      disableGtag(false, id)
     }
     return
   }
 
-  disableGtag(true)
+  disableGtag(true, id)
 }
 
 /**
@@ -27,7 +32,6 @@ export function useGtagConsent(hasConsent: boolean) {
  *
  * @see https://developers.google.com/analytics/devguides/collection/gtagjs/user-opt-out
  */
-function disableGtag(value: boolean) {
-  const { gtag: gtagOpts } = useRuntimeConfig().public
-  ;(window as any)[`ga-disable-${gtagOpts.id}`] = value
+function disableGtag(value: boolean, id: string) {
+  (window as any)[`ga-disable-${id}`] = value
 }
