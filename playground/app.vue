@@ -2,14 +2,16 @@
 const { gtag: gtagOpts } = useRuntimeConfig().public
 
 const gtag = useGtag()
+const consent = ref(gtagOpts.initialConsent)
 
 function logGtagFn() {
   // eslint-disable-next-line no-console
   console.log('Use the "gtag" function to send custom events', gtag)
 }
 
-function consentTracking() {
-  useGtagConsent(true)
+function toggleConsent() {
+  useGtagConsent(!consent.value)
+  consent.value = !consent.value
 }
 
 function trackEvent() {
@@ -36,12 +38,17 @@ function trackEvent() {
     <pre>{{ JSON.stringify(gtagOpts, null, 2) }}</pre>
   </details>
 
+  <h3>Consent</h3>
+  <p>
+    <mark>{{ consent ? 'Consent granted' : 'Consent denied' }}</mark>
+  </p>
+
   <h3>Composables</h3>
   <button @click="logGtagFn">
     useGtag
   </button>
   &nbsp;
-  <button @click="consentTracking">
+  <button @click="toggleConsent">
     useGtagConsent
   </button>
   &nbsp;
