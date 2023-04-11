@@ -1,8 +1,14 @@
+import { gtag } from '../gtag'
 import type { Gtag } from '../types'
-import { useNuxtApp } from '#imports'
+import { useRuntimeConfig } from '#imports'
 
 export function useGtag(): Gtag {
-  // Return a proxy to avoid errors when using the gtag function server-side
-  // or when the Gtag ID is not set
-  return useNuxtApp()?.$gtag ?? (() => {})
+  const { gtag: { id } } = useRuntimeConfig().public
+
+  // Return a noop function if this composable is called on the server
+  // or if there is no Gtag ID configured
+  if (!id || process.server)
+    return () => {}
+
+  return gtag
 }
