@@ -54,8 +54,8 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   defaults: {
-    id: undefined,
-    config: undefined,
+    id: '',
+    config: {},
     initialConsent: true,
     loadingStrategy: 'defer',
   },
