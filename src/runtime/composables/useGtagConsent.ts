@@ -1,5 +1,4 @@
-import { gtag } from '../gtag'
-import { useHead, useRoute, useRuntimeConfig } from '#imports'
+import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtagConsent(hasConsent: boolean) {
   const { gtag: { id } } = useRuntimeConfig().public
@@ -16,13 +15,6 @@ export function useGtagConsent(hasConsent: boolean) {
     if (!isInitialized) {
       useHead({
         script: [{ src: `https://www.googletagmanager.com/gtag/js?id=${id}` }],
-      })
-
-      // Send initial `page_view` event
-      gtag('event', 'page_view', {
-        page_location: window.location.href,
-        page_path: useRoute().path,
-        page_title: document.title,
       })
     }
     else {

@@ -1,5 +1,5 @@
 import { gtag } from './gtag'
-import { defineNuxtPlugin, useHead, useRoute, useRuntimeConfig } from '#imports'
+import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
   const {
@@ -28,12 +28,5 @@ export default defineNuxtPlugin(() => {
         [strategy]: true,
       },
     ],
-  })
-
-  // Send initial `page_view` event
-  gtag('event', 'page_view', {
-    page_location: window.location.href,
-    page_path: useRoute().path,
-    page_title: document.title,
   })
 })
