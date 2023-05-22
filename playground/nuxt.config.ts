@@ -8,5 +8,10 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
     shim: false,
+    tsConfig: {
+      compilerOptions: {
+        moduleResolution: 'bundler',
+      },
+    },
   },
 })
