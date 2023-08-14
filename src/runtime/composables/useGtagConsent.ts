@@ -1,15 +1,18 @@
+import type { UseGtagConsentOptions } from '../types'
 import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtagConsent(
   hasConsent: boolean,
-  { id }: {
-    /**
-     * In case you want to initialize a custom Gtag ID. Make sure to set
-     * `initialConsent` to `false` in the module options beforehand.
-     */
-    id?: string
-  } = {},
+  options?: Omit<UseGtagConsentOptions, 'hasConsent'>,
+): void
+export function useGtagConsent(options: UseGtagConsentOptions): void
+export function useGtagConsent(
+  arg1: boolean | UseGtagConsentOptions,
+  arg2?: Omit<UseGtagConsentOptions, 'hasConsent'>,
 ) {
+  const hasConsent = typeof arg1 === 'boolean' ? arg1 : arg1.hasConsent ?? true
+  const { id } = typeof arg1 === 'boolean' ? arg2 ?? {} : arg1
+
   const { gtag: { id: defaultId } } = useRuntimeConfig().public
 
   if (process.client && ('dataLayer' in window)) {
