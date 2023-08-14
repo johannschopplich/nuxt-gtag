@@ -139,7 +139,7 @@ gtag(
 ```ts
 function useGtag(): {
   (command: 'config', targetId: string, config?: Record<string, any>): void
-  (command: 'event', eventName: string & {}, eventParams?: Record<string, any>): void
+  (command: 'event', eventName: string, eventParams?: Record<string, any>): void
   (command: 'set', targetId: string, config: string | boolean | Record<string, any>): void
   (command: 'set', config: Record<string, any>): void
   (command: 'get', targetId: string, fieldName: string, callback?: (field?: string | Record<string, any>) => void): void
@@ -192,7 +192,7 @@ Track your defined goals by passing the following parameters:
 
 ```ts
 function useTrackEvent(
-  eventName: (string & {}),
+  eventName: string,
   eventParams?: Record<string, any>
 ): void
 ```
