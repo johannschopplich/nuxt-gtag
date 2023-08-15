@@ -163,12 +163,19 @@ gtag('event', 'screen_view', {
 
 ### `useGtagConsent`
 
-If you want to manually manage consent, i.e. for GDPR compliance, you can use the `useGtagConsent` composable to set the consent state. This composable accepts a boolean value that indicates whether the user has consented to tracking. If the user has consented, the `gtag.js` script will be loaded and tracking will begin.
+If you want to manually manage consent, i.e. for GDPR compliance, you can use the `useGtagConsent` composable to set the consent state. This composable accepts a single argument, an object with the following properties:
+
+- `hasConsent` (optional): Whether to accept or decline the consent. Defaults to `true`.
+- `id` (optional): In case you want to initialize a custom Gtag ID. Make sure to set `initialConsent` to `false` in the module options beforehand.
+
+If the user has consented, the `gtag.js` script will be loaded and tracking will begin.
 
 This is only necessary if you have disabled the `initialConsent` option.
 
 ```ts
-useGtagConsent(true)
+useGtagConsent({
+  hasConsent: true
+})
 ```
 
 > ℹ️ Since the Gtag instance is available in the client only, executing the composable on the server will have no effect.
@@ -176,7 +183,21 @@ useGtagConsent(true)
 **Type Declarations**
 
 ```ts
-function useGtagConsent(hasConsent: boolean): void
+interface UseGtagConsentOptions {
+  /**
+   * Whether to accept or decline the consent.
+   *
+   * @default true
+   */
+  hasConsent?: boolean
+  /**
+   * In case you want to initialize a custom Gtag ID. Make sure to set
+   * `initialConsent` to `false` in the module options beforehand.
+   */
+  id?: string
+}
+
+function useGtagConsent(options: UseGtagConsentOptions): void
 ```
 
 ### `useTrackEvent`
