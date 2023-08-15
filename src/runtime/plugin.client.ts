@@ -1,5 +1,5 @@
 import { gtag } from './gtag'
-import { useHead, useRuntimeConfig } from '#imports'
+import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
   const {
