@@ -1,5 +1,5 @@
 import { gtag } from './gtag'
-import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
+import { useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
   const {
@@ -9,7 +9,6 @@ export default defineNuxtPlugin(() => {
   if (!id)
     return
 
-  // @ts-expect-error: `dataLayer` is not defined
   window.dataLayer = window.dataLayer || []
 
   gtag('js', new Date())

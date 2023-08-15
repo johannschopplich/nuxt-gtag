@@ -6,34 +6,34 @@ import { name, version } from '../package.json'
 
 export interface ModuleOptions {
   /**
-   * The Google Analytics 4 property ID to use for tracking
+   * The Google Analytics 4 property ID to use for tracking.
    *
    * @default undefined
    */
   id?: string
 
   /**
-   * Additional configuration for the Google Analytics 4 property
+   * Additional configuration for the Google Analytics 4 property.
    *
    * @remarks
-   * Will be set when initializing `gtag` with the `config` command
+   * Will be set when initializing `gtag` with the `config` command.
    *
    * @default undefined
    */
   config?: Record<string, any>
 
   /**
-   * Whether to initially consent to tracking
+   * Whether to initially consent to tracking.
    *
    * @remarks
-   * If set to `true`, the Google Analytics 4 script will be loaded immediately
+   * If set to `true`, the Google Analytics 4 script will be loaded immediately.
    *
    * @default true
    */
   initialConsent?: boolean
 
   /**
-   * Whether to load the Google Analytics 4 script asynchronously or defer its loading
+   * Whether to load the Google Analytics 4 script asynchronously or defer its loading.
    *
    * @remarks
    * If set to `async`, the script will be loaded asynchronously.
