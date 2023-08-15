@@ -43,9 +43,14 @@ Done! Google Analytics will now run in your application's client.
 
 > **Note**
 >
-> Ensure that the **Enhanced measurement** feature is enabled to allow GA4 to automatically track page views in your Single Page Application.
+> Ensure that the **Enhanced measurement** feature is enabled to allow Gtag to automatically track page changes based on browser history events in Nuxt.
 >
-> To enable this feature, go to your Google Analytics 4 account, then navigate to "Admin" > "Data Streams" > "Web" > "Enhanced measurement settings." In this section, make sure the "Page views" toggle is enabled. Enabling the "Page views" toggle allows GA4 to track page changes based on browser history events in your Single Page Application.
+> To enable this feature:
+>
+> 1. Go to the GA4 reporting view and click on “Admin”
+> 2. Select “Data Streams” under the “Property” column.
+> 3. Click on your web data stream.
+> 4. Next, toggle the switch button near “Enhanced measurement”.
 
 ## Configuration
 
@@ -84,7 +89,7 @@ To manually manage consent, you can use the [`useGtagConsent` composable](#usegt
 ```vue
 <script setup lang="ts">
 function acceptTracking() {
-  useGtagConsent(true)
+  useGtagConsent({ hasConsent: true })
 }
 </script>
 
