@@ -1,7 +1,5 @@
-import { fileURLToPath } from 'node:url'
-import { join } from 'pathe'
 import { defu } from 'defu'
-import { addImportsDir, addPlugin, defineNuxtModule } from '@nuxt/kit'
+import { addImportsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
 
 export interface ModuleOptions {
@@ -60,6 +58,8 @@ export default defineNuxtModule<ModuleOptions>({
     loadingStrategy: 'defer',
   },
   setup(options, nuxt) {
+    const { resolve } = createResolver(import.meta.url)
+
     // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(
       nuxt.options.runtimeConfig.public.gtag,
@@ -67,13 +67,12 @@ export default defineNuxtModule<ModuleOptions>({
     )
 
     // Transpile runtime
-    const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
-    nuxt.options.build.transpile.push(runtimeDir)
+    nuxt.options.build.transpile.push(resolve('runtime'))
 
-    addImportsDir(join(runtimeDir, 'composables'))
+    addImportsDir(resolve('runtime/composables'))
 
     addPlugin({
-      src: join(runtimeDir, 'plugin.client'),
+      src: resolve('runtime/plugin.client'),
       mode: 'client',
     })
   },
