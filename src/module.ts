@@ -1,5 +1,5 @@
 import { defu } from 'defu'
-import { addImportsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
 
 export interface ModuleOptions {
@@ -69,7 +69,15 @@ export default defineNuxtModule<ModuleOptions>({
     // Transpile runtime
     nuxt.options.build.transpile.push(resolve('runtime'))
 
-    addImportsDir(resolve('runtime/composables'))
+    addImports([
+      'useGtag',
+      'useGtagConsent',
+      'useTrackEvent',
+    ].map(name => ({
+      name,
+      as: name,
+      from: resolve(`runtime/composables/${name}`),
+    })))
 
     addPlugin({
       src: resolve('runtime/plugin.client'),
