@@ -244,7 +244,7 @@ useTrackEvent('login', {
 
 ## Credits
 
-- [Maronbeere](https://maronbeere.carrd.co) for his Chameleon pixel art.
+- [Maronbeere](https://maronbeere.carrd.co) for his logo pixel art.
 
 ## License
 
