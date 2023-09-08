@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/nuxt-gtag?color=a1b858&label=)](https://www.npmjs.com/package/nuxt-gtag)
 
-> [Nuxt 3](https://nuxt.com) module to integrate [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en).
+> [Nuxt](https://nuxt.com) module to integrate [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en).
 
 ## Features
 
@@ -22,6 +22,9 @@ pnpm add -D nuxt-gtag
 
 # npm
 npm i -D nuxt-gtag
+
+# yarn
+yarn add -D nuxt-gtag
 ```
 
 ## Basic Usage
@@ -41,9 +44,8 @@ export default defineNuxtConfig({
 
 Done! Google Analytics will now run in your application's client.
 
-> **Note**
->
-> Ensure that the **Enhanced measurement** feature is enabled to allow Gtag to automatically track page changes based on browser history events in Nuxt.
+> [!NOTE]
+> Ensure that the **Enhanced measurement** feature is enabled to allow `gtag.js` to automatically track page changes based on browser history events in Nuxt.
 >
 > To enable this feature:
 >
@@ -61,13 +63,26 @@ export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
+    // The Google Analytics 4 property ID to use for tracking
     id: 'G-XXXXXXXXXX',
+    // Additional configuration for the Google Analytics 4 property
     config: {
       page_title: 'My Custom Page Title'
     }
   }
 })
 ```
+
+### Runtime Config
+
+Instead of hard-coding your measurement ID in your Nuxt configuration, you can set your desired option in your project's `.env` file, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig) by matching environment variables at runtime.
+
+```ini
+# Overwrites the `gtag.id` module option
+NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
+```
+
+With this setup, you can omit the `gtag` key in your Nuxt configuration if you only intend to set the measurement ID.
 
 ### Consent Management
 
@@ -84,12 +99,14 @@ export default defineNuxtConfig({
 })
 ```
 
-To manually manage consent, you can use the [`useGtagConsent` composable](#usegtagconsent) to set the consent state, e.g. after the user has accepted your cookie policy.
+To manually manage consent, you can use the [`grantConsent` method destructurable from `useGtag`](#usegtag) to set the consent state, e.g. after the user has accepted your cookie policy.
 
 ```vue
 <script setup lang="ts">
+const { gtag, grantConsent, revokeConsent } = useGtag()
+
 function acceptTracking() {
-  useGtagConsent({ hasConsent: true })
+  grantConsent()
 }
 </script>
 
@@ -100,16 +117,15 @@ function acceptTracking() {
 </template>
 ```
 
-### Runtime Config
+You can even leave the measurement ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `grantConsent`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
 
-Alternatively, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig) by matching environment variables at runtime, set your desired option in your project's `.env` file:
+```ts
+const { gtag, grantConsent, revokeConsent } = useGtag()
 
-```bash
-# Sets the `gtag.id` module option
-NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
+function acceptTracking() {
+  grantConsent('G-XXXXXXXXXX')
+}
 ```
-
-With this setup, you can omit the `gtag` key in your Nuxt configuration if you only want to set the measurement ID.
 
 ## Module Options
 
@@ -126,23 +142,48 @@ As with other composables in the Nuxt 3 ecosystem, they are auto-imported and ca
 
 ### `useGtag`
 
-The `useGtag` composable is SSR-safe and can be used to call any of the [gtag.js methods](https://developers.google.com/tag-platform/gtagjs/reference).
+The SSR-safe `useGtag` composable provides access to:
+
+- The `gtag.js` instance
+- The `grantConsent` method
+- The `revokeConsent` method
+
+It can be used as follows:
 
 ```ts
 // SSR-ready
-const gtag = useGtag()
-gtag(
-  // <command>,
-  // <command-parameters>
-)
+const { gtag } = useGtag()
+gtag('<command>', '<command-parameters>')
 ```
-
-> ℹ️ Since the Gtag instance is available in the client only, any `gtag()` (assuming the variable from above) calls executed on the server will have no effect.
 
 **Type Declarations**
 
 ```ts
 function useGtag(): {
+  gtag: Gtag
+  grantConsent: (id?: string) => void
+  revokeConsent: (id?: string) => void
+}
+```
+
+#### `gtag`
+
+The `gtag` function is the main interface to the `gtag.js` instance and can be used to call any of the [gtag.js methods](https://developers.google.com/tag-platform/gtagjs/reference).
+
+```ts
+const { gtag } = useGtag()
+
+// SSR-ready
+gtag('<command>', '<command-parameters>')
+```
+
+> [!NOTE]
+> Since the `gtag.js` instance is available in the client only, any `gtag()` calls executed on the server will have no effect.
+
+**Type Declarations**
+
+```ts
+function gtag(): {
   (command: 'config', targetId: string, config?: Record<string, any>): void
   (command: 'event', eventName: string, eventParams?: Record<string, any>): void
   (command: 'set', targetId: string, config: string | boolean | Record<string, any>): void
@@ -158,61 +199,65 @@ function useGtag(): {
 The following event command fires the event `screen_view` with two parameters: `app_name` and `screen_name`.
 
 ```ts
+const { gtag } = useGtag()
+
 // SSR-ready
-const gtag = useGtag()
 gtag('event', 'screen_view', {
   app_name: 'My App',
   screen_name: 'Home'
 })
 ```
 
-### `useGtagConsent`
+#### `grantConsent`
 
-If you want to manually manage consent, i.e. for GDPR compliance, you can use the `useGtagConsent` composable to set the consent state. This composable accepts a single argument, an object with the following properties:
+If you want to manually manage consent, i.e. for GDPR compliance, you can use the `grantConsent` method to grant the consent. Make sure to set `initialConsent` to `false` in the module options beforehand.
 
-- `hasConsent` (optional): Whether to accept or decline the consent. Defaults to `true`.
-- `id` (optional): In case you want to initialize a custom Gtag ID. Make sure to set `initialConsent` to `false` in the module options beforehand.
-
-If the user has consented, the `gtag.js` script will be loaded and tracking will begin.
-
-This is only necessary if you have disabled the `initialConsent` option.
+This function accepts an optional ID in case you want to initialize a custom Gtag ID and haven't set it in the module options.
 
 ```ts
-useGtagConsent({
-  hasConsent: true
-})
+const { grantConsent } = useGtag()
+
+// When called, the `gtag.js` script will be loaded and tracking will begin
+grantConsent()
 ```
 
-> ℹ️ Since the Gtag instance is available in the client only, executing the composable on the server will have no effect.
+> [!NOTE]
+> Although this method is SSR-safe, the `gtag.js` script will be loaded in the client only. Make sure to run this method in the client.
 
 **Type Declarations**
 
 ```ts
-interface UseGtagConsentOptions {
-  /**
-   * Whether to accept or decline the consent.
-   *
-   * @default true
-   */
-  hasConsent?: boolean
-  /**
-   * In case you want to initialize a custom Gtag ID. Make sure to set
-   * `initialConsent` to `false` in the module options beforehand.
-   */
-  id?: string
-}
+function grantConsent(id?: string): void
+```
 
-function useGtagConsent(options: UseGtagConsentOptions): void
+#### `revokeConsent`
+
+If a user has previously granted consent, you can use the `revokeConsent` method to revoke the consent. This will prevent the `gtag.js` script from tracking any events until the consent is granted again.
+
+This function accepts an optional ID in case you haven't set it in the module options. Make sure to pass the same ID that was used to grant the consent.
+
+```ts
+const { revokeConsent } = useGtag()
+
+// When called, the `gtag.js` script will be stopped from tracking events
+revokeConsent()
+```
+
+**Type Declarations**
+
+```ts
+function revokeConsent(id?: string): void
 ```
 
 ### `useTrackEvent`
 
 Track your defined goals by passing the following parameters:
 
-- The name of the recommended or custom event
-- A collection of parameters that provide additional information about the event (optional)
+- The name of the recommended or custom event.
+- A collection of parameters that provide additional information about the event (optional).
 
-> ℹ️ Since the Gtag instance is available in the client only, executing the composable on the server will have no effect.
+> [!NOTE]
+> This composable is SSR-ready. But since the `gtag.js` instance is available in the client only, executing the composable on the server will have no effect.
 
 **Type Declarations**
 
