@@ -1,4 +1,4 @@
-![Nuxt Gtag module](./.github/og.png)
+![Nuxt Gtag module](./.github/og.jpg)
 
 # Nuxt Gtag
 
@@ -244,7 +244,7 @@ useTrackEvent('login', {
 
 ## Credits
 
-- [SVGBackgrounds.com](https://www.svgbackgrounds.com) for the OpenGraph image background pattern.
+- [Maronbeere](https://maronbeere.carrd.co) for his Chameleon pixel art.
 
 ## License
 
