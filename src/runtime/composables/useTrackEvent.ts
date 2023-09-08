@@ -4,5 +4,6 @@ export function useTrackEvent(
   eventName: string,
   eventParams?: Record<string, any>,
 ) {
-  useGtag()('event', eventName, eventParams)
+  const { gtag } = useGtag()
+  gtag('event', eventName, eventParams)
 }

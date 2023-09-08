@@ -1,4 +1,4 @@
-import { gtag } from './gtag'
+import { initGtag } from './gtag'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
@@ -9,10 +9,7 @@ export default defineNuxtPlugin(() => {
   if (!id)
     return
 
-  window.dataLayer = window.dataLayer || []
-
-  gtag('js', new Date())
-  gtag('config', id, config)
+  initGtag({ id, config })
 
   if (!initialConsent)
     return
