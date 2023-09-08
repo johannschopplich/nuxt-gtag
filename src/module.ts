@@ -71,7 +71,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     addImports([
       'useGtag',
-      'useGtagConsent',
       'useTrackEvent',
     ].map(name => ({
       name,
