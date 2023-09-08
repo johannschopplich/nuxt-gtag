@@ -104,14 +104,10 @@ To manually manage consent, you can use the [`grantConsent` method destructurabl
 ```vue
 <script setup lang="ts">
 const { gtag, grantConsent, revokeConsent } = useGtag()
-
-function acceptTracking() {
-  grantConsent()
-}
 </script>
 
 <template>
-  <button @click="acceptTracking">
+  <button @click="grantConsent()">
     Accept Tracking
   </button>
 </template>
