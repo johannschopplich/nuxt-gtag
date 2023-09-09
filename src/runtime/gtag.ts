@@ -1,4 +1,5 @@
-export function gtag(..._args: any[]) {
+// eslint-disable-next-line unused-imports/no-unused-vars
+export function gtag(command: string, ...args: any[]) {
   // eslint-disable-next-line prefer-rest-params
   window.dataLayer?.push(arguments)
 }

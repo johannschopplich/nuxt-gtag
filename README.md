@@ -179,14 +179,14 @@ gtag('<command>', '<command-parameters>')
 **Type Declarations**
 
 ```ts
-function gtag(): {
-  (command: 'config', targetId: string, config?: Record<string, any>): void
-  (command: 'event', eventName: string, eventParams?: Record<string, any>): void
+const gtag: {
+  (command: 'config', targetId: string, config?: ControlParams | EventParams | ConfigParams | Record<string, any>): void
   (command: 'set', targetId: string, config: string | boolean | Record<string, any>): void
   (command: 'set', config: Record<string, any>): void
-  (command: 'get', targetId: string, fieldName: string, callback?: (field?: string | Record<string, any>) => void): void
-  (command: 'consent', consentArg: string, consentParams: Record<string, any>): void
   (command: 'js', config: Date): void
+  (command: 'event', eventName: EventNames | (string & Record<never, never>), eventParams?: ControlParams | EventParams | Record<string, any>): void
+  (command: 'get', targetId: string, fieldName: FieldNames | string, callback?: (field?: string | Record<string, any>) => any): void
+  (command: 'consent', consentArg: ConsentArg | string, consentParams: ConsentParams): void
 }
 ```
 
@@ -286,6 +286,8 @@ useTrackEvent('login', {
 ## Credits
 
 - [Maronbeere](https://maronbeere.carrd.co) for his logo pixel art.
+- [Junyoung Choi](https://github.com/rokt33r) and [Lucas Akira Uehara](https://github.com/KsAkira10) for their Google [`gtag.js` API type definitions](https://www.npmjs.com/package/@types/gtag.js)
+
 
 ## License
 
