@@ -11,6 +11,7 @@
 - 🌻 No dependencies except Google's `gtag.js`
 - 🤝 Manual [consent management](#consent-management) for GDPR compliance
 - 📯 Track events manually with [composables](#composables)
+- 🏷️ Fully typed `gtag.js` API
 - 🦾 SSR-ready
 - 📂 [`.env` file support](#configuration)
 
