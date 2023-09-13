@@ -148,9 +148,9 @@ The SSR-safe `useGtag` composable provides access to:
 It can be used as follows:
 
 ```ts
-// SSR-ready
-const { gtag } = useGtag()
-gtag('<command>', '<command-parameters>')
+// Each method is destructurable from the composable and can be
+// used on the server and client-side
+const { gtag, grantConsent, revokeConsent } = useGtag()
 ```
 
 **Type Declarations**
@@ -171,7 +171,10 @@ The `gtag` function is the main interface to the `gtag.js` instance and can be u
 const { gtag } = useGtag()
 
 // SSR-ready
-gtag('<command>', '<command-parameters>')
+gtag('event', 'screen_view', {
+  app_name: 'My App',
+  screen_name: 'Home'
+})
 ```
 
 > [!NOTE]
