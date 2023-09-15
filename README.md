@@ -263,8 +263,8 @@ Track your defined goals by passing the following parameters:
 
 ```ts
 function useTrackEvent(
-  eventName: string,
-  eventParams?: Record<string, any>
+  eventName: EventNames | (string & Record<never, never>),
+  eventParams?: ControlParams | EventParams | Record<string, any>,
 ): void
 ```
 

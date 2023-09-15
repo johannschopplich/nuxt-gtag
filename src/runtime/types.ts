@@ -22,21 +22,21 @@ export interface Gtag {
   (command: 'consent', consentArg: ConsentArg | string, consentParams: ConsentParams): void
 }
 
-interface ConfigParams {
+export interface ConfigParams {
   page_title?: string
   page_location?: string
   page_path?: string
   send_page_view?: boolean
 }
 
-interface ControlParams {
+export interface ControlParams {
   groups?: string | string[]
   send_to?: string | string[]
   event_callback?: () => void
   event_timeout?: number
 }
 
-type EventNames =
+export type EventNames =
   | 'add_payment_info'
   | 'add_shipping_info'
   | 'add_to_cart'
@@ -75,7 +75,7 @@ type EventNames =
   | 'view_promotion'
   | 'view_search_results'
 
-interface EventParams {
+export interface EventParams {
   checkout_option?: string
   checkout_step?: number
   content_id?: string
