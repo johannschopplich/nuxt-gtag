@@ -2,7 +2,7 @@
   "name": "nuxt-gtag",
   "type": "module",
   "version": "1.1.1",
-  "packageManager": "pnpm@8.7.4",
+  "packageManager": "pnpm@8.8.0",
   "description": "Nuxt 3 module to natively integrate Google Analytics",
   "author": "Johann Schopplich <pkg@johannschopplich.com>",
   "license": "MIT",
@@ -44,20 +44,20 @@
     "prepare": "nuxi prepare playground"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.7.1",
+    "@nuxt/kit": "^3.7.4",
     "defu": "^6.1.2",
     "pathe": "^1.1.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.41.0",
-    "@nuxt/module-builder": "^0.5.1",
-    "@nuxt/schema": "^3.7.1",
-    "@types/node": "^20.5.9",
+    "@antfu/eslint-config": "^1.0.0-beta.18",
+    "@nuxt/module-builder": "^0.5.2",
+    "@nuxt/schema": "^3.7.4",
+    "@types/node": "^20.8.2",
     "bumpp": "^9.2.0",
-    "eslint": "^8.48.0",
-    "nuxt": "^3.7.1",
+    "eslint": "^8.50.0",
+    "nuxt": "^3.7.4",
     "nuxt-gtag": "workspace:*",
     "typescript": "^5.2.2",
-    "vue-tsc": "^1.8.10"
+    "vue-tsc": "^1.8.15"
   }
 }
