@@ -3,10 +3,12 @@ import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
   const {
-    gtag: { id, config, initialConsent, loadingStrategy },
+    gtag: { id: _id, config, initialConsent, loadingStrategy },
   } = useRuntimeConfig().public
+    
+  const id = [].concat(_id)
 
-  if (!id)
+  if (!id.length)
     return
 
   initGtag({ id, config })
@@ -20,7 +22,7 @@ export default defineNuxtPlugin(() => {
   useHead({
     script: [
       {
-        src: `https://www.googletagmanager.com/gtag/js?id=${id}`,
+        src: `https://www.googletagmanager.com/gtag/js?id=${id[0]}`,
         [strategy]: true,
       },
     ],

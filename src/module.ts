@@ -8,7 +8,7 @@ export interface ModuleOptions {
    *
    * @default undefined
    */
-  id?: string
+  id?: string | string[]
 
   /**
    * Additional configuration for the Google Analytics 4 property.

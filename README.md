@@ -30,7 +30,7 @@ yarn add -D nuxt-gtag
 
 ## Basic Usage
 
-Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google Analytics measurement ID.
+Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google Analytics measurement IDs.
 
 ```ts
 // `nuxt.config.ts`
@@ -64,8 +64,8 @@ export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
-    // The Google Analytics 4 property ID to use for tracking
-    id: 'G-XXXXXXXXXX',
+    // The Google Analytics 4 property IDs to use for tracking
+    id: ['G-XXXXXXXXXX', 'AW-YYYYYY'],
     // Additional configuration for the Google Analytics 4 property
     config: {
       page_title: 'My Custom Page Title'
@@ -128,7 +128,7 @@ function acceptTracking() {
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `string` | `undefined` | The Google Analytics measurement ID. |
+| `id` | `string \| string[]` | `undefined` | The Google Analytics measurement ID. |
 | `config` | `Record<string, any>` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
 | `initialConsent` | `boolean` | `true` | Whether to initially consent to tracking. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
@@ -160,6 +160,7 @@ function useGtag(): {
   gtag: Gtag
   grantConsent: (id?: string) => void
   revokeConsent: (id?: string) => void
+  configureSecond: ({ id: string, config?: any }) => void
 }
 ```
 
@@ -247,6 +248,35 @@ revokeConsent()
 
 ```ts
 function revokeConsent(id?: string): void
+```
+
+#### `configureSecond`
+
+
+The `configureSecond` method empowers you to enhance your Google Analytics (gtag.js) settings by specifying additional IDs.
+
+
+```ts
+const { configureSecond, gtag } = useGtag()
+
+// Example usage:
+configureSecond({
+  id: 'G-XXXXXX-2',
+  config: {
+    send_page_view: false,
+  },
+})
+
+// and then 
+gtag('event', 'screen_view', {
+  send_to: 'G-XXXXXX-2',
+})
+```
+
+**Type Declarations**
+
+```ts
+function configureSecond({ id: string, config?: any }): void
 ```
 
 ### `useTrackEvent`

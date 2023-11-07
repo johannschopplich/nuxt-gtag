@@ -5,13 +5,24 @@ export function gtag(command: string, ...args: any[]) {
 }
 
 /**
+ * Configure Google Analytics tag.
+ */
+export function configureGtag({ id, config }: { id: string | string[]; config?: any }) {
+  gtag('config', id, config)
+}
+
+/**
  * Initialize the Google Analytics script.
  */
-export function initGtag({ id, config }: { id: string; config: any }) {
+export function initGtag({ id: _id, config }: { id: string | string[]; config: any }) {
   window.dataLayer = window.dataLayer || []
 
   gtag('js', new Date())
-  gtag('config', id, config)
+
+  const ids = [].concat(_id)
+
+  for( const id of ids) 
+    configureGtag('config', id, config)
 }
 
 /**

@@ -1,4 +1,4 @@
-import { disableGtag, enableGtag, gtag, initGtag } from '../gtag'
+import { disableGtag, enableGtag, gtag, initGtag, configureGtag } from '../gtag'
 import type { Gtag, UseGtagConsentOptions } from '../types'
 import { useHead, useRuntimeConfig } from '#imports'
 
@@ -62,10 +62,18 @@ export function useGtag() {
     setConsent({ id, hasConsent: false })
   }
 
+  const configureSecond = (
+    id: string,
+    config?: any
+  )  => {
+    configureGtag({ id, config})
+  }
+
   return {
     gtag: _gtag!,
     setConsent,
     grantConsent,
     revokeConsent,
+    configureSecond
   }
 }
