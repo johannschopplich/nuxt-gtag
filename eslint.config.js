@@ -1,9 +1,7 @@
 import antfu from '@antfu/eslint-config'
 
-export default antfu(
-  {
-    rules: {
-      'node/prefer-global/process': 'off',
-    },
+export default await antfu({
+  rules: {
+    'node/prefer-global/process': 'off',
   },
-)
+})

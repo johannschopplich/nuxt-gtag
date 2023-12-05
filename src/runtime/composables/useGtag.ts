@@ -1,9 +1,10 @@
 import { disableGtag, enableGtag, gtag, initGtag } from '../gtag'
+import type { ModuleOptions } from '../../module'
 import type { Gtag, UseGtagConsentOptions } from '../types'
 import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtag() {
-  const { gtag: { id: defaultId, config } } = useRuntimeConfig().public
+  const { id: defaultId, config } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
 
   let _gtag: Gtag
   // Return a noop function if this composable is called on the server.

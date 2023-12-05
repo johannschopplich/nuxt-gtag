@@ -1,10 +1,10 @@
+import type { ModuleOptions } from '../module'
 import { initGtag } from './gtag'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
-  const {
-    gtag: { id, config, initialConsent, loadingStrategy },
-  } = useRuntimeConfig().public
+  const { id, config, initialConsent, loadingStrategy }
+   = useRuntimeConfig().public.gtag as Required<ModuleOptions>
 
   if (!id)
     return

@@ -7,7 +7,7 @@ export function gtag(command: string, ...args: any[]) {
 /**
  * Initialize the Google Analytics script.
  */
-export function initGtag({ id, config }: { id: string; config: any }) {
+export function initGtag({ id, config }: { id: string, config: any }) {
   window.dataLayer = window.dataLayer || []
 
   gtag('js', new Date())

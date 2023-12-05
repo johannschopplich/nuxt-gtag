@@ -62,7 +62,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(
-      nuxt.options.runtimeConfig.public.gtag,
+      nuxt.options.runtimeConfig.public.gtag as Required<ModuleOptions>,
       options,
     )
 
