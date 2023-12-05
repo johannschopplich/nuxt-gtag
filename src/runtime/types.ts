@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    dataLayer?: any[]
-  }
-}
-
 export interface UseGtagConsentOptions {
   /**
    * Whether to accept or decline the consent.
