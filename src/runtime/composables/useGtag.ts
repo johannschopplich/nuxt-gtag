@@ -18,6 +18,11 @@ export function useGtag() {
       const hasConsent = options.hasConsent ?? true
       const id = options.id || defaultId
 
+      if (!id) {
+        console.error('[nuxt-gtag] Missing Google Analytics ID')
+        return
+      }
+
       if (!hasConsent) {
         disableGtag(id)
         return

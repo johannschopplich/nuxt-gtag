@@ -3,8 +3,7 @@ import { initGtag } from './gtag'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin(() => {
-  const { id, config, initialConsent, loadingStrategy }
-   = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+  const { id, config, initialConsent, loadingStrategy } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
 
   if (!id)
     return
