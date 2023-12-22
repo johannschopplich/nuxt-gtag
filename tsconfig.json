@@ -1,6 +1,3 @@
 {
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "moduleResolution": "Bundler"
-  }
+  "extends": "./.nuxt/tsconfig.json"
 }
