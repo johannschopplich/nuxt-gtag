@@ -40,6 +40,16 @@ export interface ModuleOptions {
    * @default 'defer'
    */
   loadingStrategy?: 'async' | 'defer'
+
+  /**
+   * Whether to automatically track page views.
+   *
+   * @remarks
+   * If set to `true`, a `page_view` event will be sent to Google Analytics 4 whenever the route changes.
+   *
+   * @default false
+   */
+  enableAutomaticRouteTracking?: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -56,6 +66,7 @@ export default defineNuxtModule<ModuleOptions>({
     config: {},
     initialConsent: true,
     loadingStrategy: 'defer',
+    enableAutomaticRouteTracking: false,
   },
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)

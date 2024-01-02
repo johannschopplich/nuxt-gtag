@@ -11,6 +11,7 @@
 - 🌻 No dependencies except Google's `gtag.js`
 - 🤝 Manual [consent management](#consent-management) for GDPR compliance
 - 📯 Track events manually with [composables](#composables)
+- 🔍 [Track page views](#module-options) automatically as the route changes
 - 🏷️ Fully typed `gtag.js` API
 - 🦾 SSR-ready
 - 📂 [`.env` file support](#configuration)
@@ -124,14 +125,31 @@ function acceptTracking() {
 }
 ```
 
+### Automatic Route Tracking
+
+The module can listen to the active route and automatically send a `page_view` event (with path/title) whenever the user changes routes. By default, this functionality is disabled. To enable this feature, set the `enableAutomaticRouteTracking` option to `true`.
+
+```ts
+// `nuxt.config.ts`
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    id: 'G-XXXXXXXXXX',
+    enableAutomaticRouteTracking: true
+  }
+})
+```
+
 ## Module Options
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `id` | `string` | `undefined` | The Google Analytics measurement ID. |
-| `config` | `Record<string, any>` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
-| `initialConsent` | `boolean` | `true` | Whether to initially consent to tracking. |
-| `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
+| Option            | Type | Default | Description                                                                                                                                                    |
+|-------------------| --- | --- |----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id`              | `string` | `undefined` | The Google Analytics measurement ID.                                                                                                                           |
+| `config`          | `Record<string, any>` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `initialConsent`  | `boolean` | `true` | Whether to initially consent to tracking.                                                                                                                      |
+| `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script.                                                                                                      |
+| `enableAutomaticRouteTracking`          | `boolean` | `false` | Whether to automatically track page views.                                                                                              |
 
 ## Composables
 
@@ -291,6 +309,7 @@ useTrackEvent('login', {
 
 - [Maronbeere](https://maronbeere.carrd.co) for his logo pixel art.
 - [Junyoung Choi](https://github.com/rokt33r) and [Lucas Akira Uehara](https://github.com/KsAkira10) for their Google [`gtag.js` API type definitions](https://www.npmjs.com/package/@types/gtag.js)
+- [Simon Le Marchant](https://marchantweb.com) for contributing automatic route tracking.
 
 ## License
 
