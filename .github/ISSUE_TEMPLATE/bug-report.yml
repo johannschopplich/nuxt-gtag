@@ -1,18 +1,18 @@
 name: 🐞 Bug report
-description: Create a report to help me improve Nuxt Gtag
+description: Write a report to help improve Nuxt Gtag
 labels: [pending triage]
 body:
   - type: markdown
     attributes:
       value: |
-        Please use a template below to create a minimal reproduction
+        Please use a template below to create a minimal reproduction:
         👉 https://stackblitz.com/github/nuxt/starter/tree/v3-stackblitz
         👉 https://codesandbox.io/p/github/nuxt/starter/v3-codesandbox
   - type: textarea
     id: bug-env
     attributes:
       label: Environment
-      description: You can use `npx nuxi info` to fill this section
+      description: You can use `npx nuxi info` to fill this section.
       placeholder: Environment
     validations:
       required: true
@@ -28,7 +28,7 @@ body:
     id: bug-description
     attributes:
       label: Describe the bug
-      description: A clear and concise description of what the bug is. If you intend to submit a PR for this issue, tell me in the description. Thanks!
+      description: A clear and concise description of what the bug is. If you intend to file a PR for this issue, please let us know in the description. Thanks a lot!
       placeholder: Bug description
     validations:
       required: true
@@ -36,11 +36,11 @@ body:
     id: additonal
     attributes:
       label: Additional context
-      description: If applicable, add any other context about the problem here
+      description: If applicable, add any other context about the problem here.
   - type: textarea
     id: logs
     attributes:
       label: Logs
       description: |
-        Optional if reproduction is provided. Please try not to insert an image but copy paste the log text.
+        Optional if reproduction is provided. Please try not to insert an image, but copy and paste the log text.
       render: shell-script
