@@ -5,10 +5,6 @@ export default defineNuxtConfig({
     initialConsent: false,
   },
 
-  future: {
-    typescriptBundlerResolution: true,
-  },
-
   typescript: {
     shim: false,
   },
