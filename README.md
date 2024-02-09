@@ -1,15 +1,17 @@
-![Nuxt Gtag module](./.github/og.jpg)
+![Nuxt Google tag module](./.github/og.jpg)
 
-# Nuxt Gtag
+# Nuxt Google Tag
 
 [![npm version](https://img.shields.io/npm/v/nuxt-gtag?color=a1b858&label=)](https://www.npmjs.com/package/nuxt-gtag)
 
-[Nuxt](https://nuxt.com) module to integrate [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en).
+[Google Tag](https://developers.google.com/tag-platform/gtagjs?hl=en) integration for [Nuxt](https://nuxt.com) with support for [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en) with consent management, Google Ads and more.
 
 ## Features
 
 - 🌻 No dependencies except Google's `gtag.js`
+- 🛍️ For Google Analytics 4, Google Ads and other products
 - 🤝 Manual [consent management](#consent-management) for GDPR compliance
+- 🔢 Supports [multiple tag IDs](#multiple-google-tags)
 - 📯 Track events manually with [composables](#composables)
 - 🏷️ Fully typed `gtag.js` API
 - 🦾 SSR-ready
@@ -30,7 +32,7 @@ yarn add -D nuxt-gtag
 
 ## Basic Usage
 
-Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google Analytics measurement ID.
+Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google tag ID.
 
 ```ts
 // `nuxt.config.ts`
@@ -43,7 +45,7 @@ export default defineNuxtConfig({
 })
 ```
 
-Done! Google Analytics will now run in your application's client.
+Done! Google tag will now run in your application's client.
 
 > [!NOTE]
 > Ensure that the **Enhanced measurement** feature is enabled to allow `gtag.js` to automatically track page changes based on browser history events in Nuxt.
@@ -55,6 +57,52 @@ Done! Google Analytics will now run in your application's client.
 > 3. Click on your web data stream.
 > 4. Next, toggle the switch button near “Enhanced measurement”.
 
+### Multiple Google Tags
+
+If you want to send data to multiple destinations, you can add more than one Google tag ID to your Nuxt configuration in the `tags` module option.
+
+The following example shows how to load a second Google tag that is connected to a Floodlight destination. To send data to Floodlight (tag ID `DC-ZZZZZZ`), add another config command after initializing the first Google tag (tag ID `GT-XXXXXX`):
+
+```ts
+// `nuxt.config.ts`
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    tags: [
+      'GT-XXXXXX', // Google Ads and GA4
+      'DC-ZZZZZZ' // Floodlight
+    ]
+  }
+})
+```
+
+Or use the object syntax to initialize multiple tags with different configurations:
+
+```ts
+// `nuxt.config.ts`
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    tags: [
+      {
+        id: 'GT-XXXXXX',
+        config: {
+          page_title: 'My Custom Page Title'
+        }
+      },
+      {
+        id: 'DC-ZZZZZZ',
+        config: {
+          page_title: 'My Custom Page Title'
+        }
+      }
+    ]
+  }
+})
+```
+
 ## Configuration
 
 All [supported module options](#module-options) can be configured using the `gtag` key in your Nuxt configuration:
@@ -64,26 +112,32 @@ export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
-    // The Google Analytics 4 property ID to use for tracking
+    // The Google tag ID to use for tracking
     id: 'G-XXXXXXXXXX',
-    // Additional configuration for the Google Analytics 4 property
+    // Additional configuration for your tag ID
     config: {
       page_title: 'My Custom Page Title'
-    }
+    },
+
+    // Or use the tags option to send data to multiple destinations
+    tags: [
+      'GT-XXXXXX', // Google Ads and GA4
+      'DC-ZZZZZZ' // Floodlight
+    ]
   }
 })
 ```
 
 ### Runtime Config
 
-Instead of hard-coding your measurement ID in your Nuxt configuration, you can set your desired option in your project's `.env` file, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig) by matching environment variables at runtime.
+Instead of hard-coding your Google tag ID in your Nuxt configuration, you can set your desired option in your project's `.env` file, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig) by matching environment variables at runtime.
 
 ```ini
 # Overwrites the `gtag.id` module option
 NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
 ```
 
-With this setup, you can omit the `gtag` key in your Nuxt configuration if you only intend to set the measurement ID.
+With this setup, you can omit the `gtag` key in your Nuxt configuration if you only intend to set the Google tag ID.
 
 ### Consent Management
 
@@ -114,7 +168,7 @@ const { gtag, grantConsent, revokeConsent } = useGtag()
 </template>
 ```
 
-You can even leave the measurement ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `grantConsent`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
+You can even leave the Google tag ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `grantConsent`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
 
 ```ts
 const { gtag, grantConsent, revokeConsent } = useGtag()
@@ -128,8 +182,9 @@ function acceptTracking() {
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `string` | `undefined` | The Google Analytics measurement ID. |
-| `config` | `Record<string, any>` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `id` | `string` | `undefined` | The Google tag ID to use for tracking. |
+| `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Google tag IDs to send data to multiple destinations. |
+| `config` | `Record<string, any>` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
 | `initialConsent` | `boolean` | `true` | Whether to initially consent to tracking. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
@@ -213,7 +268,7 @@ gtag('event', 'screen_view', {
 
 If you want to manually manage consent, i.e. for GDPR compliance, you can use the `grantConsent` method to grant the consent. Make sure to set `initialConsent` to `false` in the module options beforehand.
 
-This function accepts an optional ID in case you want to initialize a custom Gtag ID and haven't set it in the module options.
+This function accepts an optional ID in case you want to initialize a custom Google tag ID and haven't set it in the module options.
 
 ```ts
 const { grantConsent } = useGtag()

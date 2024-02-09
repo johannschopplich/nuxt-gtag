@@ -1,3 +1,8 @@
+export interface GoogleTagOptions {
+  id: string
+  config?: Record<string, any>
+}
+
 export interface UseGtagConsentOptions {
   /**
    * Whether to accept or decline the consent.
@@ -6,7 +11,7 @@ export interface UseGtagConsentOptions {
    */
   hasConsent?: boolean
   /**
-   * In case you want to initialize a custom Gtag ID. Make sure to set
+   * In case you want to initialize a custom Google tag ID. Make sure to set
    * `initialConsent` to `false` in the module options beforehand.
    */
   id?: string

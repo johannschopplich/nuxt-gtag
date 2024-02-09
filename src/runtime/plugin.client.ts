@@ -1,17 +1,17 @@
 import { withQuery } from 'ufo'
-import type { ModuleOptions } from '../module'
+import type { ResolvedModuleOptions } from '../module'
 import { initGtag } from './gtag'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin({
   parallel: true,
   setup() {
-    const { id, config, initialConsent, loadingStrategy, url } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+    const { tags, initialConsent, loadingStrategy, url } = useRuntimeConfig().public.gtag as Required<ResolvedModuleOptions>
 
-    if (!id)
+    if (!tags.length)
       return
 
-    initGtag({ id, config })
+    initGtag({ tags })
 
     if (!initialConsent)
       return
@@ -22,7 +22,7 @@ export default defineNuxtPlugin({
     useHead({
       script: [
         {
-          src: withQuery(url, { id }),
+          src: withQuery(url, { id: tags[0].id }),
           [strategy]: true,
         },
       ],

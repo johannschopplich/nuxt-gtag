@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.1.2",
   "packageManager": "pnpm@8.15.1",
-  "description": "Nuxt 3 module to natively integrate Google Analytics",
+  "description": "Natively integrates Google Tag into Nuxt",
   "author": "Johann Schopplich <pkg@johannschopplich.com>",
   "license": "MIT",
   "homepage": "https://github.com/johannschopplich/nuxt-gtag#readme",
@@ -13,12 +13,11 @@
   },
   "bugs": "https://github.com/johannschopplich/nuxt-gtag/issues",
   "keywords": [
-    "nuxt",
-    "nuxt3",
+    "analytics",
     "google",
     "gtag",
     "gtm",
-    "analytics"
+    "nuxt"
   ],
   "exports": {
     ".": {

@@ -1,37 +1,48 @@
 import { defu } from 'defu'
 import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { name, version } from '../package.json'
+import type { GoogleTagOptions } from './runtime/types'
 
 export interface ModuleOptions {
   /**
-   * The Google Analytics 4 property ID to use for tracking.
+   * The Google tag ID to initialize.
    *
    * @default undefined
    */
   id?: string
 
   /**
-   * Additional configuration for the Google Analytics 4 property.
+   * The Google tags to initialize.
    *
    * @remarks
-   * Will be set when initializing `gtag` with the `config` command.
+   * Each item can be a string or an object with `id` and `config` properties. The latter is useful especially when you want to set additional configuration for the Google tag ID.
+   *
+   * @default undefined
+   */
+  tags?: string[] | GoogleTagOptions[]
+
+  /**
+   * Additional configuration for the Google tag ID to be set when initializing the tag ID with the `config` command.
+   *
+   * @remarks
+   * Does only apply when `id` is set or the `ids` array contains strings.
    *
    * @default undefined
    */
   config?: Record<string, any>
 
   /**
-   * Whether to initially consent to tracking.
+   * Whether to initially consent to tracking if the tag ID is for Google Analytics.
    *
    * @remarks
-   * If set to `true`, the Google Analytics 4 script will be loaded immediately.
+   * If set to `true`, the Google tag ID script will be loaded immediately.
    *
    * @default true
    */
   initialConsent?: boolean
 
   /**
-   * Whether to load the Google Analytics 4 script asynchronously or defer its loading.
+   * Whether to load the Google tag ID script asynchronously or defer its loading.
    *
    * @remarks
    * If set to `async`, the script will be loaded asynchronously.
@@ -42,7 +53,7 @@ export interface ModuleOptions {
   loadingStrategy?: 'async' | 'defer'
 
   /**
-   * The URL to load the Google Analytics 4 script from.
+   * The URL to load the Google tag script from.
    *
    * @remarks
    * Useful if you want to proxy the script through your own server.
@@ -50,6 +61,10 @@ export interface ModuleOptions {
    * @default 'https://www.googletagmanager.com/gtag/js'
    */
   url?: string
+}
+
+export interface ResolvedModuleOptions extends ModuleOptions {
+  tags: GoogleTagOptions[]
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -62,14 +77,21 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   defaults: {
-    id: '',
-    config: {},
+    tags: [],
     initialConsent: true,
     loadingStrategy: 'defer',
     url: 'https://www.googletagmanager.com/gtag/js',
   },
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    // Normalize options
+    options.tags = options.tags!.filter(Boolean).map(
+      i => typeof i === 'string' ? { id: i } : i,
+    )
+
+    if (options.id)
+      options.tags.unshift({ id: options.id, config: options.config })
 
     // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(

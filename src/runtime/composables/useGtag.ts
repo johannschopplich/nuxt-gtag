@@ -1,11 +1,11 @@
 import { withQuery } from 'ufo'
 import { disableGtag, enableGtag, gtag, initGtag } from '../gtag'
-import type { ModuleOptions } from '../../module'
+import type { ResolvedModuleOptions } from '../../module'
 import type { Gtag, UseGtagConsentOptions } from '../types'
 import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtag() {
-  const { id: defaultId, config, url } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+  const { tags, url } = useRuntimeConfig().public.gtag as Required<ResolvedModuleOptions>
 
   let _gtag: Gtag
   // Return a noop function if this composable is called on the server.
@@ -17,41 +17,41 @@ export function useGtag() {
   const setConsent = (options: UseGtagConsentOptions) => {
     if (process.client) {
       const hasConsent = options.hasConsent ?? true
-      const id = options.id || defaultId
+      const tag = tags?.find(tag => tag.id === options.id) ?? tags?.[0] ?? { id: options.id }
 
-      if (!id) {
-        console.error('[nuxt-gtag] Missing Google Analytics ID')
+      if (!tag) {
+        console.error('[nuxt-gtag] Missing Google tag ID')
         return
       }
 
       if (!hasConsent) {
-        disableGtag(id)
+        disableGtag(tag.id)
         return
       }
 
       // Initialize `dataLayer` if the client plugin didn't initialize it
       // (because no ID was provided in the module options).
       if (!window.dataLayer)
-        initGtag({ id, config })
+        initGtag({ tags: [tag] })
 
       // If the `dataLayer` has more than two items
       // it is considered to be initialized.
       if (window.dataLayer!.length > 2) {
         // Re-enable Google Analytics if it was disabled before.
-        enableGtag(id)
+        enableGtag(tag.id)
         return
       }
 
-      // Inject the Google Analytics script.
+      // Inject the Google tag script.
       useHead({
-        script: [{ src: withQuery(url, { id }) }],
+        script: [{ src: withQuery(url, { id: tag.id }) }],
       })
     }
   }
 
   const grantConsent = (
     /**
-     * In case you want to initialize a custom Gtag ID. Make sure to set
+     * In case you want to initialize a custom Google tag ID. Make sure to set
      * `initialConsent` to `false` in the module options beforehand.
      */
     id?: string,
@@ -61,7 +61,7 @@ export function useGtag() {
 
   const revokeConsent = (
     /**
-     * In case you want to initialize a custom Gtag ID. Make sure to set
+     * In case you want to initialize a custom Google tag ID. Make sure to set
      * `initialConsent` to `false` in the module options beforehand.
      */
     id?: string,

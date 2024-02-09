@@ -1,3 +1,5 @@
+import type { GoogleTagOptions } from './types'
+
 // eslint-disable-next-line unused-imports/no-unused-vars
 export function gtag(command: string, ...args: any[]) {
   // eslint-disable-next-line prefer-rest-params
@@ -5,19 +7,21 @@ export function gtag(command: string, ...args: any[]) {
 }
 
 /**
- * Initialize the Google Analytics script.
+ * Initialize the Google tag.
  */
-export function initGtag({ id, config }: { id: string, config: any }) {
+export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
 
   gtag('js', new Date())
-  gtag('config', id, config)
+  for (const tag of tags)
+    gtag('config', tag.id, tag.config)
 }
 
 /**
- * Disable Google Analytics.
+ * Disable the Google tag if it is a Google Analytics property.
  *
- * The Google tag (gtag.js) library includes a `window['ga-disable-MEASUREMENT_ID']`
+ * @remarks
+ * The Google tag library includes a `window['ga-disable-GA_MEASUREMENT_ID']`
  * property that, when set to `true`, turns off the Google tag from sending data.
  *
  * @see https://developers.google.com/analytics/devguides/collection/gtagjs/user-opt-out
