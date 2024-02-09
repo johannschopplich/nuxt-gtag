@@ -1,3 +1,4 @@
+import { withQuery } from 'ufo'
 import type { ModuleOptions } from '../module'
 import { initGtag } from './gtag'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
@@ -5,7 +6,7 @@ import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 export default defineNuxtPlugin({
   parallel: true,
   setup() {
-    const { id, config, initialConsent, loadingStrategy } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+    const { id, config, initialConsent, loadingStrategy, url } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
 
     if (!id)
       return
@@ -21,7 +22,7 @@ export default defineNuxtPlugin({
     useHead({
       script: [
         {
-          src: `https://www.googletagmanager.com/gtag/js?id=${id}`,
+          src: withQuery(url, { id }),
           [strategy]: true,
         },
       ],

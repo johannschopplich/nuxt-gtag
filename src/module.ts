@@ -40,6 +40,16 @@ export interface ModuleOptions {
    * @default 'defer'
    */
   loadingStrategy?: 'async' | 'defer'
+
+  /**
+   * The URL to load the Google Analytics 4 script from.
+   *
+   * @remarks
+   * Useful if you want to proxy the script through your own server.
+   *
+   * @default 'https://www.googletagmanager.com/gtag/js'
+   */
+  url?: string
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -56,6 +66,7 @@ export default defineNuxtModule<ModuleOptions>({
     config: {},
     initialConsent: true,
     loadingStrategy: 'defer',
+    url: 'https://www.googletagmanager.com/gtag/js',
   },
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)

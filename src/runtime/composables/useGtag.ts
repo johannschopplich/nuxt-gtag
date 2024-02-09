@@ -1,10 +1,11 @@
+import { withQuery } from 'ufo'
 import { disableGtag, enableGtag, gtag, initGtag } from '../gtag'
 import type { ModuleOptions } from '../../module'
 import type { Gtag, UseGtagConsentOptions } from '../types'
 import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtag() {
-  const { id: defaultId, config } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+  const { id: defaultId, config, url } = useRuntimeConfig().public.gtag as Required<ModuleOptions>
 
   let _gtag: Gtag
   // Return a noop function if this composable is called on the server.
@@ -43,7 +44,7 @@ export function useGtag() {
 
       // Inject the Google Analytics script.
       useHead({
-        script: [{ src: `https://www.googletagmanager.com/gtag/js?id=${id}` }],
+        script: [{ src: withQuery(url, { id }) }],
       })
     }
   }
