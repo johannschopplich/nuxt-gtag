@@ -63,10 +63,6 @@ export interface ModuleOptions {
   url?: string
 }
 
-export interface ResolvedModuleOptions extends ModuleOptions {
-  tags: GoogleTagOptions[]
-}
-
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name,
@@ -77,6 +73,8 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   defaults: {
+    id: undefined,
+    config: undefined,
     tags: [],
     initialConsent: true,
     loadingStrategy: 'defer',
@@ -84,14 +82,6 @@ export default defineNuxtModule<ModuleOptions>({
   },
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
-
-    // Normalize options
-    options.tags = options.tags!.filter(Boolean).map(
-      i => typeof i === 'string' ? { id: i } : i,
-    )
-
-    if (options.id)
-      options.tags.unshift({ id: options.id, config: options.config })
 
     // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(

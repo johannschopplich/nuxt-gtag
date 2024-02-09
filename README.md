@@ -61,7 +61,7 @@ Done! Google tag will now run in your application's client.
 
 If you want to send data to multiple destinations, you can add more than one Google tag ID to your Nuxt configuration in the `tags` module option.
 
-The following example shows how to load a second Google tag that is connected to a Floodlight destination. To send data to Floodlight (tag ID `DC-ZZZZZZ`), add another config command after initializing the first Google tag (tag ID `GT-XXXXXX`):
+The following example shows how to load a second Google tag that is connected to a Floodlight destination. To send data to Floodlight (tag ID `DC-ZZZZZZZZZZ`), add another config command after initializing the first Google tag (tag ID `GT-XXXXXXXXXX`):
 
 ```ts
 // `nuxt.config.ts`
@@ -70,8 +70,8 @@ export default defineNuxtConfig({
 
   gtag: {
     tags: [
-      'GT-XXXXXX', // Google Ads and GA4
-      'DC-ZZZZZZ' // Floodlight
+      'GT-XXXXXXXXXX', // Google Ads and GA4
+      'DC-ZZZZZZZZZZ' // Floodlight
     ]
   }
 })
@@ -87,15 +87,15 @@ export default defineNuxtConfig({
   gtag: {
     tags: [
       {
-        id: 'GT-XXXXXX',
+        id: 'GT-XXXXXXXXXX',
         config: {
-          page_title: 'My Custom Page Title'
+          page_title: 'GA4'
         }
       },
       {
-        id: 'DC-ZZZZZZ',
+        id: 'DC-ZZZZZZZZZZ',
         config: {
-          page_title: 'My Custom Page Title'
+          page_title: 'Floodlight'
         }
       }
     ]
@@ -119,10 +119,10 @@ export default defineNuxtConfig({
       page_title: 'My Custom Page Title'
     },
 
-    // Or use the tags option to send data to multiple destinations
+    // To send data to multiple destinations, use this option
     tags: [
       'GT-XXXXXX', // Google Ads and GA4
-      'DC-ZZZZZZ' // Floodlight
+      'DC-ZZZZZZZZZZ' // Floodlight
     ]
   }
 })
@@ -183,8 +183,8 @@ function acceptTracking() {
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | `undefined` | The Google tag ID to use for tracking. |
-| `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Google tag IDs to send data to multiple destinations. |
 | `config` | `Record<string, any>` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Google tag IDs to send data to multiple destinations. |
 | `initialConsent` | `boolean` | `true` | Whether to initially consent to tracking. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |

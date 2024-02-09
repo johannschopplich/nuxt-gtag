@@ -1,28 +1,30 @@
 import { withQuery } from 'ufo'
-import type { ResolvedModuleOptions } from '../module'
+import type { ModuleOptions } from '../module'
 import { initGtag } from './gtag'
+import { resolveTags } from './utils'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin({
   parallel: true,
   setup() {
-    const { tags, initialConsent, loadingStrategy, url } = useRuntimeConfig().public.gtag as Required<ResolvedModuleOptions>
+    const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+    const tags = resolveTags(options)
 
     if (!tags.length)
       return
 
     initGtag({ tags })
 
-    if (!initialConsent)
+    if (!options.initialConsent)
       return
 
     // Sanitize loading strategy to be either `async` or `defer`
-    const strategy = loadingStrategy === 'async' ? 'async' : 'defer'
+    const strategy = options.loadingStrategy === 'async' ? 'async' : 'defer'
 
     useHead({
       script: [
         {
-          src: withQuery(url, { id: tags[0].id }),
+          src: withQuery(options.url, { id: tags[0].id }),
           [strategy]: true,
         },
       ],

@@ -1,11 +1,13 @@
 import { withQuery } from 'ufo'
 import { disableGtag, enableGtag, gtag, initGtag } from '../gtag'
-import type { ResolvedModuleOptions } from '../../module'
+import type { ModuleOptions } from '../../module'
 import type { Gtag, UseGtagConsentOptions } from '../types'
+import { resolveTags } from '../utils'
 import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtag() {
-  const { tags, url } = useRuntimeConfig().public.gtag as Required<ResolvedModuleOptions>
+  const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+  const tags = resolveTags(options)
 
   let _gtag: Gtag
   // Return a noop function if this composable is called on the server.
@@ -14,10 +16,12 @@ export function useGtag() {
   else if (process.client)
     _gtag = gtag
 
-  const setConsent = (options: UseGtagConsentOptions) => {
+  const setConsent = ({
+    id,
+    hasConsent = true,
+  }: UseGtagConsentOptions) => {
     if (process.client) {
-      const hasConsent = options.hasConsent ?? true
-      const tag = tags?.find(tag => tag.id === options.id) ?? tags?.[0] ?? { id: options.id }
+      const tag = tags?.find(tag => tag.id === id) ?? (id ? { id } : tags[0])
 
       if (!tag) {
         console.error('[nuxt-gtag] Missing Google tag ID')
@@ -44,7 +48,7 @@ export function useGtag() {
 
       // Inject the Google tag script.
       useHead({
-        script: [{ src: withQuery(url, { id: tag.id }) }],
+        script: [{ src: withQuery(options.url, { id: tag.id }) }],
       })
     }
   }
