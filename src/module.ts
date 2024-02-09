@@ -32,10 +32,10 @@ export interface ModuleOptions {
   config?: Record<string, any>
 
   /**
-   * Whether to initially consent to tracking if the tag ID is for Google Analytics.
+   * Whether to initialize the Google tag script immediately after the page has loaded.
    *
    * @remarks
-   * If set to `true`, the Google tag ID script will be loaded immediately.
+   * Set this to `false` to delay the initialization until you call the `grantConsent` function manually.
    *
    * @default true
    */

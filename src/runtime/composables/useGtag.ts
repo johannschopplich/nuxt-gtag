@@ -21,34 +21,36 @@ export function useGtag() {
     hasConsent = true,
   }: UseGtagConsentOptions) => {
     if (process.client) {
-      const tag = tags?.find(tag => tag.id === id) ?? (id ? { id } : tags[0])
+      const _tags = [...tags]
+      if (id && !_tags.find(tag => tag.id === id))
+        _tags.unshift({ id })
 
-      if (!tag) {
+      if (!_tags.length) {
         console.error('[nuxt-gtag] Missing Google tag ID')
         return
       }
 
       if (!hasConsent) {
-        disableGtag(tag.id)
+        disableGtag(_tags[0].id)
         return
       }
 
       // Initialize `dataLayer` if the client plugin didn't initialize it
       // (because no ID was provided in the module options).
       if (!window.dataLayer)
-        initGtag({ tags: [tag] })
+        initGtag({ tags: _tags })
 
       // If the `dataLayer` has more than two items
       // it is considered to be initialized.
       if (window.dataLayer!.length > 2) {
         // Re-enable Google Analytics if it was disabled before.
-        enableGtag(tag.id)
+        enableGtag(_tags[0].id)
         return
       }
 
       // Inject the Google tag script.
       useHead({
-        script: [{ src: withQuery(options.url, { id: tag.id }) }],
+        script: [{ src: withQuery(options.url, { id: _tags[0].id }) }],
       })
     }
   }
