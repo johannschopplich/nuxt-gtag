@@ -22,16 +22,25 @@ export function useGtag() {
   }: UseGtagConsentOptions) => {
     if (process.client) {
       const _tags = [...tags]
-      if (id && !_tags.find(tag => tag.id === id))
-        _tags.unshift({ id })
+      let tag = _tags.find(tag => tag.id === id)
 
-      if (!_tags.length) {
+      if (!tag) {
+        if (id) {
+          tag = { id }
+          _tags.unshift(tag)
+        }
+        else {
+          tag = _tags[0]
+        }
+      }
+
+      if (!tag) {
         console.error('[nuxt-gtag] Missing Google tag ID')
         return
       }
 
       if (!hasConsent) {
-        disableGtag(_tags[0].id)
+        disableGtag(tag.id)
         return
       }
 
@@ -44,13 +53,13 @@ export function useGtag() {
       // it is considered to be initialized.
       if (window.dataLayer!.length > 2) {
         // Re-enable Google Analytics if it was disabled before.
-        enableGtag(_tags[0].id)
+        enableGtag(tag.id)
         return
       }
 
       // Inject the Google tag script.
       useHead({
-        script: [{ src: withQuery(options.url, { id: _tags[0].id }) }],
+        script: [{ src: withQuery(options.url, { id: tag.id }) }],
       })
     }
   }
