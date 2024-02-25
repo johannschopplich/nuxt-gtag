@@ -12,6 +12,15 @@ export function gtag(command: string, ...args: any[]) {
 export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
 
+  // https://developers.google.com/tag-platform/security/guides/consent
+  gtag('consent', 'default', {
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500,
+  });
+
   gtag('js', new Date())
   for (const tag of tags)
     gtag('config', tag.id, tag.config)
