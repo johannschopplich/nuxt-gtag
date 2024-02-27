@@ -10,7 +10,7 @@
 
 - 🌻 Zero dependencies except Google's `gtag.js`
 - 🛍️ Use Google Analytics 4, Google Ads and other products
-- 🛎️ Supports Google tag [consent mode v2](#set-up-consent-mode)
+- 🛎️ Supports [Google Consent Mode v2](#google-consent-mode)
 - 🤝 Manually [initialize](#manually-load-gtagjs-script) a Google tag
 - 🔢 Supports [multiple tag IDs](#multiple-google-tags)
 - 📯 Track events with [composables](#composables)
@@ -114,7 +114,7 @@ NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
 
 With this setup, you can omit the `gtag` key in your Nuxt configuration if you only intend to set the Google tag ID.
 
-### Set Up Consent Mode
+### Google Consent Mode
 
 > [!TIP]
 > Follows the [Google consent mode v2](https://developers.google.com/tag-platform/security/guides/consent) specification.
@@ -215,8 +215,8 @@ function acceptTracking() {
 | --- | --- | --- | --- |
 | `enabled` | `boolean` | `true` | Whether to initialize the Google tag script immediately after the page has loaded. |
 | `id` | `string` | `undefined` | The Google tag ID to initialize. |
-| `initCommands` | `GoogleTagOptions['initCommands']` | `[]` | Commands to be executed when the Google tag ID is initialized. |
-| `config` | `GoogleTagOptions['config']` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `initCommands` | See `initCommands` of `GoogleTagOptions` | `[]` | Commands to be executed when the Google tag ID is initialized. |
+| `config` | See `config` of `GoogleTagOptions` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
 | `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
