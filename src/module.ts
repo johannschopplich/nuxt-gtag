@@ -5,6 +5,16 @@ import type { GoogleTagOptions } from './runtime/types'
 
 export interface ModuleOptions {
   /**
+   * Whether to initialize the Google tag script immediately after the page has loaded.
+   *
+   * @remarks
+   * Set this to `false` to delay the initialization until you call the `enable` function manually.
+   *
+   * @default true
+   */
+  enabled?: boolean
+
+  /**
    * The Google tag ID to initialize.
    *
    * @default undefined
@@ -54,16 +64,6 @@ export interface ModuleOptions {
   tags?: string[] | GoogleTagOptions[]
 
   /**
-   * Whether to initialize the Google tag script immediately after the page has loaded.
-   *
-   * @remarks
-   * Set this to `false` to delay the initialization until you call the `grantConsent` function manually.
-   *
-   * @default true
-   */
-  initialConsent?: boolean
-
-  /**
    * Whether to load the Google tag ID script asynchronously or defer its loading.
    *
    * @remarks
@@ -95,11 +95,11 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   defaults: {
+    enabled: true,
     id: '',
     initCommands: [],
     config: {},
     tags: [],
-    initialConsent: true,
     loadingStrategy: 'defer',
     url: 'https://www.googletagmanager.com/gtag/js',
   },

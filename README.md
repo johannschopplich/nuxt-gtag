@@ -9,11 +9,11 @@
 ## Features
 
 - 🌻 Zero dependencies except Google's `gtag.js`
-- 🛍️ For Google Analytics 4, Google Ads and other products
+- 🛍️ Use Google Analytics 4, Google Ads and other products
 - 🛎️ Supports Google tag [consent mode v2](#set-up-consent-mode)
-- 🤝 Manual [consent management](#consent-management) for GDPR compliance
+- 🤝 Manually [initialize](#manually-load-gtagjs-script) a Google tag
 - 🔢 Supports [multiple tag IDs](#multiple-google-tags)
-- 📯 Track events manually with [composables](#composables)
+- 📯 Track events with [composables](#composables)
 - 🏷️ Fully typed `gtag.js` API
 - 🦾 SSR-ready
 
@@ -168,44 +168,44 @@ function consentGrantedAdStorage() {
 consentGrantedAdStorage() // Or `allConsentGranted()`
 ```
 
-### Delay Google Tag Script Loading
+### Manually Load `gtag.js` Script
 
-For GDPR compliance, you may want to delay the loading of the `gtag.js` script until the user has granted consent. Set the `initialConsent` option to `false` to prevent the `gtag.js` script from loading until you manually enable it.
+For even more control than the [consent mode](#set-up-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `enabled` option to `false` to prevent loading the `gtag.js` script until you manually enable it:
 
 ```ts
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
-    id: 'G-XXXXXXXXXX',
-    initialConsent: false
+    enabled: false,
+    id: 'G-XXXXXXXXXX'
   }
 })
 ```
 
-To manually manage consent, you can use the [`grantConsent` method destructurable from `useGtag`](#usegtag) to set the consent state, e.g. after the user has accepted your cookie policy.
+To manually load the Google tag script, i.e. after the user has accepted your privacy policy, you can use the [`initialize` method destructurable from `useGtag`](#usegtag):
 
 ```vue
 <script setup lang="ts">
-const { gtag, grantConsent, revokeConsent } = useGtag()
+const { gtag, initialize } = useGtag()
 </script>
 
 <template>
-  <button @click="grantConsent()">
-    Accept Tracking
+  <button @click="initialize()">
+    Grant Consent
   </button>
 </template>
 ```
 
 ### Multi-Tenancy Support
 
-You can even leave the Google tag ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `grantConsent`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
+You can even leave the Google tag ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `initialize`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
 
 ```ts
-const { gtag, grantConsent, revokeConsent } = useGtag()
+const { gtag, initialize } = useGtag()
 
 function acceptTracking() {
-  grantConsent('G-XXXXXXXXXX')
+  initialize('G-XXXXXXXXXX')
 }
 ```
 
@@ -213,11 +213,11 @@ function acceptTracking() {
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
+| `enabled` | `boolean` | `true` | Whether to initialize the Google tag script immediately after the page has loaded. |
 | `id` | `string` | `undefined` | The Google tag ID to initialize. |
 | `initCommands` | `GoogleTagOptions['initCommands']` | `[]` | Commands to be executed when the Google tag ID is initialized. |
 | `config` | `GoogleTagOptions['config']` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
 | `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
-| `initialConsent` | `boolean` | `true` | Whether to initialize the Google tag script immediately after the page has loaded. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
 
@@ -230,15 +230,16 @@ As with other composables in the Nuxt 3 ecosystem, they are auto-imported and ca
 The SSR-safe `useGtag` composable provides access to:
 
 - The `gtag.js` instance
-- The `grantConsent` method
-- The `revokeConsent` method
+- The `initialize` method
+- The `disableAnalytics` method
+- The `enableAnalytics` method
 
 It can be used as follows:
 
 ```ts
 // Each method is destructurable from the composable and can be
 // used on the server and client-side
-const { gtag, grantConsent, revokeConsent } = useGtag()
+const { gtag, initialize, disableAnalytics, enableAnalytics } = useGtag()
 ```
 
 **Type Declarations**
@@ -246,50 +247,18 @@ const { gtag, grantConsent, revokeConsent } = useGtag()
 ```ts
 function useGtag(): {
   gtag: Gtag
-  grantConsent: (id?: string) => void
-  revokeConsent: (id?: string) => void
+  initialize: (id?: string) => void
+  disableAnalytics: (id?: string) => void
+  enableAnalytics: (id?: string) => void
 }
 ```
 
 #### `gtag`
 
-The `gtag` function is the main interface to the `gtag.js` instance and can be used to call any of the [gtag.js methods](https://developers.google.com/tag-platform/gtagjs/reference).
-
-```ts
-const { gtag } = useGtag()
-
-// SSR-ready
-gtag('event', 'screen_view', {
-  app_name: 'My App',
-  screen_name: 'Home'
-})
-```
+The `gtag` function is the main interface to the `gtag.js` instance and can be used to run every [gtag.js command](https://developers.google.com/tag-platform/gtagjs/reference).
 
 > [!NOTE]
 > Since the `gtag.js` instance is available in the client only, any `gtag()` calls executed on the server will have no effect.
-
-**Type Declarations**
-
-```ts
-interface GtagCommands {
-  config: [targetId: string, config?: ControlParams | EventParams | ConfigParams | CustomParams]
-  set: [targetId: string, config: CustomParams | boolean | string] | [config: CustomParams]
-  js: [config: Date]
-  // eslint-disable-next-line ts/ban-types
-  event: [eventName: EventNames | (string & {}), eventParams?: ControlParams | EventParams | CustomParams]
-  get: [
-      targetId: string,
-      fieldName: FieldNames | string,
-      callback?: (field?: string | CustomParams) => any,
-  ]
-  // eslint-disable-next-line ts/ban-types
-  consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
-}
-
-const gtag: {
-  <Command extends keyof GtagCommands>(command: Command, ...args: GtagCommands[Command]): void
-}
-```
 
 **Example**
 
@@ -305,17 +274,40 @@ gtag('event', 'screen_view', {
 })
 ```
 
-#### `grantConsent`
-
-If you want to manually manage consent, i.e. for GDPR compliance, you can use the `grantConsent` method to initialize the `gtag.js` script after the user has accepted your cookie policy. Make sure to set `initialConsent` to `false` in the module options beforehand.
-
-This function accepts an optional ID in case you want to initialize a custom Google tag ID and haven't set it in the module options.
+**Type Declarations**
 
 ```ts
-const { grantConsent } = useGtag()
+interface GtagCommands {
+  config: [targetId: string, config?: ControlParams | EventParams | ConfigParams | CustomParams]
+  set: [targetId: string, config: CustomParams | boolean | string] | [config: CustomParams]
+  js: [config: Date]
+  event: [eventName: EventNames | (string & {}), eventParams?: ControlParams | EventParams | CustomParams]
+  get: [
+      targetId: string,
+      fieldName: FieldNames | string,
+      callback?: (field?: string | CustomParams) => any,
+  ]
+  consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
+}
 
-// When called, the `gtag.js` script will be loaded all tag IDs initialized
-grantConsent()
+const gtag: {
+  <Command extends keyof GtagCommands>(command: Command, ...args: GtagCommands[Command]): void
+}
+```
+
+#### `initialize`
+
+If you want to manually manage the initialization of the Google tag script, i.e. for GDPR compliance, you can use the `initialize` method to inject the `gtag.js` script to the document's head after the user has accepted your privacy policy. Make sure to set `enabled` to `false` in the Nuxt module for this to work.
+
+The function accepts an optional ID in case you want to initialize a custom Google tag ID, which isn't set in the module options.
+
+**Example**
+
+```ts
+const { initialize } = useGtag()
+
+// Load the `gtag.js` script and initialize all tag IDs from the module options
+initialize()
 ```
 
 > [!TIP]
@@ -324,29 +316,45 @@ grantConsent()
 **Type Declarations**
 
 ```ts
-function grantConsent(id?: string): void
+function initialize(id?: string): void
 ```
 
-#### `revokeConsent`
+#### `disableAnalytics`
 
-If a user has previously granted consent, you can use the `revokeConsent` method to revoke the consent. It will prevent the Google tag from sending data until the consent is granted again.
+In some cases, it may be necessary to disable Google Analytics without removing the Google tag. For example, you might want to provide users with the option to opt out of tracking.
 
-> [!Note]
-> This works only with Google Analytics 4 tags
+The `gtag.js` library includes a `window` property that, toggles `gtag.js` from sending data to Google Analytics. When Google Analytics attempts to set a cookie or send data back to the Google Analytics servers, this property is checked to determine whether to allow the action.
 
-This function accepts an optional ID in case you haven't set it in the module options. Make sure to pass the same ID that was used to grant the consent.
+**Example**
 
 ```ts
-const { revokeConsent } = useGtag()
+const { disableAnalytics } = useGtag()
 
-// When called, the `gtag.js` script will be stopped from tracking events
-revokeConsent()
+disableAnalytics()
 ```
 
 **Type Declarations**
 
 ```ts
-function revokeConsent(id?: string): void
+function disableAnalytics(id?: string): void
+```
+
+#### `enableAnalytics`
+
+The `enableAnalytics` method is the counterpart to `disableAnalytics` and can be used to re-enable Google Analytics after it has been disabled.
+
+**Example**
+
+```ts
+const { enableAnalytics } = useGtag()
+
+enableAnalytics()
+```
+
+**Type Declarations**
+
+```ts
+function enableAnalytics(id?: string): void
 ```
 
 ### `useTrackEvent`
@@ -359,15 +367,6 @@ Track your defined goals by passing the following parameters:
 > [!NOTE]
 > This composable is SSR-ready. But since the `gtag.js` instance is available in the client only, executing the composable on the server will have no effect.
 
-**Type Declarations**
-
-```ts
-function useTrackEvent(
-  eventName: EventNames | (string & Record<never, never>),
-  eventParams?: ControlParams | EventParams | Record<string, any>,
-): void
-```
-
 **Example**
 
 For example, the following is an event called `login` with a parameter `method`:
@@ -377,6 +376,15 @@ For example, the following is an event called `login` with a parameter `method`:
 useTrackEvent('login', {
   method: 'Google'
 })
+```
+
+**Type Declarations**
+
+```ts
+function useTrackEvent(
+  eventName: EventNames | (string & {}),
+  eventParams?: ControlParams | EventParams | CustomParams
+): void
 ```
 
 ## 💻 Development
