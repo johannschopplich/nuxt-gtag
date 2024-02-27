@@ -12,24 +12,46 @@ export interface ModuleOptions {
   id?: string
 
   /**
+   * Additional commands to be executed before the Google tag ID is initialized.
+   *
+   * @remarks
+   * Useful to set the default consent state. Only applies when `id` is set. For multiple tags, use the `tags` option instead.
+   *
+   * @example
+   * ```ts
+   * commands: [
+   *   ['consent', 'default', {
+   *     ad_storage: 'denied',
+   *     ad_user_data: 'denied',
+   *     ad_personalization: 'denied',
+   *     analytics_storage: 'denied'
+   *   }]
+   * ]
+   * ```
+   *
+   * @default []
+   */
+  initCommands: GoogleTagOptions['initCommands']
+
+  /**
+   * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config' command.
+   *
+   * @remarks
+   * Only applies when `id` is set. For multiple tags, use the `tags` option instead.
+   *
+   * @default {}
+   */
+  config?: GoogleTagOptions['config']
+
+  /**
    * The Google tags to initialize.
    *
    * @remarks
    * Each item can be a string or an object with `id` and `config` properties. The latter is useful especially when you want to set additional configuration for the Google tag ID.
    *
-   * @default undefined
+   * @default []
    */
   tags?: string[] | GoogleTagOptions[]
-
-  /**
-   * Additional configuration for the Google tag ID to be set when initializing the tag ID with the `config` command.
-   *
-   * @remarks
-   * Does only apply when `id` is set or the `ids` array contains strings.
-   *
-   * @default undefined
-   */
-  config?: Record<string, any>
 
   /**
    * Whether to initialize the Google tag script immediately after the page has loaded.
@@ -74,6 +96,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     id: '',
+    initCommands: [],
     config: {},
     tags: [],
     initialConsent: true,

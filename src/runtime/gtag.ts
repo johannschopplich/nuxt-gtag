@@ -12,6 +12,13 @@ export function gtag(command: string, ...args: any[]) {
 export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
 
+  for (const tag of tags) {
+    for (const command of tag.initCommands ?? []) {
+      // @ts-expect-error: Tuple type
+      gtag(...command)
+    }
+  }
+
   gtag('js', new Date())
   for (const tag of tags)
     gtag('config', tag.id, tag.config)

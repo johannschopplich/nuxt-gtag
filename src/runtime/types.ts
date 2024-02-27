@@ -1,6 +1,37 @@
 export interface GoogleTagOptions {
+  /**
+   * The Google tag ID to initialize.
+   */
   id: string
-  config?: Record<string, any>
+  /**
+   * Additional commands to be executed before the Google tag ID is initialized.
+   *
+   * @remarks
+   * Useful to set the default consent state.
+   *
+   * @example
+   * ```ts
+   * commands: [
+   *   ['consent', 'default', {
+   *     ad_storage: 'denied',
+   *     ad_user_data: 'denied',
+   *     ad_personalization: 'denied',
+   *     analytics_storage: 'denied'
+   *   }]
+   * ]
+   * ```
+   *
+   * @default undefined
+   */
+  initCommands?: {
+    [K in keyof GtagCommands]: [K, ...GtagCommands[K]];
+  }[keyof GtagCommands][]
+  /**
+   * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config' command.
+   *
+   * @default undefined
+   */
+  config?: GtagCommands['config'][1]
 }
 
 export interface UseGtagConsentOptions {
@@ -17,15 +48,26 @@ export interface UseGtagConsentOptions {
   id?: string
 }
 
-export interface Gtag {
-  (command: 'config', targetId: string, config?: ControlParams | EventParams | ConfigParams | Record<string, any>): void
-  (command: 'set', targetId: string, config: string | boolean | Record<string, any>): void
-  (command: 'set', config: Record<string, any>): void
-  (command: 'js', config: Date): void
-  (command: 'event', eventName: EventNames | (string & Record<never, never>), eventParams?: ControlParams | EventParams | Record<string, any>): void
-  (command: 'get', targetId: string, fieldName: FieldNames | string, callback?: (field?: string | Record<string, any>) => any): void
-  (command: 'consent', consentArg: ConsentArg | string, consentParams: ConsentParams): void
+export interface GtagCommands {
+  config: [targetId: string, config?: ControlParams | EventParams | ConfigParams | CustomParams]
+  set: [targetId: string, config: CustomParams | boolean | string] | [config: CustomParams]
+  js: [config: Date]
+  // eslint-disable-next-line ts/ban-types
+  event: [eventName: EventNames | (string & {}), eventParams?: ControlParams | EventParams | CustomParams]
+  get: [
+      targetId: string,
+      fieldName: FieldNames | string,
+      callback?: (field?: string | CustomParams) => any,
+  ]
+  // eslint-disable-next-line ts/ban-types
+  consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
 }
+
+export interface Gtag {
+  <Command extends keyof GtagCommands>(command: Command, ...args: GtagCommands[Command]): void
+}
+
+export type CustomParams = Record<string, any>
 
 export interface ConfigParams {
   page_title?: string
@@ -155,9 +197,11 @@ type ConsentArg = 'default' | 'update'
 /**
  * Reference:
  * @see {@link https://support.google.com/tagmanager/answer/10718549#consent-types consent-types}
- * @see {@link https://developers.google.com/tag-platform/devguides/consent consent}
+ * @see {@link https://developers.google.com/tag-platform/security/guides/consent consent}
  */
 interface ConsentParams {
+  ad_personalization?: 'granted' | 'denied' | undefined
+  ad_user_data?: 'granted' | 'denied' | undefined
   ad_storage?: 'granted' | 'denied'
   analytics_storage?: 'granted' | 'denied'
   functionality_storage?: 'granted' | 'denied'

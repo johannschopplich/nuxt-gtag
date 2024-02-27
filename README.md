@@ -10,7 +10,7 @@
 
 - 🌻 Zero dependencies except Google's `gtag.js`
 - 🛍️ For Google Analytics 4, Google Ads and other products
-- 🛎️ Supports Google tag consent mode v2
+- 🛎️ Supports Google tag [consent mode v2](#set-up-consent-mode)
 - 🤝 Manual [consent management](#consent-management) for GDPR compliance
 - 🔢 Supports [multiple tag IDs](#multiple-google-tags)
 - 📯 Track events manually with [composables](#composables)
@@ -57,52 +57,6 @@ Done! The `gtag.js` script will be loaded and initialized client-side with your 
 > 3. Click on your web data stream.
 > 4. Next, toggle the switch button near “Enhanced measurement”.
 
-### Multiple Google Tags
-
-If you want to send data to multiple destinations, you can add more than one Google tag ID to your Nuxt configuration in the `tags` module option.
-
-The following example shows how to load a second Google tag that is connected to a Floodlight destination. To send data to Floodlight (tag ID `DC-ZZZZZZZZZZ`), add another config command after initializing the first Google tag (tag ID `GT-XXXXXXXXXX`):
-
-```ts
-// `nuxt.config.ts`
-export default defineNuxtConfig({
-  modules: ['nuxt-gtag'],
-
-  gtag: {
-    tags: [
-      'GT-XXXXXXXXXX', // Google Ads and GA4
-      'DC-ZZZZZZZZZZ' // Floodlight
-    ]
-  }
-})
-```
-
-Or use the object syntax to initialize multiple tags with different configurations:
-
-```ts
-// `nuxt.config.ts`
-export default defineNuxtConfig({
-  modules: ['nuxt-gtag'],
-
-  gtag: {
-    tags: [
-      {
-        id: 'GT-XXXXXXXXXX',
-        config: {
-          page_title: 'GA4'
-        }
-      },
-      {
-        id: 'DC-ZZZZZZZZZZ',
-        config: {
-          page_title: 'Floodlight'
-        }
-      }
-    ]
-  }
-})
-```
-
 ## Configuration
 
 All [supported module options](#module-options) can be configured using the `gtag` key in your Nuxt configuration. An example of some of the options you can set:
@@ -118,11 +72,32 @@ export default defineNuxtConfig({
     config: {
       page_title: 'My Custom Page Title'
     },
+  }
+})
+```
 
-    // To send data to multiple destinations, use this option instead:
+### Multiple Google Tags
+
+If you want to send data to multiple destinations, you can add more than one Google tag ID to your Nuxt configuration in the `tags` module option. Pass a string (single tag ID) or an object (tag ID with additional configuration) to the `tags` array.
+
+The following example shows how to load a second Google tag that is connected to a Floodlight destination:
+
+```ts
+// `nuxt.config.ts`
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
     tags: [
-      'GT-XXXXXXXXXX', // Google Ads and GA4
-      'DC-ZZZZZZZZZZ' // Floodlight
+      // Google Ads and GA4, with additional configuration
+      {
+        id: 'G-XXXXXXXXXX',
+        config: {
+          page_title: 'My Custom Page Title'
+        }
+      },
+      // Second Google tag ID for Floodlight
+      'DC-ZZZZZZZZZZ'
     ]
   }
 })
@@ -139,7 +114,61 @@ NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
 
 With this setup, you can omit the `gtag` key in your Nuxt configuration if you only intend to set the Google tag ID.
 
-### Consent Management
+### Set Up Consent Mode
+
+> [!TIP]
+> Follows the [Google consent mode v2](https://developers.google.com/tag-platform/security/guides/consent) specification.
+
+Set a default value for each consent type you are using. By default, no consent mode values are set.
+
+The following example sets multiple consent mode parameters to denied by default:
+
+```ts
+// `nuxt.config.ts`
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    id: 'G-XXXXXXXXXX',
+    initCommands: [
+      // Setup up consent mode
+      ['consent', 'default', {
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+      }]
+    ]
+  }
+})
+```
+
+After a user indicates their consent choices, update relevant parameters to `granted`:
+
+```ts
+function allConsentGranted() {
+  const { gtag } = useGtag()
+  gtag('consent', 'update', {
+    ad_user_data: 'granted',
+    ad_personalization: 'granted',
+    ad_storage: 'granted',
+    analytics_storage: 'granted'
+  })
+}
+
+function consentGrantedAdStorage() {
+  const { gtag } = useGtag()
+  gtag('consent', 'update', {
+    ad_storage: 'granted'
+  })
+}
+
+// Invoke the consent function when a user interacts with your banner
+consentGrantedAdStorage() // Or `allConsentGranted()`
+```
+
+### Delay Google Tag Script Loading
 
 For GDPR compliance, you may want to delay the loading of the `gtag.js` script until the user has granted consent. Set the `initialConsent` option to `false` to prevent the `gtag.js` script from loading until you manually enable it.
 
@@ -185,9 +214,9 @@ function acceptTracking() {
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | `undefined` | The Google tag ID to initialize. |
-| `config` | `GoogleTagOptions['config']` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
-| `config` | `GoogleTagOptions['commands']` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
-| `tags` | `string[] \| GoogleTagOptions[]` | `undefined` | Multiple Google tag IDs to initialize for sending data to different destinations. |
+| `initCommands` | `GoogleTagOptions['initCommands']` | `[]` | Commands to be executed when the Google tag ID is initialized. |
+| `config` | `GoogleTagOptions['config']` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
 | `initialConsent` | `boolean` | `true` | Whether to initialize the Google tag script immediately after the page has loaded. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
