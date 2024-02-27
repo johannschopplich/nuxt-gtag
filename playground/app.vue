@@ -1,21 +1,27 @@
 <script setup lang="ts">
 const { gtag: gtagOpts } = useRuntimeConfig().public
 
-const { gtag, grantConsent, revokeConsent } = useGtag()
-const consent = ref(gtagOpts.initialConsent)
+const { gtag, initialize, enableAnalytics, disableAnalytics } = useGtag()
+const isInitialized = ref(gtagOpts.enabled)
+const isAnalyticsActive = ref(true)
 
 onMounted(() => {
   // eslint-disable-next-line no-console
   console.log('Use the "gtag" function to send custom events', gtag)
 })
 
-function toggleConsent() {
-  consent.value = !consent.value
+function init() {
+  initialize()
+  isInitialized.value = true
+}
 
-  if (consent.value)
-    grantConsent()
+function toggleAnalytics() {
+  if (!isAnalyticsActive.value)
+    enableAnalytics()
   else
-    revokeConsent()
+    disableAnalytics()
+
+  isAnalyticsActive.value = !isAnalyticsActive.value
 }
 
 function trackEvent() {
@@ -42,15 +48,19 @@ function trackEvent() {
     <pre>{{ JSON.stringify(gtagOpts, null, 2) }}</pre>
   </details>
 
-  <h3>Consent</h3>
+  <h3>Status</h3>
   <p>
-    <mark>{{ consent ? 'Consent granted' : 'Consent denied' }}</mark>
+    <mark>{{ isInitialized ? 'Initialized' : 'Pending' }}</mark>
   </p>
 
   <h3>Usage</h3>
   <p>
-    <button @click="toggleConsent">
-      {{ consent ? 'Revoke' : 'Grant' }} consent
+    <button @click="init">
+      Initialize <code>gtag.js</code>
+    </button>
+    &nbsp;
+    <button @click="toggleAnalytics">
+      {{ isAnalyticsActive ? 'Disable' : 'Enable' }} Analytics
     </button>
     &nbsp;
     <button @click="trackEvent">
