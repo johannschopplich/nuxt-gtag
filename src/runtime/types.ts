@@ -24,7 +24,7 @@ export interface GoogleTagOptions {
    * @default undefined
    */
   initCommands?: {
-    [K in keyof GtagCommands]: [K, ...GtagCommands[K]];
+    [K in keyof GtagCommands]: [K, ...GtagCommands[K]]
   }[keyof GtagCommands][]
   /**
    * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config' command.
@@ -34,32 +34,16 @@ export interface GoogleTagOptions {
   config?: GtagCommands['config'][1]
 }
 
-export interface UseGtagConsentOptions {
-  /**
-   * Whether to accept or decline the consent.
-   *
-   * @default true
-   */
-  hasConsent?: boolean
-  /**
-   * In case you want to initialize a custom Google tag ID. Make sure to set
-   * `initialConsent` to `false` in the module options beforehand.
-   */
-  id?: string
-}
-
 export interface GtagCommands {
   config: [targetId: string, config?: ControlParams | EventParams | ConfigParams | CustomParams]
   set: [targetId: string, config: CustomParams | boolean | string] | [config: CustomParams]
   js: [config: Date]
-  // eslint-disable-next-line ts/ban-types
   event: [eventName: EventNames | (string & {}), eventParams?: ControlParams | EventParams | CustomParams]
   get: [
       targetId: string,
       fieldName: FieldNames | string,
       callback?: (field?: string | CustomParams) => any,
   ]
-  // eslint-disable-next-line ts/ban-types
   consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
 }
 

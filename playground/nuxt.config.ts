@@ -2,8 +2,8 @@ export default defineNuxtConfig({
   modules: ['../src/module.ts'],
 
   gtag: {
+    enabled: false,
     tags: ['G-ZZZZZZZZZZ'],
-    initialConsent: false,
   },
 
   typescript: {
