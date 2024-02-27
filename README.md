@@ -219,7 +219,7 @@ function acceptTracking() {
 | `config` | See `config` of `GoogleTagOptions` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
 | `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
-| `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
+| `url` | `string` | [Source](https://www.googletagmanager.com/gtag/js) | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
 
 ## Composables
 
