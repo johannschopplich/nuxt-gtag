@@ -8,14 +8,14 @@
 
 ## Features
 
-- 🌻 No dependencies except Google's `gtag.js`
+- 🌻 Zero dependencies except Google's `gtag.js`
 - 🛍️ For Google Analytics 4, Google Ads and other products
+- 🛎️ Supports Google tag consent mode v2
 - 🤝 Manual [consent management](#consent-management) for GDPR compliance
 - 🔢 Supports [multiple tag IDs](#multiple-google-tags)
 - 📯 Track events manually with [composables](#composables)
 - 🏷️ Fully typed `gtag.js` API
 - 🦾 SSR-ready
-- 📂 [`.env` file support](#configuration)
 
 ## Setup
 
@@ -185,8 +185,9 @@ function acceptTracking() {
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | `undefined` | The Google tag ID to initialize. |
-| `config` | `Record<string, any>` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
-| `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
+| `config` | `GoogleTagOptions['config']` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `config` | `GoogleTagOptions['commands']` | `undefined` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
+| `tags` | `string[] \| GoogleTagOptions[]` | `undefined` | Multiple Google tag IDs to initialize for sending data to different destinations. |
 | `initialConsent` | `boolean` | `true` | Whether to initialize the Google tag script immediately after the page has loaded. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
@@ -241,14 +242,23 @@ gtag('event', 'screen_view', {
 **Type Declarations**
 
 ```ts
+interface GtagCommands {
+  config: [targetId: string, config?: ControlParams | EventParams | ConfigParams | CustomParams]
+  set: [targetId: string, config: CustomParams | boolean | string] | [config: CustomParams]
+  js: [config: Date]
+  // eslint-disable-next-line ts/ban-types
+  event: [eventName: EventNames | (string & {}), eventParams?: ControlParams | EventParams | CustomParams]
+  get: [
+      targetId: string,
+      fieldName: FieldNames | string,
+      callback?: (field?: string | CustomParams) => any,
+  ]
+  // eslint-disable-next-line ts/ban-types
+  consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
+}
+
 const gtag: {
-  (command: 'config', targetId: string, config?: ControlParams | EventParams | ConfigParams | Record<string, any>): void
-  (command: 'set', targetId: string, config: string | boolean | Record<string, any>): void
-  (command: 'set', config: Record<string, any>): void
-  (command: 'js', config: Date): void
-  (command: 'event', eventName: EventNames | (string & Record<never, never>), eventParams?: ControlParams | EventParams | Record<string, any>): void
-  (command: 'get', targetId: string, fieldName: FieldNames | string, callback?: (field?: string | Record<string, any>) => any): void
-  (command: 'consent', consentArg: ConsentArg | string, consentParams: ConsentParams): void
+  <Command extends keyof GtagCommands>(command: Command, ...args: GtagCommands[Command]): void
 }
 ```
 
