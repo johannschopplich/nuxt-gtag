@@ -167,7 +167,7 @@ consentGrantedAdStorage() // Or `allConsentGranted()`
 
 ### Manually Load `gtag.js` Script
 
-For even more control than the [consent mode](#set-up-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `enabled` option to `false` to prevent loading the `gtag.js` script until you manually enable it:
+For even more control than the [consent mode](#google-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `enabled` option to `false` to prevent loading the `gtag.js` script until you manually enable it:
 
 ```ts
 export default defineNuxtConfig({
