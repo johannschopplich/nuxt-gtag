@@ -2,8 +2,8 @@ export default defineNuxtConfig({
   modules: ['../src/module.ts'],
 
   gtag: {
-    id: 'G-ZZZZZZZZZZ',
     enabled: false,
+    id: 'G-ZZZZZZZZZZ',
     initCommands: [
       // Setup up consent mode
       ['consent', 'default', {
