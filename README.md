@@ -35,7 +35,6 @@ yarn add -D nuxt-gtag
 Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google tag ID (for multiple tag IDs, see below).
 
 ```ts
-// `nuxt.config.ts`
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
@@ -83,7 +82,6 @@ If you want to send data to multiple destinations, you can add more than one Goo
 The following example shows how to load a second Google tag that is connected to a Floodlight destination:
 
 ```ts
-// `nuxt.config.ts`
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
@@ -124,7 +122,6 @@ Set a default value for each consent type you are using. By default, no consent 
 The following example sets multiple consent mode parameters to denied by default:
 
 ```ts
-// `nuxt.config.ts`
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
