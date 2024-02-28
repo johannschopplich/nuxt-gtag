@@ -6,8 +6,10 @@ export function resolveTags(options: Required<ModuleOptions>) {
   const tags: GoogleTagOptions[] = [...options.tags].filter(Boolean)
     .map(i => typeof i === 'string' ? { id: i } : i)
 
-  if (options.id)
-    tags.unshift({ id: options.id, config: options.config })
+  if (options.id) {
+    const { id, config, initCommands } = options
+    tags.unshift({ id, config, initCommands })
+  }
 
   return tags
 }
