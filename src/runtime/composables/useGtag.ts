@@ -60,15 +60,15 @@ export function useGtag() {
       if (!window.dataLayer)
         initGtag({ tags })
 
-      // If the `dataLayer` has more than two items
-      // it is considered to be initialized.
-      if (window.dataLayer!.length > 2)
-        return
-
-      // Inject the Google tag script.
-      useHead({
-        script: [{ src: withQuery(options.url, { id: tag.id }) }],
-      })
+      // Inject the Google tag script if it wasn't injected by the client plugin.
+      if (!document.head.querySelector('script[data-gtag]')) {
+        useHead({
+          script: [{
+            'src': withQuery(options.url, { id: tag.id }),
+            'data-gtag': '',
+          }],
+        })
+      }
     }
   }
 

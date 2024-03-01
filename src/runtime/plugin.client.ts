@@ -24,8 +24,9 @@ export default defineNuxtPlugin({
     useHead({
       script: [
         {
-          src: withQuery(options.url, { id: tags[0].id }),
+          'src': withQuery(options.url, { id: tags[0].id }),
           [strategy]: true,
+          'data-gtag': '',
         },
       ],
     })
