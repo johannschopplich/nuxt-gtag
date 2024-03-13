@@ -20,7 +20,7 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install
-      - run: pnpm dev:prepare
+      - run: pnpm run dev:prepare
       - run: pnpm run lint
 
   typecheck:
@@ -33,5 +33,5 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install
-      - run: pnpm dev:prepare
+      - run: pnpm run dev:prepare
       - run: pnpm run test:types
