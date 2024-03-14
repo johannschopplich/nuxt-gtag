@@ -31,7 +31,7 @@ jobs:
         run: pnpm install
 
       - name: Build type stubs
-        run: pnpm dev:prepare
+        run: pnpm run dev:prepare
 
       - name: Publish to npm
         run: npm publish --access public
