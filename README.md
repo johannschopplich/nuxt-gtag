@@ -20,14 +20,7 @@
 ## Setup
 
 ```bash
-# pnpm
-pnpm add -D nuxt-gtag
-
-# npm
-npm i -D nuxt-gtag
-
-# yarn
-yarn add -D nuxt-gtag
+npx nuxi@latest module add gtag
 ```
 
 ## Basic Usage
