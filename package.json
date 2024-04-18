@@ -2,9 +2,9 @@
   "name": "nuxt-gtag",
   "type": "module",
   "version": "2.0.5",
-  "packageManager": "pnpm@8.15.6",
+  "packageManager": "pnpm@8.15.7",
   "description": "Natively integrates Google Tag into Nuxt",
-  "author": "Johann Schopplich <pkg@johannschopplich.com>",
+  "author": "Johann Schopplich <hello@johannschopplich.com>",
   "license": "MIT",
   "homepage": "https://github.com/johannschopplich/nuxt-gtag#readme",
   "repository": {
@@ -39,7 +39,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:types": "tsc --noEmit",
-    "release": "bumpp --commit --push --tag"
+    "release": "bumpp"
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2",
@@ -48,13 +48,13 @@
     "ufo": "^1.5.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.13.2",
+    "@nuxt/eslint-config": "^0.3.8",
     "@nuxt/module-builder": "^0.5.5",
     "@nuxt/schema": "^3.11.2",
     "@types/node": "^20.12.7",
     "bumpp": "^9.4.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "nuxt": "^3.11.2",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   }
 }

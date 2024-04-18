@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+
 export interface GoogleTagOptions {
   /**
    * The Google tag ID to initialize.

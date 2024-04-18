@@ -1,8 +1,14 @@
-import antfu from '@antfu/eslint-config'
+// @ts-check
+import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
 
-export default await antfu({
-  rules: {
-    'node/prefer-global/process': 'off',
-    'ts/ban-types': 'off',
+export default createConfigForNuxt({
+  features: {
+    tooling: true,
+    stylistic: true,
+  },
+  dirs: {
+    src: [
+      './playground',
+    ],
   },
 })

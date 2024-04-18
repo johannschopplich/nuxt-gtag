@@ -1,6 +1,6 @@
 import type { GoogleTagOptions } from './types'
 
-// eslint-disable-next-line unused-imports/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export function gtag(...args: any[]) {
   // eslint-disable-next-line prefer-rest-params
   window.dataLayer?.push(arguments)

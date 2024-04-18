@@ -6,7 +6,6 @@ const isInitialized = ref(gtagOpts.enabled)
 const isAnalyticsActive = ref(true)
 
 onMounted(() => {
-  // eslint-disable-next-line no-console
   console.log('Use the "gtag" function to send custom events', gtag)
 })
 
