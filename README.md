@@ -1,8 +1,11 @@
-![Nuxt Google Tag module](./.github/social-card.jpg)
+![Nuxt Google Tag banner](./.github/assets/banner.png)
 
 # Nuxt Google Tag
 
-[![npm version](https://img.shields.io/npm/v/nuxt-gtag?color=a1b858&label=)](https://www.npmjs.com/package/nuxt-gtag)
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![License][license-src]][license-href]
+[![Nuxt][nuxt-src]][nuxt-href]
 
 [Google Tag](https://developers.google.com/tag-platform/gtagjs?hl=en) integration for [Nuxt](https://nuxt.com) with support for [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en), Google Ads and more.
 
@@ -393,3 +396,16 @@ function useTrackEvent(
 ## License
 
 [MIT](./LICENSE) License © 2023-PRESENT [Johann Schopplich](https://github.com/johannschopplich)
+
+<!-- Badges -->
+[npm-version-src]: https://img.shields.io/npm/v/nuxt-gtag/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/nuxt-gtag
+
+[npm-downloads-src]: https://img.shields.io/npm/dm/nuxt-gtag.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/nuxt-gtag
+
+[license-src]: https://img.shields.io/github/license/johannschopplich/nuxt-gtag.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-href]: https://github.com/johannschopplich/nuxt-gtag/blob/main/LICENSE
+
+[nuxt-src]: https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js
+[nuxt-href]: https://nuxt.com
