@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const { gtag: gtagOpts } = useRuntimeConfig().public
+const gtagOpts = useRuntimeConfig().public.gtag
 
 const { gtag, initialize, enableAnalytics, disableAnalytics } = useGtag()
-const isInitialized = ref(gtagOpts.enabled)
+const isInitialized = ref(gtagOpts.initMode === 'auto')
 const isAnalyticsActive = ref(true)
 
 onMounted(() => {
