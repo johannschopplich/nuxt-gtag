@@ -46,7 +46,11 @@ importers:
         specifier: ^5.4.5
         version: 5.4.5
 
-  playground: {}
+  playground:
+    dependencies:
+      nuxt-gtag:
+        specifier: 'workspace:'
+        version: link:..
 
 packages:
 

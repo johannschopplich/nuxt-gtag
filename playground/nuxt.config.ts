@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['../src/module.ts'],
+  modules: ['nuxt-gtag'],
 
   gtag: {
     enabled: false,
