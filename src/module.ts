@@ -107,9 +107,8 @@ export default defineNuxtModule<ModuleOptions>({
     const { resolve } = createResolver(import.meta.url)
 
     // Add module options to public runtime config
-    // @ts-expect-error: Loosely typed runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(
-      nuxt.options.runtimeConfig.public.gtag as Required<ModuleOptions>,
+      nuxt.options.runtimeConfig.public.gtag,
       options,
     )
 
