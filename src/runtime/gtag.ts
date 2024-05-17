@@ -18,6 +18,8 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   }
 
   gtag('js', new Date())
-  for (const tag of tags)
-    gtag('config', tag.id, tag.config)
+  for (const tag of tags) {
+    // Always provide a default value for the `config` object
+    gtag('config', tag.id, tag.config ?? {})
+  }
 }
