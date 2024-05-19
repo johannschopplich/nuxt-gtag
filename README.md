@@ -47,7 +47,8 @@ Done! The `gtag.js` script will be loaded and initialized client-side with your 
 > 1. Go to the GA4 reporting view and click on “Admin”
 > 2. Select “Data Streams” under the “Property” column.
 > 3. Click on your web data stream.
-> 4. Next, toggle the switch button near “Enhanced measurement”.
+> 4. Next, expand the switch button “Enhanced measurement”.
+> 5. Ensure the “Page changes based on browser history events” switch button is enabled.
 
 ## Configuration
 
