@@ -48,7 +48,7 @@ Done! The `gtag.js` script will be loaded and initialized client-side with your 
 > 2. Select “Data Streams” under the “Property” column.
 > 3. Click on your web data stream.
 > 4. Next, expand the switch button “Enhanced measurement”.
-> 5. Ensure "Page changes based on browser history events" switch button is on.
+> 5. Ensure the “Page changes based on browser history events” switch button is enabled.
 
 ## Configuration
 
