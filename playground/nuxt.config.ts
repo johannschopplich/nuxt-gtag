@@ -2,7 +2,8 @@ export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
-    enabled: false,
+    enabled: true,
+    initMode: 'manual',
     id: 'G-ZZZZZZZZZZ',
     initCommands: [
       // Setup up consent mode

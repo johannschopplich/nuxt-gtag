@@ -10,13 +10,15 @@ export default defineNuxtPlugin({
     const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
     const tags = resolveTags(options)
 
-    if (!tags.length)
+    if (!tags.length) {
       return
+    }
 
     initGtag({ tags })
 
-    if (!options.enabled)
+    if (options.initMode === 'manual') {
       return
+    }
 
     // Sanitize loading strategy to be either `async` or `defer`
     const strategy = options.loadingStrategy === 'async' ? 'async' : 'defer'
