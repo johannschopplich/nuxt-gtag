@@ -1,11 +1,8 @@
 <script setup lang="ts">
 useHead({
-  title: 'nuxt-gtag',
+  title: 'Nuxt Gtag',
   link: [
-    {
-      rel: 'stylesheet',
-      href: 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css',
-    },
+    { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css' },
   ],
 })
 
@@ -39,7 +36,7 @@ function trackEvent() {
 
 <template>
   <header>
-    <h1>nuxt-gtag</h1>
+    <h1>Nuxt Gtag</h1>
   </header>
 
   <h3>Configuration</h3>
