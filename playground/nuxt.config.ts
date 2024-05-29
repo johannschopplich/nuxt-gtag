@@ -1,8 +1,9 @@
+import type { NuxtModule } from '@nuxt/schema'
 import { defineNuxtConfig } from 'nuxt/config'
 import NuxtGtag from '../src/module'
 
 export default defineNuxtConfig({
-  modules: [NuxtGtag],
+  modules: [NuxtGtag as unknown as NuxtModule],
 
   gtag: {
     enabled: false,
