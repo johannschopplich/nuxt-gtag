@@ -1,6 +1,15 @@
 <script setup lang="ts">
-const { gtag: gtagOpts } = useRuntimeConfig().public
+useHead({
+  title: 'nuxt-gtag',
+  link: [
+    {
+      rel: 'stylesheet',
+      href: 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css',
+    },
+  ],
+})
 
+const { gtag: gtagOpts } = useRuntimeConfig().public
 const { gtag, initialize, enableAnalytics, disableAnalytics } = useGtag()
 const isInitialized = ref(gtagOpts.enabled)
 const isAnalyticsActive = ref(true)
@@ -29,14 +38,6 @@ function trackEvent() {
 </script>
 
 <template>
-  <Head>
-    <Title>nuxt-gtag</Title>
-    <Link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
-    />
-  </Head>
-
   <header>
     <h1>nuxt-gtag</h1>
   </header>
