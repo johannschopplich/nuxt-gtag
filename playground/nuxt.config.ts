@@ -1,5 +1,8 @@
+import { defineNuxtConfig } from 'nuxt/config'
+import NuxtGtag from '../src/module'
+
 export default defineNuxtConfig({
-  modules: ['nuxt-gtag'],
+  modules: [NuxtGtag],
 
   gtag: {
     enabled: false,

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-useHead({
+import { useServerHead, useRuntimeConfig, ref, onMounted, useTrackEvent, useGtag } from '#imports'
+
+useServerHead({
   title: 'Nuxt Gtag',
   link: [
     { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css' },
