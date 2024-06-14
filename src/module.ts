@@ -91,7 +91,7 @@ export default defineNuxtModule<ModuleOptions>({
     version,
     configKey: 'gtag',
     compatibility: {
-      nuxt: '^3.7',
+      nuxt: '>=3.7',
     },
   },
   defaults: {
