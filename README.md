@@ -195,6 +195,8 @@ const { gtag, initialize } = useGtag()
 
 function acceptTracking() {
   initialize('G-XXXXXXXXXX')
+  // Optionally, track the current page view
+  // useTrackEvent('page_view')
 }
 ```
 
@@ -296,7 +298,11 @@ The function accepts an optional ID in case you want to initialize a custom Goog
 const { initialize } = useGtag()
 
 // Load the `gtag.js` script and initialize all tag IDs from the module options
-initialize()
+function acceptTracking() {
+  initialize()
+  // Optionally, track the current page view
+  // useTrackEvent('page_view')
+}
 ```
 
 > [!TIP]
