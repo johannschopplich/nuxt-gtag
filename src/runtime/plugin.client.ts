@@ -1,8 +1,9 @@
 import { withQuery } from 'ufo'
+import { defineNuxtPlugin } from 'nuxt/app'
 import type { ModuleOptions } from '../module'
 import { initGtag } from './gtag'
 import { resolveTags } from './utils'
-import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
+import { useHead, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin({
   parallel: true,
