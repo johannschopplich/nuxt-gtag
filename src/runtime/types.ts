@@ -9,6 +9,10 @@ declare module '@nuxt/schema' {
   }
 }
 
+declare module '#app' {
+  interface NuxtApp { }
+}
+
 export interface GoogleTagOptions {
   /**
    * The Google tag ID to initialize.
