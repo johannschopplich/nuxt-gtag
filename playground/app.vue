@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useServerHead, useRuntimeConfig, ref, onMounted, useTrackEvent, useGtag } from '#imports'
+import { useServerHead, useRuntimeConfig, ref, onMounted, useGtag } from '#imports'
 
 useServerHead({
   title: 'Nuxt Gtag',
@@ -32,7 +32,10 @@ function toggleAnalytics() {
 }
 
 function trackEvent() {
-  useTrackEvent('share')
+  gtag('event', 'show_contact_info', {
+    email: 'mail@mail.dk',
+    phone: '12 34 56 78',
+  })
 }
 </script>
 
