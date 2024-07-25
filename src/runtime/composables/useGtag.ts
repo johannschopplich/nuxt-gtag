@@ -1,9 +1,8 @@
 import { withQuery } from 'ufo'
-import { gtag, initGtag } from '../gtag'
+import { gtag, initGtag, resolveTags } from '../utils'
 import { disableAnalytics as _disableAnalytics, enableAnalytics as _enableAnalytics } from '../analytics'
 import type { ModuleOptions } from '../../module'
 import type { Gtag } from '../types'
-import { resolveTags } from '../utils'
 import { useHead, useRuntimeConfig } from '#imports'
 
 export function useGtag() {
