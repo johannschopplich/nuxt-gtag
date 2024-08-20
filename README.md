@@ -186,6 +186,30 @@ const { gtag, initialize } = useGtag()
 </template>
 ```
 
+### Conditionally Enable Tracking in Different Environments
+
+While it may seem intuitive to use `enabled: process.env.NODE_ENV === 'production'` to conditionally enable the module based on the environment, it is not recommended, as the `enabled` option is used for a different purpose in this module.
+
+Instead, to disable tracking in development and enable it only in production, the Gtag ID can be added via a config variable only in production environment file (e.g., `.env.production`):
+
+```ini
+# Only add this in production env
+NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
+```
+
+And keep the id property empty in module configuration:
+
+```ts
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    // Keep the id property empty here
+    // ... other configuration options
+  }
+})
+```
+
 ### Multi-Tenancy Support
 
 You can even leave the Google tag ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `initialize`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
