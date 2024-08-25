@@ -15,7 +15,7 @@ export default defineNuxtPlugin({
 
     initGtag({ tags })
 
-    if (!options.enabled)
+    if (options.initMode === 'manual')
       return
 
     // Sanitize loading strategy to be either `async` or `defer`

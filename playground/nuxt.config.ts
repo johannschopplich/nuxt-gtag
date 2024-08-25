@@ -1,12 +1,14 @@
-import type { NuxtModule } from '@nuxt/schema'
 import { defineNuxtConfig } from 'nuxt/config'
 import NuxtGtag from '../src/module'
 
 export default defineNuxtConfig({
-  modules: [NuxtGtag as unknown as NuxtModule],
+  compatibilityDate: '2024-04-03',
+
+  // @ts-expect-error: Type mismatch
+  modules: [NuxtGtag],
 
   gtag: {
-    enabled: false,
+    initMode: 'manual',
     id: 'G-ZZZZZZZZZZ',
     initCommands: [
       // Setup up consent mode

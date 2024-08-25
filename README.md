@@ -159,14 +159,14 @@ consentGrantedAdStorage() // Or `allConsentGranted()`
 
 ### Manually Load `gtag.js` Script
 
-For even more control than the [consent mode](#google-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `enabled` option to `false` to prevent loading the `gtag.js` script until you manually enable it:
+For even more control than the [consent mode](#google-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `initMode` option to `manual` to prevent loading the `gtag.js` script until you initialize it manually.
 
 ```ts
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
-    enabled: false,
+    initMode: 'manual',
     id: 'G-XXXXXXXXXX'
   }
 })
@@ -204,7 +204,8 @@ function acceptTracking() {
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `enabled` | `boolean` | `true` | Whether to initialize the Google tag script immediately after the page has loaded. |
+| `enabled` | `boolean` | `true` | Whether to enable the Google tag module for the current environment. |
+| `initMode` | `string` | `auto` | Whether to initialize the Google tag script immediately after the page has loaded. |
 | `id` | `string` | `undefined` | The Google tag ID to initialize. |
 | `initCommands` | See `initCommands` of `GoogleTagOptions` | `[]` | Commands to be executed when the Google tag ID is initialized. |
 | `config` | See `config` of `GoogleTagOptions` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
@@ -389,6 +390,37 @@ function useTrackEvent(
 3. Install dependencies using `pnpm install`
 4. Run `pnpm run dev:prepare`
 5. Start development server using `pnpm run dev`
+
+## Migration
+
+### v2.x to v3.x
+
+In v2.x and earlier, the `enabled` option was used to control manual initialization of the Google tag script. This option has been replaced with `initMode` in v3.x. To migrate your configuration, set the `initMode` option to `manual`:
+
+```diff
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+-    enabled: false,
++    initMode: 'manual',
+    id: 'GX-XXXXXXXXXX'
+  }
+})
+```
+
+The `enabled` option is still available in v3.x, but is now used to disable the Google tag module for the current environment. This is useful if you want to disable the module in development or staging environments:
+
+```ts
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    enabled: process.env.NODE_ENV === 'production',
+    id: 'G-XXXXXXXXXX'
+  }
+})
+```
 
 ## Credits
 

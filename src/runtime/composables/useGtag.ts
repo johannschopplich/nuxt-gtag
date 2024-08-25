@@ -45,7 +45,7 @@ export function useGtag() {
   const initialize = (
     /**
      * In case you want to initialize a custom Google tag ID. Make sure to set
-     * `enabled` to `false` in the module options beforehand.
+     * `initMode` to `manual` in the module options beforehand.
      */
     id?: string,
   ) => {

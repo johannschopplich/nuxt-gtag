@@ -5,14 +5,21 @@ import type { GoogleTagOptions } from './runtime/types'
 
 export interface ModuleOptions {
   /**
-   * Whether to initialize the Google tag script immediately after the page has loaded.
-   *
-   * @remarks
-   * Set this to `false` to delay the initialization until you call the `enable` function manually.
+   * Whether to enable the Google tag module for the current environment.
    *
    * @default true
    */
   enabled?: boolean
+
+  /**
+   * Whether to initialize the Google tag script immediately after the page has loaded.
+   *
+   * @remarks
+   * Set this to `manual` to delay the initialization until you call the `initialize` function manually.
+   *
+   * @default 'auto'
+   */
+  initMode?: 'auto' | 'manual'
 
   /**
    * The Google tag ID to initialize.
@@ -96,6 +103,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     enabled: true,
+    initMode: 'auto',
     id: '',
     initCommands: [],
     config: {},
@@ -104,6 +112,9 @@ export default defineNuxtModule<ModuleOptions>({
     url: 'https://www.googletagmanager.com/gtag/js',
   },
   setup(options, nuxt) {
+    if (!options.enabled)
+      return
+
     const { resolve } = createResolver(import.meta.url)
 
     // Add module options to public runtime config
