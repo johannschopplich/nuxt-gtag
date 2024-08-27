@@ -112,10 +112,17 @@ export default defineNuxtModule<ModuleOptions>({
     url: 'https://www.googletagmanager.com/gtag/js',
   },
   setup(options, nuxt) {
-    if (!options.enabled)
-      return
-
     const { resolve } = createResolver(import.meta.url)
+
+    if (!options.enabled) {
+      addImports(['useGtag', 'useTrackEvent'].map(name => ({
+        from: resolve(`runtime/composables/${name}Mock`),
+        name: `${name}Mock`,
+        as: name,
+      })))
+
+      return
+    }
 
     // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(
@@ -126,13 +133,9 @@ export default defineNuxtModule<ModuleOptions>({
     // Transpile runtime
     nuxt.options.build.transpile.push(resolve('runtime'))
 
-    addImports([
-      'useGtag',
-      'useTrackEvent',
-    ].map(name => ({
-      name,
-      as: name,
+    addImports(['useGtag', 'useTrackEvent'].map(name => ({
       from: resolve(`runtime/composables/${name}`),
+      name,
     })))
 
     addPlugin({

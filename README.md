@@ -67,6 +67,24 @@ export default defineNuxtConfig({
 })
 ```
 
+### Conditional Enable/Disable of the Module
+
+You may want to disable the Google tag module in certain environments, such as development or staging. To do this, set the `enabled` option to `false`.
+
+> [!NOTE]
+> Composables like `useGtag` and `useTrackEvent` are still importable when the module is disabled. In this case, the functions are replaced with no-ops to avoid type and logic errors.
+
+```ts
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    enabled: process.env.NODE_ENV === 'production',
+    id: 'G-XXXXXXXXXX'
+  }
+})
+```
+
 ### Multiple Google Tags
 
 If you want to send data to multiple destinations, you can add more than one Google tag ID to your Nuxt configuration in the `tags` module option. Pass a string (single tag ID) or an object (tag ID with additional configuration) to the `tags` array.
