@@ -4,7 +4,6 @@ import NuxtGtag from '../src/module'
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
 
-  // @ts-expect-error: Type mismatch
   modules: [NuxtGtag],
 
   gtag: {
