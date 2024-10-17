@@ -48,7 +48,7 @@ export interface ModuleOptions {
    *
    * @default []
    */
-  initCommands: GoogleTagOptions['initCommands']
+  initCommands?: GoogleTagOptions['initCommands']
 
   /**
    * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config' command.
