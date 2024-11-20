@@ -2,9 +2,9 @@ import { defineNuxtConfig } from 'nuxt/config'
 import NuxtGtag from '../src/module'
 
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
-
   modules: [NuxtGtag],
+
+  compatibilityDate: '2024-04-03',
 
   gtag: {
     initMode: 'manual',

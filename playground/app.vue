@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useServerHead, useRuntimeConfig, ref, onMounted, useGtag } from '#imports'
+import { onMounted, ref, useGtag, useRuntimeConfig, useServerHead } from '#imports'
 
 useServerHead({
   title: 'Nuxt Gtag',

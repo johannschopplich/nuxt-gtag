@@ -1,9 +1,9 @@
-import { withQuery } from 'ufo'
-import { gtag, initGtag, resolveTags } from '../utils'
-import { disableAnalytics as _disableAnalytics, enableAnalytics as _enableAnalytics } from '../analytics'
 import type { ModuleOptions } from '../../module'
 import type { Gtag } from '../types'
 import { useHead, useRuntimeConfig } from '#imports'
+import { withQuery } from 'ufo'
+import { disableAnalytics as _disableAnalytics, enableAnalytics as _enableAnalytics } from '../analytics'
+import { gtag, initGtag, resolveTags } from '../utils'
 
 export function useGtag() {
   const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>

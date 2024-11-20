@@ -1,7 +1,7 @@
-import { defu } from 'defu'
-import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
-import { name, version } from '../package.json'
 import type { GoogleTagOptions } from './runtime/types'
+import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { defu } from 'defu'
+import { name, version } from '../package.json'
 
 export interface ModuleOptions {
   /**
