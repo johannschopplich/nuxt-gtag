@@ -1,6 +1,7 @@
+// Expose plugin types
+import type {} from 'nuxt/app'
 import type { ModuleOptions } from '../module'
-import { useHead, useRuntimeConfig } from '#imports'
-import { defineNuxtPlugin } from 'nuxt/app'
+import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
 import { withQuery } from 'ufo'
 import { initGtag, resolveTags } from './utils'
 
