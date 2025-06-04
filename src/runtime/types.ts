@@ -50,7 +50,6 @@ export interface GtagCommands {
   get: [
       targetId: string,
       fieldName: FieldNames | string,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       callback?: (field?: string | CustomParams) => any,
   ]
   consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
@@ -60,7 +59,6 @@ export interface Gtag {
   <Command extends keyof GtagCommands>(command: Command, ...args: GtagCommands[Command]): void
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type CustomParams = Record<string, any>
 
 export interface ConfigParams {
