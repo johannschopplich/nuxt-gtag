@@ -1,11 +1,3 @@
-import type { ModuleOptions } from '../module'
-
-declare module '@nuxt/schema' {
-  interface PublicRuntimeConfig {
-    gtag: ModuleOptions
-  }
-}
-
 export interface GoogleTagOptions {
   /**
    * The Google tag ID to initialize.
