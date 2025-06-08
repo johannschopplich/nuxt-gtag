@@ -8,13 +8,13 @@ useServerHead({
   ],
 })
 
-const { gtag: gtagOpts } = useRuntimeConfig().public
-const { gtag, initialize, enableAnalytics, disableAnalytics } = useGtag()
-const isInitialized = ref(gtagOpts.initMode === 'auto')
-const isAnalyticsActive = ref(true)
+const { gtag: gtagOpts } = useRuntimeConfig().public;
+const { gtag, initialize, enableAnalytics, disableAnalytics } = useGtag();
+const isInitialized = ref(gtagOpts.initMode === 'auto');
+const isAnalyticsActive = ref(true);
 
 onMounted(() => {
-  console.log('Use the "gtag" function to send custom events', gtag)
+  console.log('Use the "gtag" function to send custom events', gtag);
 })
 
 function init() {
