@@ -2,7 +2,7 @@
   "name": "nuxt-gtag",
   "type": "module",
   "version": "3.0.3",
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.15.0",
   "description": "Natively integrates Google Tag into Nuxt",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
   "license": "MIT",
@@ -39,29 +39,29 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "dev": "nuxt dev playground",
+    "dev:build": "nuxt build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare playground",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test:types": "tsc --noEmit",
     "release": "bumpp"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.17.5",
+    "@nuxt/kit": "^4.0.3",
     "defu": "^6.1.4",
     "pathe": "^2.0.3",
     "ufo": "^1.6.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.13.3",
-    "@nuxt/module-builder": "^1.0.1",
-    "@nuxt/schema": "^3.17.5",
-    "@types/node": "^22.15.29",
-    "bumpp": "^10.1.1",
-    "eslint": "^9.28.0",
-    "eslint-plugin-perfectionist": "^4.14.0",
-    "nuxt": "^3.17.5",
-    "typescript": "^5.8.3"
+    "@antfu/eslint-config": "^5.2.1",
+    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/schema": "^4.0.3",
+    "@types/node": "^24.3.0",
+    "bumpp": "^10.2.3",
+    "eslint": "^9.33.0",
+    "eslint-plugin-perfectionist": "^4.15.0",
+    "nuxt": "^4.0.3",
+    "typescript": "^5.9.2"
   }
 }
