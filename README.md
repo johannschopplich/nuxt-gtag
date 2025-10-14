@@ -18,7 +18,7 @@
 ## Setup
 
 ```bash
-npx nuxi@latest module add gtag
+npx nuxt module add gtag
 ```
 
 ## Basic Usage
