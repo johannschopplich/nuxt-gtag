@@ -22,7 +22,11 @@ export function useGtag() {
 
     if (!tag) {
       if (id) {
-        tag = { id }
+        tag = {
+          id,
+          initCommands: options.initCommands,
+          config: options.config,
+        }
         tags.unshift(tag)
       }
       else {

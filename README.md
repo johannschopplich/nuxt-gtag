@@ -218,6 +218,48 @@ function acceptTracking() {
 }
 ```
 
+### Multi-Tenancy with Consent Mode
+
+You can combine dynamic tag IDs with consent mode by setting `initCommands` in your config without a static `id`. This is useful when you need to set consent defaults before knowing which tenant's tag ID to load:
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['nuxt-gtag'],
+
+  gtag: {
+    initMode: 'manual',
+    // No static ID needed for multi-tenant apps
+    initCommands: [
+      ['consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500,
+      }]
+    ]
+  }
+})
+```
+
+Then initialize with tenant-specific IDs at runtime. The `initCommands` will be automatically applied:
+
+```ts
+const { gtag, initialize } = useGtag()
+
+// Consent defaults are applied when initializing with dynamic ID
+initialize('G-TENANT-123')
+
+// Later, after user grants consent
+gtag('consent', 'update', {
+  analytics_storage: 'granted',
+  ad_storage: 'granted',
+  ad_user_data: 'granted',
+  ad_personalization: 'granted'
+})
+```
+
 ## Module Options
 
 | Option | Type | Default | Description |
