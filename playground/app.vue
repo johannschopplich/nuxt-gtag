@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref, useGtag, useRuntimeConfig, useServerHead } from '#imports'
+import { onMounted, ref, useGtag, useHead, useRuntimeConfig } from '#imports'
 
-useServerHead({
-  title: 'Nuxt Gtag',
-  link: [
-    { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css' },
-  ],
-})
+if (import.meta.server) {
+  useHead({
+    title: 'Nuxt Gtag',
+    link: [
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css' },
+    ],
+  })
+}
 
 const { gtag: gtagOpts } = useRuntimeConfig().public
 const { gtag, initialize, enableAnalytics, disableAnalytics } = useGtag()
