@@ -1,7 +1,7 @@
 {
   "name": "nuxt-gtag",
   "type": "module",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "packageManager": "pnpm@10.18.3",
   "description": "Natively integrates Google Tag into Nuxt",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
