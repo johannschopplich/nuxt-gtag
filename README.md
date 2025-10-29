@@ -484,7 +484,7 @@ export default defineNuxtConfig({
 
 ## Credits
 
-- [Maronbeere](https://maronbeere.carrd.co) for his logo pixel art.
+- [Konkon](https://konkon.zip) for his logo pixel art.
 - [Junyoung Choi](https://github.com/rokt33r) and [Lucas Akira Uehara](https://github.com/KsAkira10) for their Google [`gtag.js` API type definitions](https://www.npmjs.com/package/@types/gtag.js)
 
 ## License
