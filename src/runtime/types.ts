@@ -27,7 +27,7 @@ export interface GoogleTagOptions {
     [K in keyof GtagCommands]: [K, ...GtagCommands[K]]
   }[keyof GtagCommands][]
   /**
-   * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config' command.
+   * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config` command.
    *
    * @default undefined
    */
@@ -134,7 +134,6 @@ type Currency = string | number
 /**
  * Interface of an item object used in lists for this event.
  *
- * Reference:
  * @see {@link https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_item_item view_item_item}
  * @see {@link https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_item_list_item view_item_list_item}
  * @see {@link https://developers.google.com/analytics/devguides/collection/ga4/reference/events#select_item_item select_item_item}
@@ -179,7 +178,6 @@ type FieldNames = 'client_id' | 'session_id' | 'gclid'
 type ConsentArg = 'default' | 'update'
 
 /**
- * Reference:
  * @see {@link https://support.google.com/tagmanager/answer/10718549#consent-types consent-types}
  * @see {@link https://developers.google.com/tag-platform/security/guides/consent consent}
  */

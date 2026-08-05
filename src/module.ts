@@ -51,7 +51,7 @@ export interface ModuleOptions {
   initCommands?: GoogleTagOptions['initCommands']
 
   /**
-   * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config' command.
+   * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config` command.
    *
    * @remarks
    * Only applies when `id` is set. For multiple tags, use the `tags` option instead.
@@ -124,13 +124,11 @@ export default defineNuxtModule<ModuleOptions>({
       return
     }
 
-    // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.gtag = defu(
       nuxt.options.runtimeConfig.public.gtag,
       options,
     )
 
-    // Transpile runtime
     nuxt.options.build.transpile.push(resolve('runtime'))
 
     addImports(['useGtag', 'useTrackEvent'].map(name => ({

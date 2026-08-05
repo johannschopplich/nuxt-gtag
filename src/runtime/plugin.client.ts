@@ -1,4 +1,4 @@
-// Expose plugin types
+// Expose plugin types.
 import type {} from 'nuxt/app'
 import type { ModuleOptions } from '../module'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
@@ -19,7 +19,7 @@ export default defineNuxtPlugin({
     if (options.initMode === 'manual')
       return
 
-    // Sanitize loading strategy to be either `async` or `defer`
+    // Sanitize loading strategy to be either `async` or `defer`.
     const strategy = options.loadingStrategy === 'async' ? 'async' : 'defer'
 
     useHead({

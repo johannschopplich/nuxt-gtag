@@ -41,7 +41,7 @@ export function useGtag() {
   }
 
   /**
-   * Manually initialize the Google tag library.
+   * Manually initializes the Google tag library.
    *
    * @remarks
    * If no custom Google tag ID is provided, the default Google tag ID from the module options will be used.
@@ -76,7 +76,7 @@ export function useGtag() {
   }
 
   /**
-   * Disable Google Analytics measurement.
+   * Disables Google Analytics measurement.
    *
    * @remarks
    * The `gtag.js` library includes a `window['ga-disable-GA_MEASUREMENT_ID']`
@@ -93,7 +93,7 @@ export function useGtag() {
   }
 
   /**
-   * Enable Google Analytics measurement if it was previously disabled.
+   * Enables Google Analytics measurement if it was previously disabled.
    *
    * @remarks
    * The `gtag.js` library includes a `window['ga-disable-GA_MEASUREMENT_ID']`

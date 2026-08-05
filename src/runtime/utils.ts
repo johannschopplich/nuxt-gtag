@@ -7,9 +7,6 @@ export function gtag(..._args: any[]) {
   window.dataLayer?.push(arguments)
 }
 
-/**
- * Initialize the Google tag.
- */
 export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
 
@@ -20,7 +17,7 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
 
   gtag('js', new Date())
   for (const tag of tags) {
-    // Always provide a default value for the `config` object
+    // Always provide a default value for the `config` object.
     gtag('config', tag.id, tag.config ?? {})
   }
 }
@@ -28,7 +25,6 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
 export function resolveTags(options: Required<ModuleOptions>) {
   const _options = toRaw(options)
 
-  // Normalize tags
   const tags: GoogleTagOptions[] = _options.tags.filter(Boolean)
     .map(i => typeof i === 'string' ? { id: i } : i)
 
