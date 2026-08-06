@@ -269,10 +269,10 @@ gtag('consent', 'update', {
 | --- | --- | --- | --- |
 | `enabled` | `boolean` | `true` | Whether to enable the Google tag module for the current environment. |
 | `initMode` | `string` | `auto` | Whether to initialize the Google tag script immediately after the page has loaded. |
-| `id` | `string` | `undefined` | The Google tag ID to initialize. |
+| `id` | `string` | `''` | The Google tag ID to initialize. |
 | `initCommands` | See `initCommands` of `GoogleTagOptions` | `[]` | Commands to be executed when the Google tag ID is initialized. |
 | `config` | See `config` of `GoogleTagOptions` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
-| `tags` | `string[] \| GoogleTagOptions[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
+| `tags` | `(string \| GoogleTagOptions)[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
 | `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
 | `url` | `string` | [Source](https://www.googletagmanager.com/gtag/js) | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
 
@@ -352,7 +352,7 @@ const gtag: {
 
 #### `initialize`
 
-If you want to manually manage the initialization of the Google tag script, i.e. for GDPR compliance, you can use the `initialize` method to inject the `gtag.js` script to the document's head after the user has accepted your privacy policy. Make sure to set `enabled` to `false` in the Nuxt module for this to work.
+If you want to manually manage the initialization of the Google tag script, i.e. for GDPR compliance, you can use the `initialize` method to inject the `gtag.js` script to the document's head after the user has accepted your privacy policy. Make sure to set [`initMode` to `manual`](#manually-load-gtagjs-script) in the module options for this to work.
 
 The function accepts an optional ID in case you want to initialize a custom Google tag ID, which isn't set in the module options.
 
@@ -382,7 +382,7 @@ function initialize(id?: string): void
 
 In some cases, it may be necessary to disable Google Analytics without removing the Google tag. For example, you might want to provide users with the option to opt out of tracking.
 
-The `gtag.js` library includes a `window` property that, toggles `gtag.js` from sending data to Google Analytics. When Google Analytics attempts to set a cookie or send data back to the Google Analytics servers, this property is checked to determine whether to allow the action.
+The `gtag.js` library includes a `window['ga-disable-GA_MEASUREMENT_ID']` property that, when set to `true`, disables `gtag.js` from sending data to Google Analytics. When Google Analytics attempts to set a cookie or send data back to the Google Analytics servers, this property is checked to determine whether to allow the action.
 
 **Example**
 
