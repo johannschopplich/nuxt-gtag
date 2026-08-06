@@ -14,9 +14,6 @@ importers:
       defu:
         specifier: ^6.1.7
         version: 6.1.7
-      pathe:
-        specifier: ^2.0.3
-        version: 2.0.3
       ufo:
         specifier: ^1.6.4
         version: 1.6.4
