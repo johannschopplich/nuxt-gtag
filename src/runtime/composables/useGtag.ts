@@ -62,6 +62,10 @@ export function useGtag() {
       // (because no ID was provided in the module options).
       if (!window.dataLayer)
         initGtag({ tags })
+      // The plugin booted `dataLayer` from the module options, which cannot have
+      // covered a tag ID handed in at runtime.
+      else if (!rawTags.some(rawTag => rawTag.id === tag.id))
+        initGtag({ tags: [tag] })
 
       // Inject the Google tag script if it wasn't injected by the client plugin.
       if (!document.head.querySelector('script[data-gtag]')) {
