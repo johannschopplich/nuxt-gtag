@@ -26,12 +26,21 @@ export function resolveTags(options: Required<ModuleOptions>) {
   const _options = toRaw(options)
 
   const tags: GoogleTagOptions[] = _options.tags.filter(Boolean)
-    .map(i => typeof i === 'string' ? { id: i } : i)
+    .map(tag => typeof tag === 'string' ? { id: tag } : tag)
 
   if (_options.id) {
     const { id, config, initCommands } = _options
     tags.unshift({ id, config, initCommands })
   }
 
-  return tags
+  // A tag ID named by both `id` and `tags` would otherwise be configured twice.
+  // `id` comes first and wins, since it carries the top-level `initCommands`
+  // and `config`.
+  const tagsById = new Map<string, GoogleTagOptions>()
+  for (const tag of tags) {
+    if (!tagsById.has(tag.id))
+      tagsById.set(tag.id, tag)
+  }
+
+  return [...tagsById.values()]
 }

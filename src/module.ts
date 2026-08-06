@@ -34,7 +34,7 @@ export interface ModuleOptions {
    * @remarks
    * Useful to set the default consent state. Applies to the tag from `id`, and to
    * any tag ID passed to `useGtag().initialize()` that `tags` does not already
-   * cover — entries in `tags` carry their own.
+   * cover – entries in `tags` carry their own.
    *
    * @example
    * ```ts
@@ -57,7 +57,7 @@ export interface ModuleOptions {
    *
    * @remarks
    * Applies to the tag from `id`, and to any tag ID passed to
-   * `useGtag().initialize()` that `tags` does not already cover — entries in
+   * `useGtag().initialize()` that `tags` does not already cover – entries in
    * `tags` carry their own.
    *
    * @default {}
