@@ -47,7 +47,7 @@ describe('resolveTags', () => {
     expect(resolved.map(tag => tag.id)).toEqual(['G-FIRST', 'G-SECOND'])
   })
 
-  it('configures a tag ID named by both id and tags once, from id', () => {
+  it('keeps one entry for a tag ID named by both id and tags', () => {
     const resolved = resolveTags(moduleOptions({
       id: 'G-SAME',
       config: { send_page_view: false },

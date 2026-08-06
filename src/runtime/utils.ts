@@ -7,6 +7,15 @@ export function gtag(..._args: any[]) {
   window.dataLayer?.push(arguments)
 }
 
+/**
+ * Tag IDs already handed to the `config` command.
+ *
+ * @remarks
+ * `window.dataLayer` cannot stand in for this: a third-party snippet such as Google Tag Manager
+ * may have created it before Nuxt hydrates, which says nothing about what this module configured.
+ */
+export const configuredTagIds = new Set<string>()
+
 export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
 
@@ -17,8 +26,8 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
 
   gtag('js', new Date())
   for (const tag of tags) {
-    // Always provide a default value for the `config` object.
     gtag('config', tag.id, tag.config ?? {})
+    configuredTagIds.add(tag.id)
   }
 }
 

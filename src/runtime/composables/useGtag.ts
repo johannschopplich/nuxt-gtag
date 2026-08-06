@@ -3,10 +3,7 @@ import type { Gtag } from '../types'
 import { withQuery } from 'ufo'
 import { useHead, useRuntimeConfig } from '#imports'
 import { disableAnalytics as _disableAnalytics, enableAnalytics as _enableAnalytics } from '../analytics'
-import { gtag, initGtag, resolveTags } from '../utils'
-
-/** Tag IDs already handed to the `config` command, so `initialize` never repeats one. */
-const configuredTagIds = new Set<string>()
+import { configuredTagIds, gtag, initGtag, resolveTags } from '../utils'
 
 export function useGtag() {
   const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
@@ -61,19 +58,9 @@ export function useGtag() {
       if (!tag)
         return
 
-      // The client plugin boots `dataLayer` only once the module options name a
-      // tag ID, so its absence means nothing has been configured yet – and its
-      // presence covers exactly the IDs those options named.
-      const pendingTags = window.dataLayer
-        ? tags.filter(candidate => !rawTags.some(rawTag => rawTag.id === candidate.id)
-          && !configuredTagIds.has(candidate.id))
-        : tags
-
+      const pendingTags = tags.filter(candidate => !configuredTagIds.has(candidate.id))
       if (pendingTags.length > 0)
         initGtag({ tags: pendingTags })
-
-      for (const pendingTag of pendingTags)
-        configuredTagIds.add(pendingTag.id)
 
       // Inject the Google tag script if it wasn't injected by the client plugin.
       if (!document.head.querySelector('script[data-gtag]')) {
