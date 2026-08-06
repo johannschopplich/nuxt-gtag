@@ -1,7 +1,7 @@
 import type { ModuleOptions } from '../../module'
 import type { Gtag } from '../types'
-import { useHead, useRuntimeConfig } from '#imports'
 import { withQuery } from 'ufo'
+import { useHead, useRuntimeConfig } from '#imports'
 import { disableAnalytics as _disableAnalytics, enableAnalytics as _enableAnalytics } from '../analytics'
 import { gtag, initGtag, resolveTags } from '../utils'
 
