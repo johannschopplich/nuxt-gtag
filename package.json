@@ -44,6 +44,7 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxt prepare playground",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "vitest",
     "test:types": "tsc --noEmit",
     "release": "bumpp"
   },
@@ -60,6 +61,8 @@
     "bumpp": "^12.2.0",
     "eslint": "^10.8.0",
     "nuxt": "^4.5.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10",
+    "vue": "^3.5.41"
   }
 }

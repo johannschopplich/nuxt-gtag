@@ -1,6 +1,6 @@
 import type { ModuleOptions } from '../module'
 import type { GoogleTagOptions } from './types'
-import { toRaw } from '#imports'
+import { toRaw } from 'vue'
 
 export function gtag(..._args: any[]) {
   // eslint-disable-next-line prefer-rest-params
