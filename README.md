@@ -4,6 +4,8 @@
 
 [Google Tag](https://developers.google.com/tag-platform/gtagjs?hl=en) integration for [Nuxt](https://nuxt.com) with support for [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en), Google Ads and more.
 
+- [✨ &nbsp;Release Notes](https://github.com/johannschopplich/nuxt-gtag/releases)
+
 ## Features
 
 - 🌻 Zero dependencies except Google's `gtag.js`
@@ -26,6 +28,7 @@ npx nuxt module add gtag
 Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google tag ID (for multiple tag IDs, see below).
 
 ```ts
+// `nuxt.config.ts`
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
@@ -42,10 +45,10 @@ Done! The `gtag.js` script will be loaded and initialized client-side with your 
 >
 > To enable this feature:
 >
-> 1. Go to the GA4 reporting view and click on “Admin”
+> 1. Go to the GA4 reporting view and click on “Admin”.
 > 2. Select “Data Streams” under the “Property” column.
 > 3. Click on your web data stream.
-> 4. Next, expand the switch button “Enhanced measurement”.
+> 4. Expand the “Enhanced measurement” switch button.
 > 5. Ensure the “Page changes based on browser history events” switch button is enabled.
 
 ## Configuration
