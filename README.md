@@ -278,7 +278,7 @@ gtag('consent', 'update', {
 
 ## Composables
 
-As with other composables in the Nuxt 3 ecosystem, they are auto-imported and can be used in your application's components.
+As with other composables in the Nuxt ecosystem, they are auto-imported and can be used in your application's components.
 
 ### `useGtag`
 
