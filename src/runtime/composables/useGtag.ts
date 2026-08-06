@@ -61,10 +61,9 @@ export function useGtag() {
       if (!tag)
         return
 
-      // The client plugin only boots `dataLayer` once it has a tag ID from the
-      // module options, so its absence means nothing has been configured yet.
-      // Once it is there, the tags it covers are the ones the options named –
-      // a tag ID handed in at runtime still needs its `config` command.
+      // The client plugin boots `dataLayer` only once the module options name a
+      // tag ID, so its absence means nothing has been configured yet – and its
+      // presence covers exactly the IDs those options named.
       const pendingTags = window.dataLayer
         ? tags.filter(candidate => !rawTags.some(rawTag => rawTag.id === candidate.id)
           && !configuredTagIds.has(candidate.id))
