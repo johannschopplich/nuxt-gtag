@@ -24,7 +24,7 @@ export interface ModuleOptions {
   /**
    * The Google tag ID to initialize.
    *
-   * @default undefined
+   * @default ''
    */
   id?: string
 
@@ -32,11 +32,13 @@ export interface ModuleOptions {
    * Additional commands to be executed before the Google tag ID is initialized.
    *
    * @remarks
-   * Useful to set the default consent state. Only applies when `id` is set. For multiple tags, use the `tags` option instead.
+   * Useful to set the default consent state. Applies to the tag from `id`, and to
+   * any tag ID passed to `useGtag().initialize()` that `tags` does not already
+   * cover — entries in `tags` carry their own.
    *
    * @example
    * ```ts
-   * commands: [
+   * initCommands: [
    *   ['consent', 'default', {
    *     ad_storage: 'denied',
    *     ad_user_data: 'denied',
@@ -54,7 +56,9 @@ export interface ModuleOptions {
    * Additional configuration for the Google tag ID, to be set during initialization of the tag ID with the `config` command.
    *
    * @remarks
-   * Only applies when `id` is set. For multiple tags, use the `tags` option instead.
+   * Applies to the tag from `id`, and to any tag ID passed to
+   * `useGtag().initialize()` that `tags` does not already cover — entries in
+   * `tags` carry their own.
    *
    * @default {}
    */
@@ -68,7 +72,7 @@ export interface ModuleOptions {
    *
    * @default []
    */
-  tags?: string[] | GoogleTagOptions[]
+  tags?: (string | GoogleTagOptions)[]
 
   /**
    * Whether to load the Google tag ID script asynchronously or defer its loading.

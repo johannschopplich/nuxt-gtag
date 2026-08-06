@@ -11,7 +11,7 @@ export interface GoogleTagOptions {
    *
    * @example
    * ```ts
-   * commands: [
+   * initCommands: [
    *   ['consent', 'default', {
    *     ad_storage: 'denied',
    *     ad_user_data: 'denied',
