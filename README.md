@@ -19,6 +19,8 @@
 
 ## Setup
 
+Requires Nuxt 4.
+
 ```bash
 npx nuxt module add gtag
 ```
