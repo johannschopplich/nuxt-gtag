@@ -10,7 +10,6 @@ export function useGtag() {
   const rawTags = resolveTags(options)
 
   let _gtag: Gtag
-  // Return a noop function if this composable is called on the server.
   if (import.meta.server)
     _gtag = () => {}
   else if (import.meta.client)
