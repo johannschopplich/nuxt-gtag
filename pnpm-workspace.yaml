@@ -3,15 +3,6 @@ allowBuilds:
   esbuild: true
   unrs-resolver: true
 
-minimumReleaseAgeExclude:
-  - '@antfu/eslint-config@9.3.0'
-  - '@nuxt/kit@4.5.2'
-  - '@nuxt/nitro-server@4.5.2'
-  - '@nuxt/schema@4.5.2'
-  - '@nuxt/vite-builder@4.5.2'
-  - bumpp@12.2.0
-  - nuxt@4.5.2
-
 shellEmulator: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
