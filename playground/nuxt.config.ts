@@ -4,7 +4,7 @@ import NuxtGtag from '../src/module'
 export default defineNuxtConfig({
   modules: [NuxtGtag],
 
-  compatibilityDate: '2025-10-01',
+  compatibilityDate: '2026-01-01',
 
   gtag: {
     initMode: 'manual',
