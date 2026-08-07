@@ -270,13 +270,13 @@ gtag('consent', 'update', {
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `enabled` | `boolean` | `true` | Whether to enable the Google tag module for the current environment. |
-| `initMode` | `string` | `auto` | Whether to initialize the Google tag script immediately after the page has loaded. |
+| `initMode` | `'auto' \| 'manual'` | `'auto'` | Whether to initialize the Google tag script immediately after the page has loaded. Set it to `'manual'` to initialize with [`initialize`](#initialize) instead. |
 | `id` | `string` | `''` | The Google tag ID to initialize. |
-| `initCommands` | See `initCommands` of `GoogleTagOptions` | `[]` | Commands to be executed when the Google tag ID is initialized. |
-| `config` | See `config` of `GoogleTagOptions` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) to be passed to `gtag.js` on initialization. |
-| `tags` | `(string \| GoogleTagOptions)[]` | `[]` | Multiple Google tag IDs to initialize for sending data to different destinations. |
-| `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | The loading strategy to be used for the `gtag.js` script. |
-| `url` | `string` | [Source](https://www.googletagmanager.com/gtag/js) | The URL to the `gtag.js` script. Use this option to load the script from a custom URL. |
+| `initCommands` | `[command, ...args][]` | `[]` | Commands to run before the tag ID is configured, such as the [default consent state](#google-consent-mode). |
+| `config` | `ControlParams \| EventParams \| ConfigParams \| CustomParams` | `{}` | The [configuration parameters](https://developers.google.com/analytics/devguides/collection/ga4/reference/config) passed to the `config` command. |
+| `tags` | `(string \| GoogleTagOptions)[]` | `[]` | Further tag IDs to initialize, for sending data to more than one destination. |
+| `loadingStrategy` | `'async' \| 'defer'` | `'defer'` | Whether the `gtag.js` script is loaded with `async` or with `defer`. |
+| `url` | `string` | `'https://www.googletagmanager.com/gtag/js'` | The URL to load the `gtag.js` script from. |
 
 ## Composables
 
@@ -357,6 +357,8 @@ const gtag: {
 If you want to manually manage the initialization of the Google tag script, i.e. for GDPR compliance, you can use the `initialize` method to inject the `gtag.js` script to the document's head after the user has accepted your privacy policy. Make sure to set [`initMode` to `manual`](#manually-load-gtagjs-script) in the module options for this to work.
 
 The function accepts an optional ID in case you want to initialize a custom Google tag ID, which isn't set in the module options.
+
+A tag ID is configured once. Calling `initialize` again passes only the IDs it hasn't configured yet to the `config` command, so a consent flow may call it as often as it needs to.
 
 **Example**
 
