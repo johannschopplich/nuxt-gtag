@@ -8,7 +8,7 @@
 
 ## Features
 
-- 🌻 Zero dependencies except Google's `gtag.js`
+- 🌻 Loads no tracking library of its own, only Google's `gtag.js`
 - 🛍️ Use Google Analytics 4, Google Ads and other products
 - 🛎️ Supports [Google Consent Mode v2](#google-consent-mode)
 - 🤝 Manually [initialize](#manually-load-gtagjs-script) a Google tag
@@ -354,7 +354,7 @@ const gtag: {
 
 If you want to manually manage the initialization of the Google tag script, i.e. for GDPR compliance, you can use the `initialize` method to inject the `gtag.js` script to the document's head after the user has accepted your privacy policy. Make sure to set [`initMode` to `manual`](#manually-load-gtagjs-script) in the module options for this to work.
 
-The function accepts an optional ID in case you want to initialize a custom Google tag ID, which isn't set in the module options.
+The function accepts an optional ID for a Google tag that the module options do not carry. The ID joins the ones from your configuration rather than replacing them, so the call configures that tag *and* every tag still waiting.
 
 A tag ID is configured once. Calling `initialize` again passes only the IDs it hasn't configured yet to the `config` command, so a consent flow may call it as often as it needs to.
 
@@ -386,6 +386,8 @@ In some cases, it may be necessary to disable Google Analytics without removing 
 
 The `gtag.js` library includes a `window['ga-disable-GA_MEASUREMENT_ID']` property that, when set to `true`, disables `gtag.js` from sending data to Google Analytics. When Google Analytics attempts to set a cookie or send data back to the Google Analytics servers, this property is checked to determine whether to allow the action.
 
+The optional ID names the tag to switch off. It covers one tag, so a setup with [multiple tag IDs](#multiple-google-tags) needs one call per tag – without an argument, only the first configured tag is affected.
+
 **Example**
 
 ```ts
@@ -402,7 +404,7 @@ function disableAnalytics(id?: string): void
 
 #### `enableAnalytics`
 
-The `enableAnalytics` method is the counterpart to `disableAnalytics` and can be used to re-enable Google Analytics after it has been disabled.
+The `enableAnalytics` method is the counterpart to `disableAnalytics` and can be used to re-enable Google Analytics after it has been disabled. Its `id` parameter selects the tag the same way.
 
 **Example**
 
@@ -457,6 +459,14 @@ function useTrackEvent(
 5. Start development server using `pnpm run dev`
 
 ## Migration
+
+### v4.x to v5.x
+
+**Nuxt 4 is required.** The module no longer supports Nuxt 3. Nothing else in your configuration changes on that account.
+
+**A tag ID named twice is configured once.** If the same ID appeared in both the `id` option and the `tags` array, both entries used to reach the `config` command, and the second overwrote the first. Only one survives now, and it is the `id` entry, which carries the top-level `initCommands` and `config`. Move any settings you kept in the duplicate `tags` entry up to the top level, or drop the `id` option and keep the entry in `tags`.
+
+**An existing `dataLayer` no longer stops initialization.** `initialize()` used to do nothing at all when `window.dataLayer` was already present, which a third-party snippet such as Google Tag Manager creates before Nuxt hydrates. The module tracks the IDs it configured itself instead, so it now configures its tags alongside such a snippet rather than silently standing down. If you relied on the old behavior to let GTM own the page, stop calling `initialize()` – or set `enabled` to `false`.
 
 ### v2.x to v3.x
 
