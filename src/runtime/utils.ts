@@ -1,6 +1,5 @@
 import type { ModuleOptions } from '../module'
 import type { GoogleTagOptions } from './types'
-import { toRaw } from 'vue'
 
 export function gtag(..._args: any[]) {
   // eslint-disable-next-line prefer-rest-params
@@ -32,13 +31,11 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
 }
 
 export function resolveTags(options: Required<ModuleOptions>) {
-  const _options = toRaw(options)
-
-  const tags: GoogleTagOptions[] = _options.tags.filter(Boolean)
+  const tags: GoogleTagOptions[] = options.tags.filter(Boolean)
     .map(tag => typeof tag === 'string' ? { id: tag } : tag)
 
-  if (_options.id) {
-    const { id, config, initCommands } = _options
+  if (options.id) {
+    const { id, config, initCommands } = options
     tags.unshift({ id, config, initCommands })
   }
 
