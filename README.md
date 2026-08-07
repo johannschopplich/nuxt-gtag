@@ -458,45 +458,6 @@ function useTrackEvent(
 4. Run `pnpm run dev:prepare`
 5. Start development server using `pnpm run dev`
 
-## Migration
-
-### v4.x to v5.x
-
-**Nuxt 4 is required.** The module no longer supports Nuxt 3. Nothing else in your configuration changes on that account.
-
-**A tag ID named twice is configured once.** If the same ID appeared in both the `id` option and the `tags` array, both entries used to reach the `config` command, and the second overwrote the first. Only one survives now, and it is the `id` entry, which carries the top-level `initCommands` and `config`. Move any settings you kept in the duplicate `tags` entry up to the top level, or drop the `id` option and keep the entry in `tags`.
-
-**An existing `dataLayer` no longer stops initialization.** `initialize()` used to do nothing at all when `window.dataLayer` was already present, which a third-party snippet such as Google Tag Manager creates before Nuxt hydrates. The module tracks the IDs it configured itself instead, so it now configures its tags alongside such a snippet rather than silently standing down. If you relied on the old behavior to let GTM own the page, stop calling `initialize()` – or set `enabled` to `false`.
-
-### v2.x to v3.x
-
-In v2.x and earlier, the `enabled` option was used to control manual initialization of the Google tag script. This option has been replaced with `initMode` in v3.x. To migrate your configuration, set the `initMode` option to `manual`:
-
-```diff
-export default defineNuxtConfig({
-  modules: ['nuxt-gtag'],
-
-  gtag: {
--    enabled: false,
-+    initMode: 'manual',
-    id: 'GX-XXXXXXXXXX'
-  }
-})
-```
-
-The `enabled` option is still available in v3.x, but is now used to disable the Google tag module for the current environment. This is useful if you want to disable the module in development or staging environments:
-
-```ts
-export default defineNuxtConfig({
-  modules: ['nuxt-gtag'],
-
-  gtag: {
-    enabled: process.env.NODE_ENV === 'production',
-    id: 'G-XXXXXXXXXX'
-  }
-})
-```
-
 ## Credits
 
 - [Konkon](https://konkon.zip) for his logo pixel art.
