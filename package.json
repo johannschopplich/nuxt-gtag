@@ -3,7 +3,7 @@
   "type": "module",
   "version": "5.0.0",
   "packageManager": "pnpm@11.20.0",
-  "description": "Natively integrates Google Tag into Nuxt",
+  "description": "Google Analytics, Google Ads and Consent Mode v2 for Nuxt",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
   "license": "MIT",
   "homepage": "https://github.com/johannschopplich/nuxt-gtag#readme",
