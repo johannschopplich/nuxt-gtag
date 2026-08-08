@@ -48,3 +48,16 @@ jobs:
       - run: pnpm install
       - run: pnpm run dev:prepare
       - run: pnpm run test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run dev:prepare
+      - run: pnpm run dev:build
