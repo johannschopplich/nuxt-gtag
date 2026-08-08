@@ -1,4 +1,4 @@
-![Nuxt Google Tag module](./.github/social-card.jpg)
+![Nuxt Google Tag module](./.github/og.jpg)
 
 # Nuxt Google Tag
 
