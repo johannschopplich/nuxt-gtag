@@ -128,8 +128,6 @@ With this setup, you can omit the `gtag` key in your Nuxt configuration if you o
 > [!TIP]
 > Follows the [Google Consent Mode v2](https://developers.google.com/tag-platform/security/guides/consent) specification.
 
-Set a default value for each consent type you are using. By default, no consent mode values are set.
-
 Set a default value for each consent type you use. Without `initCommands`, no consent mode values are set:
 
 ```ts
