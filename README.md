@@ -141,7 +141,7 @@ export default defineNuxtConfig({
   gtag: {
     id: 'G-XXXXXXXXXX',
     initCommands: [
-      // Setup up consent mode
+      // Set up consent mode
       ['consent', 'default', {
         ad_user_data: 'denied',
         ad_personalization: 'denied',
