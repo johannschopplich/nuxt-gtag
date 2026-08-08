@@ -63,7 +63,7 @@ export default defineNuxtConfig({
     id: 'G-XXXXXXXXXX',
     config: {
       page_title: 'My Custom Page Title'
-    },
+    }
   }
 })
 ```
@@ -90,7 +90,7 @@ export default defineNuxtConfig({
 
 If you want to send data to multiple destinations, you can add more than one Google tag ID to your Nuxt configuration in the `tags` module option. Pass a string (single tag ID) or an object (tag ID with additional configuration) to the `tags` array.
 
-The following example shows how to load a second Google tag that is connected to a Floodlight destination:
+Here, the second tag sends to a Floodlight destination:
 
 ```ts
 export default defineNuxtConfig({
@@ -114,7 +114,7 @@ export default defineNuxtConfig({
 
 ### Runtime Config
 
-Instead of hard-coding your Google tag ID in your Nuxt configuration, you can set your desired option in your project's `.env` file, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/nuxt-config#runtimeconfig) by matching environment variables at runtime.
+Instead of hard-coding your Google tag ID in your Nuxt configuration, set it in your project's `.env` file – Nuxt overwrites [public runtime config values](https://nuxt.com/docs/api/nuxt-config#runtimeconfig) with matching environment variables at runtime.
 
 ```ini
 # Overwrites the `gtag.id` module option
@@ -130,7 +130,7 @@ With this setup, you can omit the `gtag` key in your Nuxt configuration if you o
 
 Set a default value for each consent type you are using. By default, no consent mode values are set.
 
-The following example sets multiple consent mode parameters to denied by default:
+Set a default value for each consent type you use. Without `initCommands`, no consent mode values are set:
 
 ```ts
 export default defineNuxtConfig({
@@ -191,7 +191,7 @@ export default defineNuxtConfig({
 })
 ```
 
-To manually load the Google tag script, i.e. after the user has accepted your privacy policy, you can use the [`initialize` method destructurable from `useGtag`](#usegtag):
+To manually load the Google tag script, e.g. after the user has accepted your privacy policy, use the [`initialize` method destructurable from `useGtag`](#usegtag):
 
 ```vue
 <script setup lang="ts">
@@ -339,7 +339,7 @@ function initialize(id?: string): void
 
 In some cases, it may be necessary to disable Google Analytics without removing the Google tag. For example, you might want to provide users with the option to opt out of tracking.
 
-The `gtag.js` library includes a `window['ga-disable-GA_MEASUREMENT_ID']` property that, when set to `true`, disables `gtag.js` from sending data to Google Analytics. When Google Analytics attempts to set a cookie or send data back to the Google Analytics servers, this property is checked to determine whether to allow the action.
+The `gtag.js` library includes a `window['ga-disable-GA_MEASUREMENT_ID']` property that, when set to `true`, disables `gtag.js` from sending data to Google Analytics.
 
 The optional ID names the tag to switch off. It covers one tag, so a setup with [multiple tag IDs](#multiple-google-tags) needs one call per tag – without an argument, only the first configured tag is affected.
 
@@ -377,7 +377,7 @@ function enableAnalytics(id?: string): void
 
 ### `useTrackEvent`
 
-Track your defined goals by passing the following parameters:
+Fires an event, optionally with a set of event parameters.
 
 - The name of the recommended or custom event.
 - A collection of parameters that provide additional information about the event (optional).
