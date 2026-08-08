@@ -2,7 +2,7 @@
 
 # Nuxt Google Tag
 
-[Google Tag](https://developers.google.com/tag-platform/gtagjs?hl=en) integration for [Nuxt](https://nuxt.com) with support for [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4?hl=en), Google Ads and more.
+[Google Analytics](https://developers.google.com/analytics/devguides/collection/ga4?hl=en), Google Ads and [Consent Mode v2](https://developers.google.com/tag-platform/security/guides/consent) for [Nuxt](https://nuxt.com), through Google's own [`gtag.js`](https://developers.google.com/tag-platform/gtagjs?hl=en).
 
 - [✨ &nbsp;Release Notes](https://github.com/johannschopplich/nuxt-gtag/releases)
 
@@ -45,15 +45,15 @@ Done! The `gtag.js` script will be loaded and initialized client-side with your 
 >
 > To enable this feature:
 >
-> 1. Go to the GA4 reporting view and click on “Admin”.
-> 2. Select “Data Streams” under the “Property” column.
+> 1. Go to the GA4 reporting view and click on "Admin".
+> 2. Select "Data Streams" under the "Property" column.
 > 3. Click on your web data stream.
-> 4. Expand the “Enhanced measurement” switch button.
-> 5. Ensure the “Page changes based on browser history events” switch button is enabled.
+> 4. Expand the "Enhanced measurement" switch button.
+> 5. Ensure the "Page changes based on browser history events" switch button is enabled.
 
 ## Configuration
 
-All [supported module options](#module-options) can be configured using the `gtag` key in your Nuxt configuration. An example of some of the options you can set:
+All [supported module options](#module-options) can be configured using the `gtag` key in your Nuxt configuration:
 
 ```ts
 export default defineNuxtConfig({
@@ -207,59 +207,35 @@ const { gtag, initialize } = useGtag()
 </template>
 ```
 
-### Multi-Tenancy Support
+### Multi-Tenancy
 
-You can even leave the Google tag ID in your Nuxt config blank and set it dynamically later in your application by passing your ID as the first argument to `initialize`. This is especially useful if you want to use a custom ID for each user or if your app manages multiple tenants.
+Leave the Google tag ID in your Nuxt configuration blank and pass it to `initialize` as the first argument instead. Reach for this when each user or tenant brings their own ID.
 
 ```ts
-const { gtag, initialize } = useGtag()
+const { initialize } = useGtag()
 
 function acceptTracking() {
-  initialize('G-XXXXXXXXXX')
+  initialize('G-TENANT-123')
   // Optionally, track the current page view
   // useTrackEvent('page_view')
 }
 ```
 
-### Multi-Tenancy with Consent Mode
-
-You can combine dynamic tag IDs with consent mode by setting `initCommands` in your config without a static `id`. This is useful when you need to set consent defaults before knowing which tenant's tag ID to load:
+[Consent defaults](#google-consent-mode) do not need a static `id` either. Set `initCommands` on their own, and they run before the tenant's ID is configured:
 
 ```ts
-// nuxt.config.ts
 export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
     initMode: 'manual',
-    // No static ID needed for multi-tenant apps
     initCommands: [
       ['consent', 'default', {
         analytics_storage: 'denied',
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
         wait_for_update: 500,
       }]
     ]
   }
-})
-```
-
-Then initialize with tenant-specific IDs at runtime. The `initCommands` will be automatically applied:
-
-```ts
-const { gtag, initialize } = useGtag()
-
-// Consent defaults are applied when initializing with dynamic ID
-initialize('G-TENANT-123')
-
-// Later, after user grants consent
-gtag('consent', 'update', {
-  analytics_storage: 'granted',
-  ad_storage: 'granted',
-  ad_user_data: 'granted',
-  ad_personalization: 'granted'
 })
 ```
 
@@ -280,20 +256,12 @@ gtag('consent', 'update', {
 
 As with other composables in the Nuxt ecosystem, they are auto-imported and can be used in your application's components.
 
+> [!NOTE]
+> Every composable here is SSR-safe, but the `gtag.js` instance lives in the client only. On the server the calls have no effect.
+
 ### `useGtag`
 
-The SSR-safe `useGtag` composable provides access to:
-
-- The `gtag.js` instance
-- The `initialize` method
-- The `disableAnalytics` method
-- The `enableAnalytics` method
-
-It can be used as follows:
-
 ```ts
-// Each method is destructurable from the composable and can be
-// used on the server and client-side
 const { gtag, initialize, disableAnalytics, enableAnalytics } = useGtag()
 ```
 
@@ -311,9 +279,6 @@ function useGtag(): {
 #### `gtag`
 
 The `gtag` function is the main interface to the `gtag.js` instance and can be used to run every [gtag.js command](https://developers.google.com/tag-platform/gtagjs/reference).
-
-> [!NOTE]
-> Since the `gtag.js` instance is available in the client only, any `gtag()` calls executed on the server will have no effect.
 
 **Example**
 
@@ -371,9 +336,6 @@ function acceptTracking() {
 }
 ```
 
-> [!TIP]
-> Although this method is SSR-safe, the `gtag.js` script will be loaded in the client only. Make sure to run this method in the client.
-
 **Type Declarations**
 
 ```ts
@@ -427,12 +389,9 @@ Track your defined goals by passing the following parameters:
 - The name of the recommended or custom event.
 - A collection of parameters that provide additional information about the event (optional).
 
-> [!NOTE]
-> This composable is SSR-ready. But since the `gtag.js` instance is available in the client only, executing the composable on the server will have no effect.
-
 **Example**
 
-For example, the following is an event called `login` with a parameter `method`:
+The following fires an event called `login` with a parameter `method`:
 
 ```ts
 // Tracks the `login` event
