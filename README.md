@@ -60,9 +60,7 @@ export default defineNuxtConfig({
   modules: ['nuxt-gtag'],
 
   gtag: {
-    // Your primary Google tag ID
     id: 'G-XXXXXXXXXX',
-    // Additional configuration for this tag ID
     config: {
       page_title: 'My Custom Page Title'
     },
@@ -287,7 +285,6 @@ The following event command fires the event `screen_view` with two parameters: `
 ```ts
 const { gtag } = useGtag()
 
-// SSR-ready
 gtag('event', 'screen_view', {
   app_name: 'My App',
   screen_name: 'Home'
@@ -317,7 +314,7 @@ const gtag: {
 
 #### `initialize`
 
-If you want to manually manage the initialization of the Google tag script, i.e. for GDPR compliance, you can use the `initialize` method to inject the `gtag.js` script to the document's head after the user has accepted your privacy policy. Make sure to set [`initMode` to `manual`](#manually-load-gtagjs-script) in the module options for this to work.
+Injects the `gtag.js` script into the document's head and configures the tag IDs. Requires [`initMode: 'manual'`](#manually-load-gtagjs-script) in the module options.
 
 The function accepts an optional ID for a Google tag that the module options do not carry. The ID joins the ones from your configuration rather than replacing them, so the call configures that tag *and* every tag still waiting.
 
@@ -328,12 +325,8 @@ A tag ID is configured once. Calling `initialize` again passes only the IDs it h
 ```ts
 const { initialize } = useGtag()
 
-// Load the `gtag.js` script and initialize all tag IDs from the module options
-function acceptTracking() {
-  initialize()
-  // Optionally, track the current page view
-  // useTrackEvent('page_view')
-}
+// Loads the script and configures every tag ID from the module options
+initialize()
 ```
 
 **Type Declarations**
@@ -394,7 +387,6 @@ Track your defined goals by passing the following parameters:
 The following fires an event called `login` with a parameter `method`:
 
 ```ts
-// Tracks the `login` event
 useTrackEvent('login', {
   method: 'Google'
 })
