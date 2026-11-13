@@ -120,6 +120,11 @@ export default defineNuxtModule<ModuleOptions>({
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
+    nuxt.options.runtimeConfig.public.gtag = defu(
+      nuxt.options.runtimeConfig.public.gtag,
+      options,
+    )
+
     if (!options.enabled) {
       addImports(['useGtag', 'useTrackEvent'].map(name => ({
         from: resolve(`runtime/composables/${name}Mock`),
@@ -129,11 +134,6 @@ export default defineNuxtModule<ModuleOptions>({
 
       return
     }
-
-    nuxt.options.runtimeConfig.public.gtag = defu(
-      nuxt.options.runtimeConfig.public.gtag,
-      options,
-    )
 
     nuxt.options.build.transpile.push(resolve('runtime'))
 
