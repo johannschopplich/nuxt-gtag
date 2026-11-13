@@ -43,15 +43,7 @@ export default defineNuxtConfig({
 Done! The module loads the `gtag.js` script client-side and initializes it with your Google tag ID when the Nuxt application starts.
 
 > [!NOTE]
-> Ensure that the **Enhanced measurement** feature is enabled to allow `gtag.js` to automatically track page changes based on browser history events in Nuxt.
->
-> To enable this feature:
->
-> 1. Go to the GA4 reporting view and click on "Admin".
-> 2. Select "Data Streams" under the "Property" column.
-> 3. Click on your web data stream.
-> 4. Expand the "Enhanced measurement" switch button.
-> 5. Ensure the "Page changes based on browser history events" switch button is enabled.
+> `gtag.js` tracks page changes in Nuxt through GA4's **Enhanced measurement**. In the settings of your web data stream, make sure "Page changes based on browser history events" is enabled.
 
 ## Configuration
 
@@ -159,11 +151,13 @@ export default defineNuxtConfig({
 
 A setup with `tags` and no `id` skips the top-level `initCommands` – set the defaults [on a `tags` entry](#add-multiple-google-tags) instead.
 
-After a user indicates their consent choices, update relevant parameters to `granted`:
+After a user indicates their consent choices, update the consent types they granted – all of them, or a subset such as `ad_storage` alone:
 
 ```ts
+const { gtag } = useGtag()
+
+// Invoke when a user interacts with your banner
 function allConsentGranted() {
-  const { gtag } = useGtag()
   gtag('consent', 'update', {
     ad_user_data: 'granted',
     ad_personalization: 'granted',
@@ -171,16 +165,6 @@ function allConsentGranted() {
     analytics_storage: 'granted'
   })
 }
-
-function consentGrantedAdStorage() {
-  const { gtag } = useGtag()
-  gtag('consent', 'update', {
-    ad_storage: 'granted'
-  })
-}
-
-// Invoke the consent function when a user interacts with your banner
-consentGrantedAdStorage() // Or `allConsentGranted()`
 ```
 
 ### Load the `gtag.js` Script Manually
@@ -226,26 +210,7 @@ function acceptTracking() {
 }
 ```
 
-[Consent defaults](#set-up-google-consent-mode) do not need a static `id` either. Set `initCommands` on their own, and they run before the tenant's ID is configured:
-
-```ts
-export default defineNuxtConfig({
-  modules: ['nuxt-gtag'],
-
-  gtag: {
-    initCommands: [
-      [
-        'consent',
-        'default',
-        {
-          analytics_storage: 'denied',
-          wait_for_update: 500,
-        }
-      ]
-    ]
-  }
-})
-```
+[Consent defaults](#set-up-google-consent-mode) do not need a static `id` either: set `initCommands` on their own, and they run before the tenant's ID is configured.
 
 ## Module Options
 
@@ -262,10 +227,7 @@ export default defineNuxtConfig({
 
 ## Composables
 
-Nuxt auto-imports both composables.
-
-> [!NOTE]
-> Every composable here is SSR-safe, but the `gtag.js` instance lives in the client only. On the server the calls have no effect.
+Nuxt auto-imports both composables. Both are SSR-safe: on the server, their calls have no effect.
 
 ### `useGtag`
 
@@ -299,27 +261,6 @@ gtag('event', 'screen_view', {
 })
 ```
 
-**Type Declarations**
-
-```ts
-interface GtagCommands {
-  config: [targetId: string, config?: ControlParams | EventParams | ConfigParams | CustomParams]
-  set: [targetId: string, config: CustomParams | boolean | string] | [config: CustomParams]
-  js: [config: Date]
-  event: [eventName: EventNames | (string & {}), eventParams?: ControlParams | EventParams | CustomParams]
-  get: [
-      targetId: string,
-      fieldName: FieldNames | string,
-      callback?: (field?: string | CustomParams) => any,
-  ]
-  consent: [consentArg: ConsentArg | (string & {}), consentParams: ConsentParams]
-}
-
-const gtag: {
-  <Command extends keyof GtagCommands>(command: Command, ...args: GtagCommands[Command]): void
-}
-```
-
 #### `initialize`
 
 Injects the `gtag.js` script into the document's head and configures the tag IDs. With a tag ID in the module options, it requires [`initMode: 'manual'`](#load-the-gtagjs-script-manually).
@@ -330,60 +271,17 @@ A tag ID is configured once. Calling `initialize` again passes only the IDs it h
 
 Called without an ID while the module options hold no tag either, `initialize` logs `[nuxt-gtag] Missing Google tag ID for initialize()` to the console and does nothing. The likely cause is an empty `NUXT_PUBLIC_GTAG_ID`, or a [per-tenant setup](#set-the-tag-id-per-tenant) that calls `initialize()` without the tenant's ID.
 
-**Example**
-
-```ts
-const { initialize } = useGtag()
-
-// Loads the script and configures every tag ID from the module options
-initialize()
-```
-
-**Type Declarations**
-
-```ts
-function initialize(id?: string): void
-```
-
 #### `disableAnalytics`
 
-Stops `gtag.js` from sending data to Google Analytics without removing the Google tag, for example when a user opts out of tracking. The function sets `window['ga-disable-GA_MEASUREMENT_ID']` to `true`, the property that tells `gtag.js` not to send data.
+Stops `gtag.js` from sending data to Google Analytics without removing the Google tag, for example when a user opts out of tracking.
 
 The optional ID names the tag to switch off. It covers one tag, so a setup with [multiple tag IDs](#add-multiple-google-tags) needs one call per tag. Without an argument, only the first tag from the module options is affected.
 
-The property lasts until the next full page load. Store the user's choice and call `disableAnalytics` again on each load.
-
-**Example**
-
-```ts
-const { disableAnalytics } = useGtag()
-
-disableAnalytics()
-```
-
-**Type Declarations**
-
-```ts
-function disableAnalytics(id?: string): void
-```
+The opt-out lasts until the next full page load. Store the user's choice and call `disableAnalytics` again on each load.
 
 #### `enableAnalytics`
 
 Re-enables Google Analytics after `disableAnalytics` has switched it off. The `id` parameter selects the tag the same way as in `disableAnalytics`.
-
-**Example**
-
-```ts
-const { enableAnalytics } = useGtag()
-
-enableAnalytics()
-```
-
-**Type Declarations**
-
-```ts
-function enableAnalytics(id?: string): void
-```
 
 ### `useTrackEvent`
 
