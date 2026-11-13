@@ -1,8 +1,5 @@
 import type { ModuleOptions } from '../src/module'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { useGtag } from '../src/runtime/composables/useGtag'
-import { useTrackEvent } from '../src/runtime/composables/useTrackEvent'
-import { configuredTagIds } from '../src/runtime/utils'
 import { moduleOptions, stubDataLayer } from './helpers'
 
 const imports = vi.hoisted(() => ({
@@ -26,11 +23,11 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals()
-  configuredTagIds.clear()
+  vi.resetModules()
 })
 
 describe('initialize', () => {
-  it('runs the top-level initCommands and js once across tag IDs', () => {
+  it('runs the top-level initCommands and js once across tag IDs', async () => {
     imports.options = moduleOptions({
       initCommands: [
         [
@@ -41,6 +38,7 @@ describe('initialize', () => {
       ],
     })
     const readDataLayer = stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
 
     const { initialize } = useGtag()
     initialize('G-TENANT-A')
@@ -61,7 +59,7 @@ describe('initialize', () => {
     ])
   })
 
-  it('holds a consent update sent before initialize(id) until after the config command', () => {
+  it('holds a consent update sent before initialize(id) until after the config command', async () => {
     imports.options = moduleOptions({
       initCommands: [
         [
@@ -72,6 +70,7 @@ describe('initialize', () => {
       ],
     })
     const readDataLayer = stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
 
     const { gtag, initialize } = useGtag()
     gtag('consent', 'update', { analytics_storage: 'granted' })
@@ -96,9 +95,11 @@ describe('initialize', () => {
     ])
   })
 
-  it('holds a useTrackEvent event sent before initialize() until after the config command', () => {
+  it('holds a useTrackEvent event sent before initialize() until after the config command', async () => {
     imports.options = moduleOptions({ id: 'G-ONE' })
     const readDataLayer = stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
+    const { useTrackEvent } = await import('../src/runtime/composables/useTrackEvent')
 
     useTrackEvent('login')
     useGtag().initialize()

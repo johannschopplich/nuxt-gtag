@@ -1,11 +1,11 @@
 import type { ModuleOptions } from '../src/module'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { configuredTagIds, initGtag, resolveTags } from '../src/runtime/utils'
+import { resolveTags } from '../src/runtime/utils'
 import { moduleOptions, stubDataLayer } from './helpers'
 
 afterEach(() => {
   vi.unstubAllGlobals()
-  configuredTagIds.clear()
+  vi.resetModules()
 })
 
 describe('resolveTags', () => {
@@ -61,8 +61,9 @@ describe('resolveTags', () => {
 })
 
 describe('initGtag', () => {
-  it('runs a tag init command before the js command', () => {
+  it('runs a tag init command before the js command', async () => {
     const readDataLayer = stubDataLayer()
+    const { initGtag } = await import('../src/runtime/utils')
 
     initGtag({
       tags: [
@@ -93,8 +94,9 @@ describe('initGtag', () => {
     ])
   })
 
-  it('configures every tag with its own config', () => {
+  it('configures every tag with its own config', async () => {
     const readDataLayer = stubDataLayer()
+    const { initGtag } = await import('../src/runtime/utils')
 
     initGtag({
       tags: [
