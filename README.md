@@ -275,7 +275,7 @@ Called without an ID while the module options hold no tag either, `initialize` l
 
 Stops `gtag.js` from sending data to Google Analytics without removing the Google tag, for example when a user opts out of tracking.
 
-The optional ID names the tag to switch off. It covers one tag, so a setup with [multiple tag IDs](#add-multiple-google-tags) needs one call per tag. Without an argument, only the first tag from the module options is affected.
+The optional ID names the tag to switch off. It covers one tag, so a setup with [multiple tag IDs](#add-multiple-google-tags) needs one call per tag. Without an argument, it switches off the first tag from the module options, or else the first tag ID passed to [`initialize`](#initialize).
 
 The opt-out lasts until the next full page load. Store the user's choice and call `disableAnalytics` again on each load.
 

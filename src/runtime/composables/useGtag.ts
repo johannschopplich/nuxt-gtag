@@ -35,6 +35,10 @@ export function useGtag() {
     return { tag, tags }
   }
 
+  // Falls back to the tag configured through `initialize(id)`, so a per-tenant app can opt out without passing its ID again.
+  const getAnalyticsTagId = (id?: string): string | undefined =>
+    getTag(id).tag?.id || configuredTagIds.values().next().value
+
   /**
    * Injects the `gtag.js` script and configures every tag ID not configured yet.
    *
@@ -70,11 +74,11 @@ export function useGtag() {
    */
   function disableAnalytics(id?: string) {
     if (import.meta.client) {
-      const { tag } = getTag(id)
-      if (!tag)
+      const tagId = getAnalyticsTagId(id)
+      if (!tagId)
         return logMissingTagId('disableAnalytics')
 
-      _disableAnalytics(tag.id)
+      _disableAnalytics(tagId)
     }
   }
 
@@ -89,11 +93,11 @@ export function useGtag() {
    */
   function enableAnalytics(id?: string) {
     if (import.meta.client) {
-      const { tag } = getTag(id)
-      if (!tag)
+      const tagId = getAnalyticsTagId(id)
+      if (!tagId)
         return logMissingTagId('enableAnalytics')
 
-      _enableAnalytics(tag.id)
+      _enableAnalytics(tagId)
     }
   }
 

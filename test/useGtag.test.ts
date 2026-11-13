@@ -155,3 +155,47 @@ describe('initialize', () => {
     ])
   })
 })
+
+describe('disableAnalytics', () => {
+  it('switches off the first tag ID handed to initialize(id) when called without an ID', async () => {
+    imports.options = moduleOptions()
+    stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
+    const { initialize, disableAnalytics } = useGtag()
+
+    initialize('G-TENANT-A')
+    initialize('G-TENANT-B')
+    disableAnalytics()
+
+    expect((window as any)['ga-disable-G-TENANT-A']).toBe(true)
+    expect('ga-disable-G-TENANT-B' in window).toBe(false)
+  })
+
+  it('prefers the tag from the module options over one handed to initialize(id) when called without an ID', async () => {
+    imports.options = moduleOptions({ id: 'G-OPTIONS' })
+    stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
+    const { initialize, disableAnalytics } = useGtag()
+
+    initialize('G-TENANT')
+    disableAnalytics()
+
+    expect((window as any)['ga-disable-G-OPTIONS']).toBe(true)
+    expect('ga-disable-G-TENANT' in window).toBe(false)
+  })
+})
+
+describe('enableAnalytics', () => {
+  it('switches the tag ID handed to initialize(id) back on when called without an ID', async () => {
+    imports.options = moduleOptions()
+    stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
+    const { initialize, enableAnalytics } = useGtag()
+
+    initialize('G-TENANT')
+    Object.assign(window, { 'ga-disable-G-TENANT': true })
+    enableAnalytics()
+
+    expect('ga-disable-G-TENANT' in window).toBe(false)
+  })
+})
