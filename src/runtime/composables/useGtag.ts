@@ -1,9 +1,8 @@
 import type { ModuleOptions } from '../../module'
 import type { Gtag } from '../types'
-import { withQuery } from 'ufo'
 import { useHead, useRuntimeConfig } from '#imports'
 import { disableAnalytics as _disableAnalytics, enableAnalytics as _enableAnalytics } from '../analytics'
-import { configuredTagIds, gtag, initGtag, resolveTags } from '../utils'
+import { configuredTagIds, createScriptHead, gtag, initGtag, resolveTags } from '../utils'
 
 export function useGtag() {
   const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
@@ -62,16 +61,8 @@ export function useGtag() {
         initGtag({ tags: pendingTags })
 
       // Inject the Google tag script if it wasn't injected by the client plugin.
-      if (!document.head.querySelector('script[data-gtag]')) {
-        useHead({
-          script: [
-            {
-              'src': withQuery(options.url, { id: tag.id }),
-              'data-gtag': '',
-            },
-          ],
-        })
-      }
+      if (!document.head.querySelector('script[data-gtag]'))
+        useHead(createScriptHead(options, tag.id))
     }
   }
 

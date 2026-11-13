@@ -1,5 +1,6 @@
 import type { ModuleOptions } from '../module'
 import type { GoogleTagOptions } from './types'
+import { withQuery } from 'ufo'
 
 export function gtag(..._args: any[]) {
   // eslint-disable-next-line prefer-rest-params
@@ -27,6 +28,34 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   for (const tag of tags) {
     gtag('config', tag.id, tag.config ?? {})
     configuredTagIds.add(tag.id)
+  }
+}
+
+/**
+ * Builds the `useHead` input that loads the `gtag.js` script for a tag ID.
+ */
+export function createScriptHead(options: Required<ModuleOptions>, id: string) {
+  const src = withQuery(options.url, { id })
+  // Sanitize loading strategy to be either `async` or `defer`.
+  const strategy = options.loadingStrategy === 'async'
+    ? 'async'
+    : 'defer'
+
+  return {
+    link: [
+      {
+        rel: 'preload' as const,
+        as: 'script' as const,
+        href: src,
+      },
+    ],
+    script: [
+      {
+        src,
+        [strategy]: true,
+        'data-gtag': '',
+      },
+    ],
   }
 }
 

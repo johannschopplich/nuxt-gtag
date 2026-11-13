@@ -1,17 +1,17 @@
 // Expose plugin types.
 import type {} from 'nuxt/app'
 import type { ModuleOptions } from '../module'
-import { withQuery } from 'ufo'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#imports'
-import { initGtag, resolveTags } from './utils'
+import { createScriptHead, initGtag, resolveTags } from './utils'
 
 export default defineNuxtPlugin({
   parallel: true,
   setup() {
     const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
     const tags = resolveTags(options)
+    const [firstTag] = tags
 
-    if (!tags.length)
+    if (!firstTag)
       return
 
     initGtag({ tags })
@@ -19,26 +19,6 @@ export default defineNuxtPlugin({
     if (options.initMode === 'manual')
       return
 
-    // Sanitize loading strategy to be either `async` or `defer`.
-    const strategy = options.loadingStrategy === 'async'
-      ? 'async'
-      : 'defer'
-
-    useHead({
-      link: [
-        {
-          rel: 'preload',
-          as: 'script',
-          href: withQuery(options.url, { id: tags[0]?.id }),
-        },
-      ],
-      script: [
-        {
-          'src': withQuery(options.url, { id: tags[0]?.id }),
-          [strategy]: true,
-          'data-gtag': '',
-        },
-      ],
-    })
+    useHead(createScriptHead(options, firstTag.id))
   },
 })
