@@ -139,13 +139,17 @@ export default defineNuxtConfig({
     id: 'G-XXXXXXXXXX',
     initCommands: [
       // Set up consent mode
-      ['consent', 'default', {
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-        ad_storage: 'denied',
-        analytics_storage: 'denied',
-        wait_for_update: 500,
-      }]
+      [
+        'consent',
+        'default',
+        {
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          ad_storage: 'denied',
+          analytics_storage: 'denied',
+          wait_for_update: 500,
+        }
+      ]
     ]
   }
 })
@@ -228,10 +232,14 @@ export default defineNuxtConfig({
 
   gtag: {
     initCommands: [
-      ['consent', 'default', {
-        analytics_storage: 'denied',
-        wait_for_update: 500,
-      }]
+      [
+        'consent',
+        'default',
+        {
+          analytics_storage: 'denied',
+          wait_for_update: 500,
+        }
+      ]
     ]
   }
 })

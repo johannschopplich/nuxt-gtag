@@ -32,7 +32,9 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
 
 export function resolveTags(options: Required<ModuleOptions>) {
   const tags: GoogleTagOptions[] = options.tags.filter(Boolean)
-    .map(tag => typeof tag === 'string' ? { id: tag } : tag)
+    .map(tag => typeof tag === 'string'
+      ? { id: tag }
+      : tag)
 
   if (options.id) {
     const { id, config, initCommands } = options
@@ -48,5 +50,7 @@ export function resolveTags(options: Required<ModuleOptions>) {
       tagsById.set(tag.id, tag)
   }
 
-  return [...tagsById.values()]
+  return [
+    ...tagsById.values(),
+  ]
 }

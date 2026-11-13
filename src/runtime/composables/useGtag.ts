@@ -64,10 +64,12 @@ export function useGtag() {
       // Inject the Google tag script if it wasn't injected by the client plugin.
       if (!document.head.querySelector('script[data-gtag]')) {
         useHead({
-          script: [{
-            'src': withQuery(options.url, { id: tag.id }),
-            'data-gtag': '',
-          }],
+          script: [
+            {
+              'src': withQuery(options.url, { id: tag.id }),
+              'data-gtag': '',
+            },
+          ],
         })
       }
     }

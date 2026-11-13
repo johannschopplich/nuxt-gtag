@@ -20,7 +20,9 @@ export default defineNuxtPlugin({
       return
 
     // Sanitize loading strategy to be either `async` or `defer`.
-    const strategy = options.loadingStrategy === 'async' ? 'async' : 'defer'
+    const strategy = options.loadingStrategy === 'async'
+      ? 'async'
+      : 'defer'
 
     useHead({
       link: [

@@ -32,17 +32,26 @@ describe('resolveTags', () => {
   })
 
   it('normalizes a string entry of tags to an object', () => {
-    expect(resolveTags(moduleOptions({ tags: ['G-STRING'] }))).toEqual([{ id: 'G-STRING' }])
+    expect(resolveTags(moduleOptions({
+      tags: ['G-STRING'],
+    }))).toEqual([
+      { id: 'G-STRING' },
+    ])
   })
 
   it('drops a falsy entry of tags', () => {
     const tags = ['G-KEPT', '', undefined] as ModuleOptions['tags']
 
-    expect(resolveTags(moduleOptions({ tags }))).toEqual([{ id: 'G-KEPT' }])
+    expect(resolveTags(moduleOptions({ tags }))).toEqual([
+      { id: 'G-KEPT' },
+    ])
   })
 
   it('places id before the entries of tags', () => {
-    const resolved = resolveTags(moduleOptions({ id: 'G-FIRST', tags: ['G-SECOND'] }))
+    const resolved = resolveTags(moduleOptions({
+      id: 'G-FIRST',
+      tags: ['G-SECOND'],
+    }))
 
     expect(resolved.map(tag => tag.id)).toEqual(['G-FIRST', 'G-SECOND'])
   })
@@ -51,14 +60,21 @@ describe('resolveTags', () => {
     const resolved = resolveTags(moduleOptions({
       id: 'G-SAME',
       config: { send_page_view: false },
-      tags: [{ id: 'G-SAME', config: { send_page_view: true } }],
+      tags: [
+        {
+          id: 'G-SAME',
+          config: { send_page_view: true },
+        },
+      ],
     }))
 
-    expect(resolved).toEqual([{
-      id: 'G-SAME',
-      config: { send_page_view: false },
-      initCommands: [],
-    }])
+    expect(resolved).toEqual([
+      {
+        id: 'G-SAME',
+        config: { send_page_view: false },
+        initCommands: [],
+      },
+    ])
   })
 })
 
@@ -66,11 +82,31 @@ describe('initGtag', () => {
   it('runs a tag init command before the js command', () => {
     const readDataLayer = stubDataLayer()
 
-    initGtag({ tags: [{ id: 'G-ONE', initCommands: [['consent', 'default', { ad_storage: 'denied' }]] }] })
+    initGtag({
+      tags: [
+        {
+          id: 'G-ONE',
+          initCommands: [
+            [
+              'consent',
+              'default',
+              { ad_storage: 'denied' },
+            ],
+          ],
+        },
+      ],
+    })
 
     expect(readDataLayer()).toEqual([
-      ['consent', 'default', { ad_storage: 'denied' }],
-      ['js', expect.any(Date)],
+      [
+        'consent',
+        'default',
+        { ad_storage: 'denied' },
+      ],
+      [
+        'js',
+        expect.any(Date),
+      ],
       ['config', 'G-ONE', {}],
     ])
   })
@@ -78,13 +114,22 @@ describe('initGtag', () => {
   it('configures every tag with its own config', () => {
     const readDataLayer = stubDataLayer()
 
-    initGtag({ tags: [
-      { id: 'G-ONE', config: { send_page_view: false } },
-      { id: 'G-TWO' },
-    ] })
+    initGtag({
+      tags: [
+        {
+          id: 'G-ONE',
+          config: { send_page_view: false },
+        },
+        { id: 'G-TWO' },
+      ],
+    })
 
     expect(readDataLayer().filter(([command]) => command === 'config')).toEqual([
-      ['config', 'G-ONE', { send_page_view: false }],
+      [
+        'config',
+        'G-ONE',
+        { send_page_view: false },
+      ],
       ['config', 'G-TWO', {}],
     ])
   })
