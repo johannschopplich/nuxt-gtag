@@ -1,6 +1,6 @@
 import type { ModuleOptions } from '../src/module'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { resolveTags } from '../src/runtime/utils'
+import { createScriptHead, resolveTags } from '../src/runtime/utils'
 import { moduleOptions, stubDataLayer } from './helpers'
 
 afterEach(() => {
@@ -57,6 +57,27 @@ describe('resolveTags', () => {
         initCommands: [],
       },
     ])
+  })
+})
+
+describe('createScriptHead', () => {
+  it('returns an async script and its preload link with loadingStrategy async', () => {
+    expect(createScriptHead(moduleOptions({ loadingStrategy: 'async' }), 'G-ONE')).toEqual({
+      link: [
+        {
+          rel: 'preload',
+          as: 'script',
+          href: 'https://www.googletagmanager.com/gtag/js?id=G-ONE',
+        },
+      ],
+      script: [
+        {
+          'src': 'https://www.googletagmanager.com/gtag/js?id=G-ONE',
+          'async': true,
+          'data-gtag': '',
+        },
+      ],
+    })
   })
 })
 
