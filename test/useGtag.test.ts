@@ -59,6 +59,32 @@ describe('initialize', () => {
     ])
   })
 
+  it('skips the top-level initCommands for initialize(id) with tags and no id', async () => {
+    imports.options = moduleOptions({
+      initCommands: [
+        [
+          'consent',
+          'default',
+          { analytics_storage: 'denied' },
+        ],
+      ],
+      tags: ['G-TAGS'],
+    })
+    const readDataLayer = stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
+
+    useGtag().initialize('G-CUSTOM')
+
+    expect(readDataLayer()).toEqual([
+      [
+        'js',
+        expect.any(Date),
+      ],
+      ['config', 'G-CUSTOM', {}],
+      ['config', 'G-TAGS', {}],
+    ])
+  })
+
   it('holds a consent update sent before initialize(id) until after the config command', async () => {
     imports.options = moduleOptions({
       initCommands: [

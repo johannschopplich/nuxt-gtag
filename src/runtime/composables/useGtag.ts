@@ -20,7 +20,9 @@ export function useGtag() {
       if (id) {
         tag = {
           id,
-          initCommands: options.initCommands,
+          initCommands: options.id || rawTags.length === 0
+            ? options.initCommands
+            : undefined,
           config: options.config,
         }
         tags.unshift(tag)
