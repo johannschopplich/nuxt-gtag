@@ -139,4 +139,19 @@ describe('initialize', () => {
       ['event', 'login'],
     ])
   })
+
+  it('pushes a gtag call made after initialize() straight to the dataLayer', async () => {
+    imports.options = moduleOptions({ id: 'G-ONE' })
+    const readDataLayer = stubDataLayer()
+    const { useGtag } = await import('../src/runtime/composables/useGtag')
+    const { gtag, initialize } = useGtag()
+
+    initialize()
+    const lengthAfterInitialize = readDataLayer().length
+    gtag('event', 'login')
+
+    expect(readDataLayer().slice(lengthAfterInitialize)).toEqual([
+      ['event', 'login'],
+    ])
+  })
 })
