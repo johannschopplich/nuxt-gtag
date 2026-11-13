@@ -1,4 +1,4 @@
-// Let the declaration emit name `NuxtModule`.
+// So the emitted declaration can name `NuxtModule`.
 import type {} from '@nuxt/schema'
 import type { GoogleTagOptions } from './runtime/types'
 import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
@@ -83,9 +83,6 @@ export interface ModuleOptions {
 
   /**
    * The Google tags to initialize.
-   *
-   * @remarks
-   * Each item is a tag ID string or an object with `id` and its own `config` and `initCommands`.
    *
    * @default []
    */

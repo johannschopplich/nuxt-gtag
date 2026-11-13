@@ -39,15 +39,11 @@ export function useGtag() {
    * Injects the `gtag.js` script and configures every tag ID not configured yet.
    *
    * @remarks
-   * The script loads for the given tag ID, or else for the first tag of the module options.
+   * Loads the script for the given tag ID, or else for the first tag of the module options,
+   * unless the document already has it.
    * `gtag` calls made before the first tag ID is configured follow its `config` command.
    */
-  const initialize = (
-    /**
-     * A Google tag ID the module options do not carry, configured alongside theirs.
-     */
-    id?: string,
-  ) => {
+  const initialize = (id?: string) => {
     if (import.meta.client) {
       const { tag, tags } = getTag(id)
       if (!tag)

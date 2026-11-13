@@ -62,12 +62,9 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer.push(...heldCommands.splice(0))
 }
 
-/**
- * Builds the `useHead` input that loads the `gtag.js` script for a tag ID.
- */
 export function createScriptHead(options: Required<ModuleOptions>, id: string) {
   const src = withQuery(options.url, { id })
-  // Sanitize loading strategy to be either `async` or `defer`.
+  // Sanitize the loading strategy.
   const strategy = options.loadingStrategy === 'async'
     ? 'async'
     : 'defer'
