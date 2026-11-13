@@ -19,13 +19,15 @@
 
 ## Setup
 
+Install `nuxt-gtag` and add it to the `modules` section of your Nuxt configuration in one step:
+
 ```bash
 npx nuxt module add gtag
 ```
 
 ## Basic Usage
 
-Add `nuxt-gtag` to the `modules` section of your Nuxt configuration and provide your Google tag ID. For more than one, see [Add Multiple Google Tags](#add-multiple-google-tags).
+Provide your Google tag ID under the `gtag` key of your Nuxt configuration. For more than one, see [Add Multiple Google Tags](#add-multiple-google-tags).
 
 ```ts
 // `nuxt.config.ts`
