@@ -41,6 +41,7 @@ function stubDocument() {
 }
 
 afterEach(() => {
+  vi.restoreAllMocks()
   vi.unstubAllGlobals()
   imports.useHead.mockReset()
   configuredTagIds.clear()
@@ -69,6 +70,16 @@ describe('initialize', () => {
         },
       ],
     })
+  })
+  it('logs the missing tag ID for initialize() without any tag', () => {
+    setModuleOptions({})
+    stubDocument()
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    useGtag().initialize()
+
+    expect(consoleError).toHaveBeenCalledWith('[nuxt-gtag] Missing Google tag ID for initialize()')
+    expect(imports.useHead).not.toHaveBeenCalled()
   })
 })
 

@@ -32,9 +32,6 @@ export function useGtag() {
       }
     }
 
-    if (!tag)
-      console.error('[nuxt-gtag] Missing Google tag ID')
-
     return { tag, tags }
   }
 
@@ -53,7 +50,7 @@ export function useGtag() {
     if (import.meta.client) {
       const { tag, tags } = getTag(id)
       if (!tag)
-        return
+        return logMissingTagId('initialize')
 
       const pendingTags = tags.filter(candidate => !configuredTagIds.has(candidate.id))
       if (pendingTags.length > 0)
@@ -77,8 +74,10 @@ export function useGtag() {
   function disableAnalytics(id?: string) {
     if (import.meta.client) {
       const { tag } = getTag(id)
-      if (tag)
-        _disableAnalytics(tag.id)
+      if (!tag)
+        return logMissingTagId('disableAnalytics')
+
+      _disableAnalytics(tag.id)
     }
   }
 
@@ -94,8 +93,10 @@ export function useGtag() {
   function enableAnalytics(id?: string) {
     if (import.meta.client) {
       const { tag } = getTag(id)
-      if (tag)
-        _enableAnalytics(tag.id)
+      if (!tag)
+        return logMissingTagId('enableAnalytics')
+
+      _enableAnalytics(tag.id)
     }
   }
 
@@ -105,4 +106,8 @@ export function useGtag() {
     disableAnalytics,
     enableAnalytics,
   }
+}
+
+function logMissingTagId(functionName: string) {
+  console.error(`[nuxt-gtag] Missing Google tag ID for ${functionName}()`)
 }

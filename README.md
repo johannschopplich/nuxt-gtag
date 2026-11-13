@@ -328,7 +328,7 @@ The function accepts an optional ID for a Google tag that the module options do 
 
 A tag ID is configured once. Calling `initialize` again passes only the IDs it has not configured yet to the `config` command, so a consent flow may call it as often as it needs to.
 
-Called without an ID while the module options hold no tag either, `initialize` logs `[nuxt-gtag] Missing Google tag ID` to the console and does nothing. The likely cause is an empty `NUXT_PUBLIC_GTAG_ID`, or a [per-tenant setup](#set-the-tag-id-per-tenant) that calls `initialize()` without the tenant's ID.
+Called without an ID while the module options hold no tag either, `initialize` logs `[nuxt-gtag] Missing Google tag ID for initialize()` to the console and does nothing. The likely cause is an empty `NUXT_PUBLIC_GTAG_ID`, or a [per-tenant setup](#set-the-tag-id-per-tenant) that calls `initialize()` without the tenant's ID.
 
 **Example**
 
