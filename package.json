@@ -57,7 +57,6 @@
     "@antfu/eslint-config": "^10.0.0",
     "@nuxt/module-builder": "^1.0.4",
     "@nuxt/schema": "^4.6.4",
-    "@types/node": "^26.6.6",
     "bumpp": "^12.3.0",
     "eslint": "^10.14.0",
     "nuxt": "^4.6.4",
