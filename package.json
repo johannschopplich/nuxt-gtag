@@ -1,7 +1,7 @@
 {
   "name": "nuxt-gtag",
   "type": "module",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "packageManager": "pnpm@12.18.0",
   "description": "Google Analytics, Google Ads and Consent Mode v2 for Nuxt",
   "author": "Johann Schopplich <hello@johannschopplich.com>",
