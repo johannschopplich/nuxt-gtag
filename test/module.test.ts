@@ -3,7 +3,7 @@ import { loadNuxt } from '@nuxt/kit'
 import { describe, expect, it } from 'vitest'
 
 describe('module', () => {
-  it('writes the public runtime config with enabled false', async () => {
+  it('writes runtimeConfig.public.gtag with enabled false', async () => {
     const nuxt = await loadNuxt({
       cwd: fileURLToPath(new URL('../playground', import.meta.url)),
       overrides: {
