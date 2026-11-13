@@ -70,7 +70,7 @@ export interface ModuleOptions {
    * The Google tags to initialize.
    *
    * @remarks
-   * Each item can be a string or an object with `id` and `config` properties. The latter is useful especially when you want to set additional configuration for the Google tag ID.
+   * Each item is a tag ID string or an object with `id` and its own `config` and `initCommands`.
    *
    * @default []
    */

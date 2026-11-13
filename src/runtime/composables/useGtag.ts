@@ -39,15 +39,14 @@ export function useGtag() {
   }
 
   /**
-   * Manually initializes the Google tag library.
+   * Injects the `gtag.js` script and configures every tag ID not configured yet.
    *
    * @remarks
-   * If no custom Google tag ID is provided, the default Google tag ID from the module options will be used.
+   * The script loads for the given tag ID, or else for the first tag of the module options.
    */
   const initialize = (
     /**
-     * In case you want to initialize a custom Google tag ID. Make sure to set
-     * `initMode` to `manual` in the module options beforehand.
+     * A Google tag ID the module options do not carry, configured alongside theirs.
      */
     id?: string,
   ) => {
