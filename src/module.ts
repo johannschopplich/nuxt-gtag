@@ -1,3 +1,5 @@
+// Let the declaration emit name `NuxtModule`.
+import type {} from '@nuxt/schema'
 import type { GoogleTagOptions } from './runtime/types'
 import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
