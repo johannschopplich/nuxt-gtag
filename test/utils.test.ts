@@ -1,26 +1,7 @@
 import type { ModuleOptions } from '../src/module'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { configuredTagIds, initGtag, resolveTags } from '../src/runtime/utils'
-
-function moduleOptions(options: Partial<ModuleOptions>) {
-  return {
-    enabled: true,
-    initMode: 'auto',
-    id: '',
-    initCommands: [],
-    config: {},
-    tags: [],
-    loadingStrategy: 'defer',
-    url: 'https://www.googletagmanager.com/gtag/js',
-    ...options,
-  } as Required<ModuleOptions>
-}
-
-function stubDataLayer() {
-  const dataLayer: IArguments[] = []
-  vi.stubGlobal('window', { dataLayer })
-  return () => dataLayer.map(command => Array.from(command))
-}
+import { moduleOptions, stubDataLayer } from './helpers'
 
 afterEach(() => {
   vi.unstubAllGlobals()
@@ -29,7 +10,7 @@ afterEach(() => {
 
 describe('resolveTags', () => {
   it('returns an empty list when neither id nor tags is set', () => {
-    expect(resolveTags(moduleOptions({}))).toEqual([])
+    expect(resolveTags(moduleOptions())).toEqual([])
   })
 
   it('normalizes a string entry of tags to an object', () => {
