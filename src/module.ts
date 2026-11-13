@@ -5,6 +5,20 @@ import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/k
 import { defu } from 'defu'
 import { name, version } from '../package.json'
 
+export type {
+  ConfigParams,
+  ConsentArg,
+  ConsentParams,
+  ControlParams,
+  CustomParams,
+  EventNames,
+  EventParams,
+  FieldNames,
+  GoogleTagOptions,
+  Gtag,
+  GtagCommands,
+} from './runtime/types'
+
 export interface ModuleOptions {
   /**
    * Whether to enable the Google tag module for the current environment.

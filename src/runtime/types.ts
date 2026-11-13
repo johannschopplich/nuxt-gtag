@@ -173,15 +173,15 @@ interface Promotion {
   promotion_name?: string
 }
 
-type FieldNames = 'client_id' | 'session_id' | 'gclid'
+export type FieldNames = 'client_id' | 'session_id' | 'gclid'
 
-type ConsentArg = 'default' | 'update'
+export type ConsentArg = 'default' | 'update'
 
 /**
  * @see {@link https://support.google.com/tagmanager/answer/10718549#consent-types consent-types}
  * @see {@link https://developers.google.com/tag-platform/security/guides/consent consent}
  */
-interface ConsentParams {
+export interface ConsentParams {
   ad_personalization?: 'granted' | 'denied' | undefined
   ad_user_data?: 'granted' | 'denied' | undefined
   ad_storage?: 'granted' | 'denied'
