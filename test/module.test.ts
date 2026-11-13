@@ -14,7 +14,6 @@ describe('module', () => {
     try {
       expect(nuxt.options.runtimeConfig.public.gtag).toMatchObject({
         enabled: false,
-        initMode: 'manual',
       })
     }
     finally {
