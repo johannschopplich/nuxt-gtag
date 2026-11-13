@@ -2,11 +2,6 @@ import type { ModuleOptions } from '../module'
 import type { GoogleTagOptions } from './types'
 import { withQuery } from 'ufo'
 
-export function gtag(..._args: any[]) {
-  // eslint-disable-next-line prefer-rest-params
-  window.dataLayer?.push(arguments)
-}
-
 /**
  * Tag IDs already handed to the `config` command.
  *
@@ -17,6 +12,15 @@ export function gtag(..._args: any[]) {
 export const configuredTagIds = new Set<string>()
 
 /**
+ * `gtag` calls made before the first tag ID is configured.
+ *
+ * @remarks
+ * Pushed right after the `config` commands of that first configure, so a held `consent` `update`
+ * cannot land before the `consent` `default` from `initCommands`.
+ */
+const heldCommands: IArguments[] = []
+
+/**
  * `initCommands` lists already run, by reference.
  *
  * @remarks
@@ -24,6 +28,16 @@ export const configuredTagIds = new Set<string>()
  * `consent` `default` would land after an earlier `consent` `update`.
  */
 const executedInitCommands = new WeakSet<object>()
+
+export function gtag(...args: any[]) {
+  if (configuredTagIds.size === 0) {
+    // eslint-disable-next-line prefer-rest-params
+    heldCommands.push(arguments)
+    return
+  }
+
+  pushCommand(...args)
+}
 
 export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
@@ -33,17 +47,19 @@ export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
       continue
 
     for (const command of tag.initCommands)
-      gtag(...command)
+      pushCommand(...command)
     executedInitCommands.add(tag.initCommands)
   }
 
   if (configuredTagIds.size === 0)
-    gtag('js', new Date())
+    pushCommand('js', new Date())
 
   for (const tag of tags) {
-    gtag('config', tag.id, tag.config ?? {})
+    pushCommand('config', tag.id, tag.config ?? {})
     configuredTagIds.add(tag.id)
   }
+
+  window.dataLayer.push(...heldCommands.splice(0))
 }
 
 /**
@@ -97,4 +113,9 @@ export function resolveTags(options: Required<ModuleOptions>) {
   return [
     ...tagsById.values(),
   ]
+}
+
+function pushCommand(..._args: any[]) {
+  // eslint-disable-next-line prefer-rest-params
+  window.dataLayer!.push(arguments)
 }

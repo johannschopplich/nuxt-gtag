@@ -38,6 +38,7 @@ export function useGtag() {
    *
    * @remarks
    * The script loads for the given tag ID, or else for the first tag of the module options.
+   * `gtag` calls made before the first tag ID is configured follow its `config` command.
    */
   const initialize = (
     /**

@@ -8,6 +8,11 @@ export default defineNuxtPlugin({
   parallel: true,
   setup() {
     const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
+    // A third-party snippet such as Google Tag Manager may read `window.dataLayer`
+    // before the visitor consents, so manual mode leaves every command to `initialize`.
+    if (options.initMode === 'manual')
+      return
+
     const tags = resolveTags(options)
     const [firstTag] = tags
 
@@ -15,10 +20,6 @@ export default defineNuxtPlugin({
       return
 
     initGtag({ tags })
-
-    if (options.initMode === 'manual')
-      return
-
     useHead(createScriptHead(options, firstTag.id))
   },
 })
