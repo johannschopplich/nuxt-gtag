@@ -8,11 +8,9 @@ export function useGtag() {
   const options = useRuntimeConfig().public.gtag as Required<ModuleOptions>
   const rawTags = resolveTags(options)
 
-  let _gtag: Gtag
-  if (import.meta.server)
-    _gtag = () => {}
-  else if (import.meta.client)
-    _gtag = gtag
+  const _gtag: Gtag = import.meta.server
+    ? () => {}
+    : gtag
 
   const getTag = (id?: string) => {
     const tags = [...rawTags]
@@ -101,7 +99,7 @@ export function useGtag() {
   }
 
   return {
-    gtag: _gtag!,
+    gtag: _gtag,
     initialize,
     disableAnalytics,
     enableAnalytics,
