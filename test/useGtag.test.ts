@@ -71,3 +71,36 @@ describe('initialize', () => {
     })
   })
 })
+
+describe('initialize with a tag ID', () => {
+  it('runs the top-level initCommands and js once across tag IDs', () => {
+    setModuleOptions({
+      initCommands: [
+        [
+          'consent',
+          'default',
+          { analytics_storage: 'denied' },
+        ],
+      ],
+    })
+    const readDataLayer = stubDocument()
+
+    const { initialize } = useGtag()
+    initialize('G-TENANT-A')
+    initialize('G-TENANT-B')
+
+    expect(readDataLayer()).toEqual([
+      [
+        'consent',
+        'default',
+        { analytics_storage: 'denied' },
+      ],
+      [
+        'js',
+        expect.any(Date),
+      ],
+      ['config', 'G-TENANT-A', {}],
+      ['config', 'G-TENANT-B', {}],
+    ])
+  })
+})

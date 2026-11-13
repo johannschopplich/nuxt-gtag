@@ -1,6 +1,6 @@
 import type { ModuleOptions } from '../src/module'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { initGtag, resolveTags } from '../src/runtime/utils'
+import { configuredTagIds, initGtag, resolveTags } from '../src/runtime/utils'
 
 function moduleOptions(options: Partial<ModuleOptions>) {
   return {
@@ -24,6 +24,7 @@ function stubDataLayer() {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  configuredTagIds.clear()
 })
 
 describe('resolveTags', () => {

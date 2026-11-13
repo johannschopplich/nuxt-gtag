@@ -16,15 +16,30 @@ export function gtag(..._args: any[]) {
  */
 export const configuredTagIds = new Set<string>()
 
+/**
+ * `initCommands` lists already run, by reference.
+ *
+ * @remarks
+ * The top-level list rides along with every tag ID it applies to. Run again, its
+ * `consent` `default` would land after an earlier `consent` `update`.
+ */
+const executedInitCommands = new WeakSet<object>()
+
 export function initGtag({ tags }: { tags: GoogleTagOptions[] }) {
   window.dataLayer = window.dataLayer || []
 
   for (const tag of tags) {
-    for (const command of tag.initCommands ?? [])
+    if (!tag.initCommands || executedInitCommands.has(tag.initCommands))
+      continue
+
+    for (const command of tag.initCommands)
       gtag(...command)
+    executedInitCommands.add(tag.initCommands)
   }
 
-  gtag('js', new Date())
+  if (configuredTagIds.size === 0)
+    gtag('js', new Date())
+
   for (const tag of tags) {
     gtag('config', tag.id, tag.config ?? {})
     configuredTagIds.add(tag.id)
