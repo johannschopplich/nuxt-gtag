@@ -169,7 +169,7 @@ function allConsentGranted() {
 
 ### Load the `gtag.js` Script Manually
 
-For even more control than the [consent mode](#set-up-google-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `initMode` option to `manual` to prevent loading the `gtag.js` script until you initialize it manually.
+For even more control than the [consent mode](#set-up-google-consent-mode), you can delay the loading of the `gtag.js` script until the user has granted consent to your privacy policy. Set the `initMode` option to `manual` to hold back the `gtag.js` script and every command, `initCommands` included, until you initialize it manually.
 
 ```ts
 export default defineNuxtConfig({
@@ -263,7 +263,7 @@ gtag('event', 'screen_view', {
 
 #### `initialize`
 
-Injects the `gtag.js` script into the document's head and configures the tag IDs. With a tag ID in the module options, it requires [`initMode: 'manual'`](#load-the-gtagjs-script-manually).
+Injects the `gtag.js` script into the document's head and configures the tag IDs. [`gtag`](#gtag) calls made before the first tag ID is configured are held and follow its `config` command. With a tag ID in the module options, it requires [`initMode: 'manual'`](#load-the-gtagjs-script-manually).
 
 The function accepts an optional ID for a Google tag that the module options do not carry. The ID joins the ones from your configuration rather than replacing them, so the call configures that tag *and* every tag still waiting.
 
